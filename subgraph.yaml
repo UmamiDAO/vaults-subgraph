@@ -1,0 +1,50 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: AggregateVault
+    network: arbitrum-one
+    source:
+      address: "0xF759C9CFFB7D96615cDE95B4FFa4700fa907BBeb"
+      abi: AggregateVault
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - CallbackHandlerUpdated
+        - CloseRebalance
+        - CollectVaultFees
+        - Cycle
+        - DefaultHandlerContractUpdated
+        - HandlerContractUpdated
+        - OpenRebalance
+        - Paused
+        - SwapHandlerUpdated
+        - Unpaused
+      abis:
+        - name: AggregateVault
+          file: ./abis/AggregateVault.json
+      eventHandlers:
+        - event: CallbackHandlerUpdated(indexed bytes4,indexed address,bool)
+          handler: handleCallbackHandlerUpdated
+        - event: CloseRebalance(uint256)
+          handler: handleCloseRebalance
+        - event: CollectVaultFees(uint256,uint256,uint256,address)
+          handler: handleCollectVaultFees
+        - event: Cycle(uint256,uint256)
+          handler: handleCycle
+        - event: DefaultHandlerContractUpdated(indexed bytes4,indexed address)
+          handler: handleDefaultHandlerContractUpdated
+        - event: HandlerContractUpdated(indexed address,bool)
+          handler: handleHandlerContractUpdated
+        - event: OpenRebalance(uint256,uint256[5],uint256[5],int256[5])
+          handler: handleOpenRebalance
+        - event: Paused(address)
+          handler: handlePaused
+        - event: SwapHandlerUpdated(indexed address,bool)
+          handler: handleSwapHandlerUpdated
+        - event: Unpaused(address)
+          handler: handleUnpaused
+      file: ./src/aggregate-vault.ts
