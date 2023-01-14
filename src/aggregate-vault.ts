@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts"
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
   AggregateVault,
   CallbackHandlerUpdated,
@@ -10,97 +10,94 @@ import {
   OpenRebalance,
   Paused,
   SwapHandlerUpdated,
-  Unpaused
-} from "../generated/AggregateVault/AggregateVault"
-import { ExampleEntity } from "../generated/schema"
+  Unpaused,
+} from "../generated/AggregateVault/AggregateVault";
+import {
+  ExampleEntity,
+  VaultFeesCollection,
+  VaultPricePerShare,
+  VaultTVL,
+} from "../generated/schema";
+import { AGGREGATE_VAULT_ADDRESS, VAULTS_ARRAY } from "./constants";
 
-export function handleCallbackHandlerUpdated(
-  event: CallbackHandlerUpdated
-): void {
-  // Entities can be loaded from the store using a string ID; this ID
-  // needs to be unique across all entities of the same type
-  let entity = ExampleEntity.load(event.transaction.from.toHex())
+// It is also possible to access smart contracts from mappings. For
+// example, the contract that has emitted the event can be connected to
+// with:
+//
+// let contract = Contract.bind(event.address)
+//
+// The following functions can then be called on this contract to access
+// state variables and other data:
+//
+// - contract.ADMIN_ROLE(...)
+// - contract.AUTH(...)
+// - contract.SCALE(...)
+// - contract.STORAGE_SLOT(...)
+// - contract.WETH(...)
+// - contract.currentCallbackHandler(...)
+// - contract.defaultHandlers(...)
+// - contract.executeSwap(...)
+// - contract.fsGLP(...)
+// - contract.getRebalanceState(...)
+// - contract.getVaultFromAsset(...)
+// - contract.getVaultIndex(...)
+// - contract.getVaultPPS(...)
+// - contract.getVaultTVL(...)
+// - contract.glpCloseSlippage(...)
+// - contract.handleDeposit(...)
+// - contract.handleWithdraw(...)
+// - contract.handlerContractCallbacks(...)
+// - contract.handlerContracts(...)
+// - contract.paused(...)
+// - contract.previewDepositFee(...)
+// - contract.previewWithdrawalFee(...)
+// - contract.router(...)
+// - contract.swapHandlers(...)
+// - contract.vaultGlpAttribution(...)
+// - contract.vaultGlpAttribution(...)
 
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (!entity) {
-    entity = new ExampleEntity(event.transaction.from.toHex())
+export function handleCloseRebalance(event: CloseRebalance): void {
+  const aggregateVaultContract = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
+  VAULTS_ARRAY.map((vaultAddress) => {
+    const entityId = `${event.block.timestamp}:${vaultAddress}`;
 
-    // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
-  }
+    /** Vault price per share */
+    const vaultPps = new VaultPricePerShare(entityId);
+    vaultPps.block = event.block.number;
+    vaultPps.timestamp = event.block.timestamp;
+    vaultPps.vault = vaultAddress.toString();
+    vaultPps.pricePerShare = aggregateVaultContract.getVaultPPS(vaultAddress);
+    vaultPps.save();
 
-  // BigInt and BigDecimal math are supported
-  entity.count = entity.count + BigInt.fromI32(1)
-
-  // Entity fields can be set based on event parameters
-  entity._sig = event.params._sig
-  entity._handler = event.params._handler
-
-  // Entities can be written to the store with `.save()`
-  entity.save()
-
-  // Note: If a handler doesn't require existing field values, it is faster
-  // _not_ to load the entity from the store. Instead, create it fresh with
-  // `new Entity(...)`, set the fields that should be updated and save the
-  // entity back to the store. Fields that were not set or unset remain
-  // unchanged, allowing for partial updates to be applied.
-
-  // It is also possible to access smart contracts from mappings. For
-  // example, the contract that has emitted the event can be connected to
-  // with:
-  //
-  // let contract = Contract.bind(event.address)
-  //
-  // The following functions can then be called on this contract to access
-  // state variables and other data:
-  //
-  // - contract.ADMIN_ROLE(...)
-  // - contract.AUTH(...)
-  // - contract.SCALE(...)
-  // - contract.STORAGE_SLOT(...)
-  // - contract.WETH(...)
-  // - contract.currentCallbackHandler(...)
-  // - contract.defaultHandlers(...)
-  // - contract.executeSwap(...)
-  // - contract.fsGLP(...)
-  // - contract.getRebalanceState(...)
-  // - contract.getVaultFromAsset(...)
-  // - contract.getVaultIndex(...)
-  // - contract.getVaultPPS(...)
-  // - contract.getVaultTVL(...)
-  // - contract.glpCloseSlippage(...)
-  // - contract.handleDeposit(...)
-  // - contract.handleWithdraw(...)
-  // - contract.handlerContractCallbacks(...)
-  // - contract.handlerContracts(...)
-  // - contract.paused(...)
-  // - contract.previewDepositFee(...)
-  // - contract.previewWithdrawalFee(...)
-  // - contract.router(...)
-  // - contract.swapHandlers(...)
-  // - contract.vaultGlpAttribution(...)
-  // - contract.vaultGlpAttribution(...)
+    /** Vault TVL */
+    const vaultTvl = new VaultTVL(entityId);
+    vaultTvl.block = event.block.number;
+    vaultTvl.timestamp = event.block.timestamp;
+    vaultTvl.vault = vaultAddress.toString();
+    vaultTvl.tvl = aggregateVaultContract.getVaultTVL(vaultAddress);
+    vaultTvl.save();
+  });
 }
 
-export function handleCloseRebalance(event: CloseRebalance): void {}
+export function handleCollectVaultFees(event: CollectVaultFees): void {
+  const vaultAddress = event.params._assetVault;
+  const entityId = `${event.block.timestamp}:${vaultAddress}`;
 
-export function handleCollectVaultFees(event: CollectVaultFees): void {}
+  /** Vault fees collection */
+  const vaultFeesCollection = new VaultFeesCollection(entityId);
+  vaultFeesCollection.block = event.block.number;
+  vaultFeesCollection.timestamp = event.block.timestamp;
+  vaultFeesCollection.vault = vaultAddress.toString();
+  vaultFeesCollection.managementFees = event.params.managementFeeInAsset;
+  vaultFeesCollection.performanceFees = event.params.performanceFeeInAsset;
+  vaultFeesCollection.totalFees = event.params.totalVaultFee;
+  vaultFeesCollection.save();
+}
 
 export function handleCycle(event: Cycle): void {}
-
-export function handleDefaultHandlerContractUpdated(
-  event: DefaultHandlerContractUpdated
-): void {}
-
-export function handleHandlerContractUpdated(
-  event: HandlerContractUpdated
-): void {}
 
 export function handleOpenRebalance(event: OpenRebalance): void {}
 
 export function handlePaused(event: Paused): void {}
-
-export function handleSwapHandlerUpdated(event: SwapHandlerUpdated): void {}
 
 export function handleUnpaused(event: Unpaused): void {}
