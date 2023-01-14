@@ -1,3 +1,4 @@
+import { ethereum } from "@graphprotocol/graph-ts";
 import {
   AggregateVault,
   CloseRebalance,
@@ -50,18 +51,25 @@ import { AGGREGATE_VAULT_ADDRESS, VAULTS_ARRAY } from "./constants";
 // - contract.vaultGlpAttribution(...)
 // - contract.vaultGlpAttribution(...)
 
+export function handleBlock(block: ethereum.Block): void {
+  const aggregateVaultContract = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
+  VAULTS_ARRAY.map((vaultAddress) => {
+    const entityId = `${block.timestamp}:${vaultAddress}`;
+
+    /** Vault price per share */
+    const vaultPps = new VaultPricePerShare(entityId);
+    vaultPps.block = block.number;
+    vaultPps.timestamp = block.timestamp;
+    vaultPps.vault = vaultAddress.toString();
+    vaultPps.pricePerShare = aggregateVaultContract.getVaultPPS(vaultAddress);
+    vaultPps.save();
+  });
+}
+
 export function handleCloseRebalance(event: CloseRebalance): void {
   const aggregateVaultContract = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   VAULTS_ARRAY.map((vaultAddress) => {
     const entityId = `${event.block.timestamp}:${vaultAddress}`;
-
-    /** Vault price per share */
-    const vaultPps = new VaultPricePerShare(entityId);
-    vaultPps.block = event.block.number;
-    vaultPps.timestamp = event.block.timestamp;
-    vaultPps.vault = vaultAddress.toString();
-    vaultPps.pricePerShare = aggregateVaultContract.getVaultPPS(vaultAddress);
-    vaultPps.save();
 
     /** Vault TVL */
     const vaultTvl = new VaultTVL(entityId);

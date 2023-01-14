@@ -40,6 +40,8 @@ dataSources:
           handler: handleSwapHandlerUpdated
         - event: Unpaused(address)
           handler: handleUnpaused
+      blockHandlers:
+        - handler: handleBlock
       file: ./src/aggregate-vault.ts
   - kind: ethereum
     name: GlpUsdcVault

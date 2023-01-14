@@ -1,4 +1,4 @@
-import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
   GlpLinkVaultDeposit as GlpLinkVaultDepositEvent,
   GlpLinkVaultRebalanceRequest as GlpLinkVaultRebalanceRequestEvent,
