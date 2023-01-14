@@ -1,10 +1,3 @@
-type ExampleEntity @entity {
-  id: ID!
-  count: BigInt!
-  _sig: Bytes! # bytes4
-  _handler: Bytes! # address
-}
-
 type VaultPricePerShare @entity(immutable: true) {
   id: ID!
   block: BigInt!
@@ -31,233 +24,22 @@ type VaultFeesCollection @entity(immutable: true) {
   totalFees: BigInt! # uint256
 }
 
-type Approval @entity {
+type UserVaultBalanceTotal @entity {
   id: ID!
-  owner: Bytes! # address
-  spender: Bytes! # address
-  amount: BigInt! # uint256
+  usdc: BigInt!
+  weth: BigInt!
+  wbtc: BigInt!
+  link: BigInt!
+  uni: BigInt!
 }
 
-type Deposit @entity {
+type UserVaultBalance @entity(immutable: true) {
   id: ID!
-  caller: Bytes! # address
-  owner: Bytes! # address
-  assets: BigInt! # uint256
-  shares: BigInt! # uint256
-}
-
-type GlpUsdcVaultPaused @entity {
-  id: ID!
-  account: Bytes! # address
-}
-
-type RebalanceRequest @entity {
-  id: ID!
-  vault: Bytes! # address
-  sender: Bytes! # address
-}
-
-type Transfer @entity {
-  id: ID!
-  from: Bytes! # address
-  to: Bytes! # address
-  amount: BigInt! # uint256
-}
-
-type GlpUsdcVaultUnpaused @entity {
-  id: ID!
-  account: Bytes! # address
-}
-
-type Withdraw @entity {
-  id: ID!
-  caller: Bytes! # address
-  receiver: Bytes! # address
-  owner: Bytes! # address
-  assets: BigInt! # uint256
-  shares: BigInt! # uint256
-}
-type GlpWethVaultApproval @entity {
-  id: ID!
-  owner: Bytes! # address
-  spender: Bytes! # address
-  amount: BigInt! # uint256
-}
-
-type GlpWethVaultDeposit @entity {
-  id: ID!
-  caller: Bytes! # address
-  owner: Bytes! # address
-  assets: BigInt! # uint256
-  shares: BigInt! # uint256
-}
-
-type GlpWethVaultPaused @entity {
-  id: ID!
-  account: Bytes! # address
-}
-
-type GlpWethVaultRebalanceRequest @entity {
-  id: ID!
-  vault: Bytes! # address
-  sender: Bytes! # address
-}
-
-type GlpWethVaultTransfer @entity {
-  id: ID!
-  from: Bytes! # address
-  to: Bytes! # address
-  amount: BigInt! # uint256
-}
-
-type GlpWethVaultUnpaused @entity {
-  id: ID!
-  account: Bytes! # address
-}
-
-type GlpWethVaultWithdraw @entity {
-  id: ID!
-  caller: Bytes! # address
-  receiver: Bytes! # address
-  owner: Bytes! # address
-  assets: BigInt! # uint256
-  shares: BigInt! # uint256
-}
-type GlpWbtcVaultApproval @entity {
-  id: ID!
-  owner: Bytes! # address
-  spender: Bytes! # address
-  amount: BigInt! # uint256
-}
-
-type GlpWbtcVaultDeposit @entity {
-  id: ID!
-  caller: Bytes! # address
-  owner: Bytes! # address
-  assets: BigInt! # uint256
-  shares: BigInt! # uint256
-}
-
-type GlpWbtcVaultPaused @entity {
-  id: ID!
-  account: Bytes! # address
-}
-
-type GlpWbtcVaultRebalanceRequest @entity {
-  id: ID!
-  vault: Bytes! # address
-  sender: Bytes! # address
-}
-
-type GlpWbtcVaultTransfer @entity {
-  id: ID!
-  from: Bytes! # address
-  to: Bytes! # address
-  amount: BigInt! # uint256
-}
-
-type GlpWbtcVaultUnpaused @entity {
-  id: ID!
-  account: Bytes! # address
-}
-
-type GlpWbtcVaultWithdraw @entity {
-  id: ID!
-  caller: Bytes! # address
-  receiver: Bytes! # address
-  owner: Bytes! # address
-  assets: BigInt! # uint256
-  shares: BigInt! # uint256
-}
-type GlpLinkVaultApproval @entity {
-  id: ID!
-  owner: Bytes! # address
-  spender: Bytes! # address
-  amount: BigInt! # uint256
-}
-
-type GlpLinkVaultDeposit @entity {
-  id: ID!
-  caller: Bytes! # address
-  owner: Bytes! # address
-  assets: BigInt! # uint256
-  shares: BigInt! # uint256
-}
-
-type GlpLinkVaultPaused @entity {
-  id: ID!
-  account: Bytes! # address
-}
-
-type GlpLinkVaultRebalanceRequest @entity {
-  id: ID!
-  vault: Bytes! # address
-  sender: Bytes! # address
-}
-
-type GlpLinkVaultTransfer @entity {
-  id: ID!
-  from: Bytes! # address
-  to: Bytes! # address
-  amount: BigInt! # uint256
-}
-
-type GlpLinkVaultUnpaused @entity {
-  id: ID!
-  account: Bytes! # address
-}
-
-type GlpLinkVaultWithdraw @entity {
-  id: ID!
-  caller: Bytes! # address
-  receiver: Bytes! # address
-  owner: Bytes! # address
-  assets: BigInt! # uint256
-  shares: BigInt! # uint256
-}
-type GlpUniVaultApproval @entity {
-  id: ID!
-  owner: Bytes! # address
-  spender: Bytes! # address
-  amount: BigInt! # uint256
-}
-
-type GlpUniVaultDeposit @entity {
-  id: ID!
-  caller: Bytes! # address
-  owner: Bytes! # address
-  assets: BigInt! # uint256
-  shares: BigInt! # uint256
-}
-
-type GlpUniVaultPaused @entity {
-  id: ID!
-  account: Bytes! # address
-}
-
-type GlpUniVaultRebalanceRequest @entity {
-  id: ID!
-  vault: Bytes! # address
-  sender: Bytes! # address
-}
-
-type GlpUniVaultTransfer @entity {
-  id: ID!
-  from: Bytes! # address
-  to: Bytes! # address
-  amount: BigInt! # uint256
-}
-
-type GlpUniVaultUnpaused @entity {
-  id: ID!
-  account: Bytes! # address
-}
-
-type GlpUniVaultWithdraw @entity {
-  id: ID!
-  caller: Bytes! # address
-  receiver: Bytes! # address
-  owner: Bytes! # address
-  assets: BigInt! # uint256
-  shares: BigInt! # uint256
+  timestamp: BigInt!
+  block: BigInt!
+  txHash: String!
+  event: String!
+  value: BigInt!
+  user: String!
+  vault: String!
 }

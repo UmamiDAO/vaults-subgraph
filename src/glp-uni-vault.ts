@@ -1,96 +1,101 @@
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
-  GlpUniVaultApproval as GlpUniVaultApprovalEvent,
   GlpUniVaultDeposit as GlpUniVaultDepositEvent,
-  GlpUniVaultPaused as GlpUniVaultPausedEvent,
   GlpUniVaultRebalanceRequest as GlpUniVaultRebalanceRequestEvent,
   GlpUniVaultTransfer as GlpUniVaultTransferEvent,
-  GlpUniVaultUnpaused as GlpUniVaultUnpausedEvent,
-  GlpUniVaultWithdraw as GlpUniVaultWithdrawEvent
-} from "../generated/GlpUniVault/GlpUniVault"
-import {
-  GlpUniVaultApproval,
-  GlpUniVaultDeposit,
-  GlpUniVaultPaused,
-  GlpUniVaultRebalanceRequest,
-  GlpUniVaultTransfer,
-  GlpUniVaultUnpaused,
-  GlpUniVaultWithdraw
-} from "../generated/schema"
-
-export function handleGlpUniVaultApproval(
-  event: GlpUniVaultApprovalEvent
-): void {
-  let entity = new GlpUniVaultApproval(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.owner = event.params.owner
-  entity.spender = event.params.spender
-  entity.amount = event.params.amount
-  entity.save()
-}
-
-export function handleGlpUniVaultDeposit(event: GlpUniVaultDepositEvent): void {
-  let entity = new GlpUniVaultDeposit(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.caller = event.params.caller
-  entity.owner = event.params.owner
-  entity.assets = event.params.assets
-  entity.shares = event.params.shares
-  entity.save()
-}
-
-export function handleGlpUniVaultPaused(event: GlpUniVaultPausedEvent): void {
-  let entity = new GlpUniVaultPaused(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.account = event.params.account
-  entity.save()
-}
-
-export function handleGlpUniVaultRebalanceRequest(
-  event: GlpUniVaultRebalanceRequestEvent
-): void {
-  let entity = new GlpUniVaultRebalanceRequest(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.vault = event.params.vault
-  entity.sender = event.params.sender
-  entity.save()
-}
+  GlpUniVaultWithdraw as GlpUniVaultWithdrawEvent,
+} from "../generated/GlpUniVault/GlpUniVault";
+import { UserVaultBalance, UserVaultBalanceTotal } from "../generated/schema";
+import { UNI_VAULT_ADDRESS, ZERO_ADDRESS } from "./constants";
 
 export function handleGlpUniVaultTransfer(
   event: GlpUniVaultTransferEvent
 ): void {
-  let entity = new GlpUniVaultTransfer(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.from = event.params.from
-  entity.to = event.params.to
-  entity.amount = event.params.amount
-  entity.save()
+  const amount = event.params.amount;
+
+  const from = event.params.from.toHexString();
+  const to = event.params.to.toHexString();
+
+  // Any event not listed below is considered a transfer
+  let balanceEvent = "uni-vault-transfer";
+  // User deposited into the vault
+  if (from == ZERO_ADDRESS) {
+    balanceEvent = "uni-vault-deposit";
+  }
+  // User withdrew into the vault
+  if (to == ZERO_ADDRESS) {
+    balanceEvent = "uni-vault-withdraw";
+  }
+
+  // ZERO_ADDRESS = deposit event, don't register ZERO_ADDRESS's balance
+  if (from != ZERO_ADDRESS) {
+    const idFromTotal = `totalVault:uni:${from}`;
+    let fromTotal = UserVaultBalanceTotal.load(idFromTotal);
+    if (fromTotal == null) {
+      fromTotal = new UserVaultBalanceTotal(idFromTotal);
+      fromTotal.usdc = BigInt.zero();
+      fromTotal.weth = BigInt.zero();
+      fromTotal.wbtc = BigInt.zero();
+      fromTotal.uni = amount;
+      fromTotal.link = BigInt.zero();
+    } else {
+      fromTotal.uni = fromTotal.uni.minus(amount);
+    }
+    fromTotal.save();
+
+    const fromHistoricalBalance = new UserVaultBalance(
+      `${event.block.number}:uni:${from}`
+    );
+    fromHistoricalBalance.block = event.block.number;
+    fromHistoricalBalance.timestamp = event.block.timestamp;
+    fromHistoricalBalance.txHash = event.transaction.hash.toHex();
+    fromHistoricalBalance.vault = UNI_VAULT_ADDRESS.toString();
+    fromHistoricalBalance.user = from;
+    fromHistoricalBalance.value = fromTotal.uni;
+    fromHistoricalBalance.event = balanceEvent;
+
+    fromHistoricalBalance.save();
+  }
+
+  // ZERO_ADDRESS = withdraw event, don't register ZERO_ADDRESS's balance
+  if (to != ZERO_ADDRESS) {
+    const idToTotal = `totalVault:uni:${to}`;
+    let toTotal = UserVaultBalanceTotal.load(idToTotal);
+    if (toTotal == null) {
+      toTotal = new UserVaultBalanceTotal(idToTotal);
+      toTotal.usdc = BigInt.zero();
+      toTotal.weth = BigInt.zero();
+      toTotal.wbtc = BigInt.zero();
+      toTotal.uni = amount;
+      toTotal.link = BigInt.zero();
+    } else {
+      toTotal.uni = toTotal.uni.plus(amount);
+    }
+    toTotal.save();
+
+    const toHistoricalBalance = new UserVaultBalance(
+      `${event.block.number}:uni:${to}`
+    );
+    toHistoricalBalance.block = event.block.number;
+    toHistoricalBalance.timestamp = event.block.timestamp;
+    toHistoricalBalance.txHash = event.transaction.hash.toHex();
+    toHistoricalBalance.vault = UNI_VAULT_ADDRESS.toString();
+    toHistoricalBalance.user = to;
+    toHistoricalBalance.value = toTotal.uni;
+    toHistoricalBalance.event = balanceEvent;
+
+    toHistoricalBalance.save();
+  }
 }
 
-export function handleGlpUniVaultUnpaused(
-  event: GlpUniVaultUnpausedEvent
-): void {
-  let entity = new GlpUniVaultUnpaused(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.account = event.params.account
-  entity.save()
-}
+export function handleGlpUniVaultRebalanceRequest(
+  event: GlpUniVaultRebalanceRequestEvent
+): void {}
+
+export function handleGlpUniVaultDeposit(
+  event: GlpUniVaultDepositEvent
+): void {}
 
 export function handleGlpUniVaultWithdraw(
   event: GlpUniVaultWithdrawEvent
-): void {
-  let entity = new GlpUniVaultWithdraw(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.caller = event.params.caller
-  entity.receiver = event.params.receiver
-  entity.owner = event.params.owner
-  entity.assets = event.params.assets
-  entity.shares = event.params.shares
-  entity.save()
-}
+): void {}

@@ -1,98 +1,101 @@
+import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import {
-  GlpLinkVaultApproval as GlpLinkVaultApprovalEvent,
   GlpLinkVaultDeposit as GlpLinkVaultDepositEvent,
-  GlpLinkVaultPaused as GlpLinkVaultPausedEvent,
   GlpLinkVaultRebalanceRequest as GlpLinkVaultRebalanceRequestEvent,
   GlpLinkVaultTransfer as GlpLinkVaultTransferEvent,
-  GlpLinkVaultUnpaused as GlpLinkVaultUnpausedEvent,
-  GlpLinkVaultWithdraw as GlpLinkVaultWithdrawEvent
-} from "../generated/GlpLinkVault/GlpLinkVault"
-import {
-  GlpLinkVaultApproval,
-  GlpLinkVaultDeposit,
-  GlpLinkVaultPaused,
-  GlpLinkVaultRebalanceRequest,
-  GlpLinkVaultTransfer,
-  GlpLinkVaultUnpaused,
-  GlpLinkVaultWithdraw
-} from "../generated/schema"
-
-export function handleGlpLinkVaultApproval(
-  event: GlpLinkVaultApprovalEvent
-): void {
-  let entity = new GlpLinkVaultApproval(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.owner = event.params.owner
-  entity.spender = event.params.spender
-  entity.amount = event.params.amount
-  entity.save()
-}
-
-export function handleGlpLinkVaultDeposit(
-  event: GlpLinkVaultDepositEvent
-): void {
-  let entity = new GlpLinkVaultDeposit(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.caller = event.params.caller
-  entity.owner = event.params.owner
-  entity.assets = event.params.assets
-  entity.shares = event.params.shares
-  entity.save()
-}
-
-export function handleGlpLinkVaultPaused(event: GlpLinkVaultPausedEvent): void {
-  let entity = new GlpLinkVaultPaused(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.account = event.params.account
-  entity.save()
-}
-
-export function handleGlpLinkVaultRebalanceRequest(
-  event: GlpLinkVaultRebalanceRequestEvent
-): void {
-  let entity = new GlpLinkVaultRebalanceRequest(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.vault = event.params.vault
-  entity.sender = event.params.sender
-  entity.save()
-}
+  GlpLinkVaultWithdraw as GlpLinkVaultWithdrawEvent,
+} from "../generated/GlpLinkVault/GlpLinkVault";
+import { UserVaultBalance, UserVaultBalanceTotal } from "../generated/schema";
+import { LINK_VAULT_ADDRESS, ZERO_ADDRESS } from "./constants";
 
 export function handleGlpLinkVaultTransfer(
   event: GlpLinkVaultTransferEvent
 ): void {
-  let entity = new GlpLinkVaultTransfer(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.from = event.params.from
-  entity.to = event.params.to
-  entity.amount = event.params.amount
-  entity.save()
+  const amount = event.params.amount;
+
+  const from = event.params.from.toHexString();
+  const to = event.params.to.toHexString();
+
+  // Any event not listed below is considered a transfer
+  let balanceEvent = "link-vault-transfer";
+  // User deposited into the vault
+  if (from == ZERO_ADDRESS) {
+    balanceEvent = "link-vault-deposit";
+  }
+  // User withdrew into the vault
+  if (to == ZERO_ADDRESS) {
+    balanceEvent = "link-vault-withdraw";
+  }
+
+  // ZERO_ADDRESS = deposit event, don't register ZERO_ADDRESS's balance
+  if (from != ZERO_ADDRESS) {
+    const idFromTotal = `totalVault:link:${from}`;
+    let fromTotal = UserVaultBalanceTotal.load(idFromTotal);
+    if (fromTotal == null) {
+      fromTotal = new UserVaultBalanceTotal(idFromTotal);
+      fromTotal.usdc = BigInt.zero();
+      fromTotal.weth = BigInt.zero();
+      fromTotal.wbtc = BigInt.zero();
+      fromTotal.uni = BigInt.zero();
+      fromTotal.link = amount;
+    } else {
+      fromTotal.link = fromTotal.link.minus(amount);
+    }
+    fromTotal.save();
+
+    const fromHistoricalBalance = new UserVaultBalance(
+      `${event.block.number}:link:${from}`
+    );
+    fromHistoricalBalance.block = event.block.number;
+    fromHistoricalBalance.timestamp = event.block.timestamp;
+    fromHistoricalBalance.txHash = event.transaction.hash.toHex();
+    fromHistoricalBalance.vault = LINK_VAULT_ADDRESS.toString();
+    fromHistoricalBalance.user = from;
+    fromHistoricalBalance.value = fromTotal.link;
+    fromHistoricalBalance.event = balanceEvent;
+
+    fromHistoricalBalance.save();
+  }
+
+  // ZERO_ADDRESS = withdraw event, don't register ZERO_ADDRESS's balance
+  if (to != ZERO_ADDRESS) {
+    const idToTotal = `totalVault:link:${to}`;
+    let toTotal = UserVaultBalanceTotal.load(idToTotal);
+    if (toTotal == null) {
+      toTotal = new UserVaultBalanceTotal(idToTotal);
+      toTotal.usdc = BigInt.zero();
+      toTotal.weth = BigInt.zero();
+      toTotal.wbtc = BigInt.zero();
+      toTotal.uni = BigInt.zero();
+      toTotal.link = amount;
+    } else {
+      toTotal.link = toTotal.link.plus(amount);
+    }
+    toTotal.save();
+
+    const toHistoricalBalance = new UserVaultBalance(
+      `${event.block.number}:link:${to}`
+    );
+    toHistoricalBalance.block = event.block.number;
+    toHistoricalBalance.timestamp = event.block.timestamp;
+    toHistoricalBalance.txHash = event.transaction.hash.toHex();
+    toHistoricalBalance.vault = LINK_VAULT_ADDRESS.toString();
+    toHistoricalBalance.user = to;
+    toHistoricalBalance.value = toTotal.link;
+    toHistoricalBalance.event = balanceEvent;
+
+    toHistoricalBalance.save();
+  }
 }
 
-export function handleGlpLinkVaultUnpaused(
-  event: GlpLinkVaultUnpausedEvent
-): void {
-  let entity = new GlpLinkVaultUnpaused(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.account = event.params.account
-  entity.save()
-}
+export function handleGlpLinkVaultDeposit(
+  event: GlpLinkVaultDepositEvent
+): void {}
 
 export function handleGlpLinkVaultWithdraw(
   event: GlpLinkVaultWithdrawEvent
-): void {
-  let entity = new GlpLinkVaultWithdraw(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.caller = event.params.caller
-  entity.receiver = event.params.receiver
-  entity.owner = event.params.owner
-  entity.assets = event.params.assets
-  entity.shares = event.params.shares
-  entity.save()
-}
+): void {}
+
+export function handleGlpLinkVaultRebalanceRequest(
+  event: GlpLinkVaultRebalanceRequestEvent
+): void {}

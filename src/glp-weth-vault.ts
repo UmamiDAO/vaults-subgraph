@@ -1,98 +1,101 @@
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
-  GlpWethVaultApproval as GlpWethVaultApprovalEvent,
   GlpWethVaultDeposit as GlpWethVaultDepositEvent,
-  GlpWethVaultPaused as GlpWethVaultPausedEvent,
   GlpWethVaultRebalanceRequest as GlpWethVaultRebalanceRequestEvent,
   GlpWethVaultTransfer as GlpWethVaultTransferEvent,
-  GlpWethVaultUnpaused as GlpWethVaultUnpausedEvent,
-  GlpWethVaultWithdraw as GlpWethVaultWithdrawEvent
-} from "../generated/GlpWethVault/GlpWethVault"
-import {
-  GlpWethVaultApproval,
-  GlpWethVaultDeposit,
-  GlpWethVaultPaused,
-  GlpWethVaultRebalanceRequest,
-  GlpWethVaultTransfer,
-  GlpWethVaultUnpaused,
-  GlpWethVaultWithdraw
-} from "../generated/schema"
-
-export function handleGlpWethVaultApproval(
-  event: GlpWethVaultApprovalEvent
-): void {
-  let entity = new GlpWethVaultApproval(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.owner = event.params.owner
-  entity.spender = event.params.spender
-  entity.amount = event.params.amount
-  entity.save()
-}
-
-export function handleGlpWethVaultDeposit(
-  event: GlpWethVaultDepositEvent
-): void {
-  let entity = new GlpWethVaultDeposit(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.caller = event.params.caller
-  entity.owner = event.params.owner
-  entity.assets = event.params.assets
-  entity.shares = event.params.shares
-  entity.save()
-}
-
-export function handleGlpWethVaultPaused(event: GlpWethVaultPausedEvent): void {
-  let entity = new GlpWethVaultPaused(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.account = event.params.account
-  entity.save()
-}
-
-export function handleGlpWethVaultRebalanceRequest(
-  event: GlpWethVaultRebalanceRequestEvent
-): void {
-  let entity = new GlpWethVaultRebalanceRequest(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.vault = event.params.vault
-  entity.sender = event.params.sender
-  entity.save()
-}
+  GlpWethVaultWithdraw as GlpWethVaultWithdrawEvent,
+} from "../generated/GlpWethVault/GlpWethVault";
+import { UserVaultBalance, UserVaultBalanceTotal } from "../generated/schema";
+import { WETH_VAULT_ADDRESS, ZERO_ADDRESS } from "./constants";
 
 export function handleGlpWethVaultTransfer(
   event: GlpWethVaultTransferEvent
 ): void {
-  let entity = new GlpWethVaultTransfer(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.from = event.params.from
-  entity.to = event.params.to
-  entity.amount = event.params.amount
-  entity.save()
+  const amount = event.params.amount;
+
+  const from = event.params.from.toHexString();
+  const to = event.params.to.toHexString();
+
+  // Any event not listed below is considered a transfer
+  let balanceEvent = "weth-vault-transfer";
+  // User deposited into the vault
+  if (from == ZERO_ADDRESS) {
+    balanceEvent = "weth-vault-deposit";
+  }
+  // User withdrew into the vault
+  if (to == ZERO_ADDRESS) {
+    balanceEvent = "weth-vault-withdraw";
+  }
+
+  // ZERO_ADDRESS = deposit event, don't register ZERO_ADDRESS's balance
+  if (from != ZERO_ADDRESS) {
+    const idFromTotal = `totalVault:weth:${from}`;
+    let fromTotal = UserVaultBalanceTotal.load(idFromTotal);
+    if (fromTotal == null) {
+      fromTotal = new UserVaultBalanceTotal(idFromTotal);
+      fromTotal.usdc = BigInt.zero();
+      fromTotal.weth = amount;
+      fromTotal.wbtc = BigInt.zero();
+      fromTotal.uni = BigInt.zero();
+      fromTotal.link = BigInt.zero();
+    } else {
+      fromTotal.weth = fromTotal.weth.minus(amount);
+    }
+    fromTotal.save();
+
+    const fromHistoricalBalance = new UserVaultBalance(
+      `${event.block.number}:weth:${from}`
+    );
+    fromHistoricalBalance.block = event.block.number;
+    fromHistoricalBalance.timestamp = event.block.timestamp;
+    fromHistoricalBalance.txHash = event.transaction.hash.toHex();
+    fromHistoricalBalance.vault = WETH_VAULT_ADDRESS.toString();
+    fromHistoricalBalance.user = from;
+    fromHistoricalBalance.value = fromTotal.weth;
+    fromHistoricalBalance.event = balanceEvent;
+
+    fromHistoricalBalance.save();
+  }
+
+  // ZERO_ADDRESS = withdraw event, don't register ZERO_ADDRESS's balance
+  if (to != ZERO_ADDRESS) {
+    const idToTotal = `totalVault:weth:${to}`;
+    let toTotal = UserVaultBalanceTotal.load(idToTotal);
+    if (toTotal == null) {
+      toTotal = new UserVaultBalanceTotal(idToTotal);
+      toTotal.usdc = BigInt.zero();
+      toTotal.weth = amount;
+      toTotal.wbtc = BigInt.zero();
+      toTotal.uni = BigInt.zero();
+      toTotal.link = BigInt.zero();
+    } else {
+      toTotal.weth = toTotal.weth.plus(amount);
+    }
+    toTotal.save();
+
+    const toHistoricalBalance = new UserVaultBalance(
+      `${event.block.number}:weth:${to}`
+    );
+    toHistoricalBalance.block = event.block.number;
+    toHistoricalBalance.timestamp = event.block.timestamp;
+    toHistoricalBalance.txHash = event.transaction.hash.toHex();
+    toHistoricalBalance.vault = WETH_VAULT_ADDRESS.toString();
+    toHistoricalBalance.user = to;
+    toHistoricalBalance.value = toTotal.weth;
+    toHistoricalBalance.event = balanceEvent;
+
+    toHistoricalBalance.save();
+  }
 }
 
-export function handleGlpWethVaultUnpaused(
-  event: GlpWethVaultUnpausedEvent
-): void {
-  let entity = new GlpWethVaultUnpaused(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.account = event.params.account
-  entity.save()
-}
+export function handleGlpWethVaultRebalanceRequest(
+  event: GlpWethVaultRebalanceRequestEvent
+): void {}
+
+export function handleGlpWethVaultDeposit(
+  event: GlpWethVaultDepositEvent
+): void {}
 
 export function handleGlpWethVaultWithdraw(
   event: GlpWethVaultWithdrawEvent
-): void {
-  let entity = new GlpWethVaultWithdraw(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.caller = event.params.caller
-  entity.receiver = event.params.receiver
-  entity.owner = event.params.owner
-  entity.assets = event.params.assets
-  entity.shares = event.params.shares
-  entity.save()
-}
+): void {}

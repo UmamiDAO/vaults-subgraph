@@ -1,19 +1,13 @@
-import { BigInt } from "@graphprotocol/graph-ts";
 import {
   AggregateVault,
-  CallbackHandlerUpdated,
   CloseRebalance,
   CollectVaultFees,
   Cycle,
-  DefaultHandlerContractUpdated,
-  HandlerContractUpdated,
   OpenRebalance,
   Paused,
-  SwapHandlerUpdated,
   Unpaused,
 } from "../generated/AggregateVault/AggregateVault";
 import {
-  ExampleEntity,
   VaultFeesCollection,
   VaultPricePerShare,
   VaultTVL,

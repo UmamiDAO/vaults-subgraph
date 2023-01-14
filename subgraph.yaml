@@ -13,16 +13,9 @@ dataSources:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - CallbackHandlerUpdated
-        - CloseRebalance
-        - CollectVaultFees
-        - Cycle
-        - DefaultHandlerContractUpdated
-        - HandlerContractUpdated
-        - OpenRebalance
-        - Paused
-        - SwapHandlerUpdated
-        - Unpaused
+        - VaultPricePerShare
+        - VaultTVL
+        - VaultFeesCollection
       abis:
         - name: AggregateVault
           file: ./abis/AggregateVault.json
@@ -59,13 +52,8 @@ dataSources:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - Approval
-        - Deposit
-        - GlpUsdcVaultPaused
-        - RebalanceRequest
-        - Transfer
-        - GlpUsdcVaultUnpaused
-        - Withdraw
+        - UserVaultBalanceTotal
+        - UserVaultBalance
       abis:
         - name: GlpUsdcVault
           file: ./abis/GlpUsdcVault.json
@@ -96,13 +84,8 @@ dataSources:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - GlpWethVaultApproval
-        - GlpWethVaultDeposit
-        - GlpWethVaultPaused
-        - GlpWethVaultRebalanceRequest
-        - GlpWethVaultTransfer
-        - GlpWethVaultUnpaused
-        - GlpWethVaultWithdraw
+        - UserVaultBalanceTotal
+        - UserVaultBalance
       abis:
         - name: GlpWethVault
           file: ./abis/GlpWethVault.json
@@ -134,13 +117,8 @@ dataSources:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - GlpWbtcVaultApproval
-        - GlpWbtcVaultDeposit
-        - GlpWbtcVaultPaused
-        - GlpWbtcVaultRebalanceRequest
-        - GlpWbtcVaultTransfer
-        - GlpWbtcVaultUnpaused
-        - GlpWbtcVaultWithdraw
+        - UserVaultBalanceTotal
+        - UserVaultBalance
       abis:
         - name: GlpWbtcVault
           file: ./abis/GlpWbtcVault.json
@@ -172,13 +150,8 @@ dataSources:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - GlpLinkVaultApproval
-        - GlpLinkVaultDeposit
-        - GlpLinkVaultPaused
-        - GlpLinkVaultRebalanceRequest
-        - GlpLinkVaultTransfer
-        - GlpLinkVaultUnpaused
-        - GlpLinkVaultWithdraw
+        - UserVaultBalanceTotal
+        - UserVaultBalance
       abis:
         - name: GlpLinkVault
           file: ./abis/GlpLinkVault.json
@@ -210,13 +183,8 @@ dataSources:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - GlpUniVaultApproval
-        - GlpUniVaultDeposit
-        - GlpUniVaultPaused
-        - GlpUniVaultRebalanceRequest
-        - GlpUniVaultTransfer
-        - GlpUniVaultUnpaused
-        - GlpUniVaultWithdraw
+        - UserVaultBalanceTotal
+        - UserVaultBalance
       abis:
         - name: GlpUniVault
           file: ./abis/GlpUniVault.json
