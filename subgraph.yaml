@@ -6,8 +6,9 @@ dataSources:
     name: AggregateVault
     network: arbitrum-one
     source:
-      address: "0xF759C9CFFB7D96615cDE95B4FFa4700fa907BBeb"
+      address: "0x7f5C4f910a672763BA343A71e03730c2518A7d18"
       abi: AggregateVault
+      startBlock: 52766188
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -47,8 +48,9 @@ dataSources:
     name: GlpUsdcVault
     network: arbitrum-one
     source:
-      address: "0x676A46b081285D5da47A09e85176B84750D8eA6A"
+      address: "0xC86064D7A396B913eCf8A3CBe22d8F285b3DD17C"
       abi: GlpUsdcVault
+      startBlock: 52766476
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -79,8 +81,9 @@ dataSources:
     name: GlpWethVault
     network: arbitrum-one
     source:
-      address: "0x9D9801e4215f08297A5b1Ee3C6ea4d551f13ABe6"
+      address: "0xbB7E775CF4DB40AE859865a8b2FDeF9f514d2400"
       abi: GlpWethVault
+      startBlock: 52766511
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -112,8 +115,9 @@ dataSources:
     name: GlpWbtcVault
     network: arbitrum-one
     source:
-      address: "0x79203B6275f71F88a2E9749134Fab933E44F940D"
+      address: "0xdD8883Ba5A137323B61f73fD5783F2be6bDe4bbc"
       abi: GlpWbtcVault
+      startBlock: 52766543
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -145,8 +149,9 @@ dataSources:
     name: GlpLinkVault
     network: arbitrum-one
     source:
-      address: "0x5665DCc51Bd01f789C26517CB944292d9f0e4d56"
+      address: "0xf883b684ffE3b6B08fca4b19cc8f25D3Da8EA2BF"
       abi: GlpLinkVault
+      startBlock: 52766579
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -178,8 +183,9 @@ dataSources:
     name: GlpUniVault
     network: arbitrum-one
     source:
-      address: "0x204C6Cf53A39e0C77A135318c5D0F11D33090F39"
+      address: "0x836289A0Ee618C48f8403f3Ee9e0237133ffC9c6"
       abi: GlpUniVault
+      startBlock: 52766611
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

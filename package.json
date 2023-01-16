@@ -5,9 +5,9 @@
     "codegen": "graph codegen",
     "build": "graph build",
     "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ vaults",
-    "create-local": "graph create --node http://65.109.58.74:8080/ vaults",
-    "remove-local": "graph remove --node http://65.109.58.74:8080/ vaults",
-    "deploy-local": "graph deploy --node http://65.109.58.74:8080/ --ipfs http://65.109.58.74:5001 vaults",
+    "create-local": "graph create --node http://65.109.58.74:8020/ vaults",
+    "remove-local": "graph remove --node http://65.109.58.74:8020/ vaults",
+    "deploy-local": "graph deploy --node http://65.109.58.74:8020/ --ipfs http://65.109.58.74:5001 vaults",
     "test": "graph test"
   },
   "dependencies": {
