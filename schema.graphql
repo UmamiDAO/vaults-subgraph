@@ -3,7 +3,7 @@ type VaultPricePerShare @entity(immutable: true) {
   block: BigInt!
   timestamp: BigInt!
   vault: String!
-  pricePerShare: BigInt! # uint256
+  pricePerShare: BigInt!
 }
 
 type VaultTVL @entity(immutable: true) {
@@ -11,7 +11,7 @@ type VaultTVL @entity(immutable: true) {
   block: BigInt!
   timestamp: BigInt!
   vault: String!
-  tvl: BigInt! # uint256
+  tvl: BigInt!
 }
 
 type VaultFeesCollection @entity(immutable: true) {
@@ -19,9 +19,9 @@ type VaultFeesCollection @entity(immutable: true) {
   block: BigInt!
   timestamp: BigInt!
   vault: String!
-  performanceFees: BigInt! # uint256
-  managementFees: BigInt! # uint256
-  totalFees: BigInt! # uint256
+  performanceFees: BigInt!
+  managementFees: BigInt!
+  totalFees: BigInt!
 }
 
 type UserVaultBalanceTotal @entity {

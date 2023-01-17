@@ -8,7 +8,7 @@ dataSources:
     source:
       address: "0x7f5C4f910a672763BA343A71e03730c2518A7d18"
       abi: AggregateVault
-      startBlock: 52766188
+      startBlock: 53158116
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -41,8 +41,6 @@ dataSources:
           handler: handleSwapHandlerUpdated
         - event: Unpaused(address)
           handler: handleUnpaused
-      blockHandlers:
-        - handler: handleBlock
       file: ./src/aggregate-vault.ts
   - kind: ethereum
     name: GlpUsdcVault
@@ -50,7 +48,7 @@ dataSources:
     source:
       address: "0xC86064D7A396B913eCf8A3CBe22d8F285b3DD17C"
       abi: GlpUsdcVault
-      startBlock: 52766476
+      startBlock: 53158298
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -83,7 +81,7 @@ dataSources:
     source:
       address: "0xbB7E775CF4DB40AE859865a8b2FDeF9f514d2400"
       abi: GlpWethVault
-      startBlock: 52766511
+      startBlock: 53158324
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -117,7 +115,7 @@ dataSources:
     source:
       address: "0xdD8883Ba5A137323B61f73fD5783F2be6bDe4bbc"
       abi: GlpWbtcVault
-      startBlock: 52766543
+      startBlock: 53158343
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -151,7 +149,7 @@ dataSources:
     source:
       address: "0xf883b684ffE3b6B08fca4b19cc8f25D3Da8EA2BF"
       abi: GlpLinkVault
-      startBlock: 52766579
+      startBlock: 53158367
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -185,7 +183,7 @@ dataSources:
     source:
       address: "0x836289A0Ee618C48f8403f3Ee9e0237133ffC9c6"
       abi: GlpUniVault
-      startBlock: 52766611
+      startBlock: 53158390
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
