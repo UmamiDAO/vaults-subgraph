@@ -63,7 +63,7 @@ export function handleBlock(block: ethereum.Block): void {
   const aggregateVaultContract = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
 
   /** USDC vault price per share */
-  const usdcVaultEntityId = `${
+  const usdcVaultEntityId = `${block.number}:${
     block.timestamp
   }:${USDC_VAULT_ADDRESS.toHexString()}`;
   const usdcVaultPps = new VaultPricePerShare(usdcVaultEntityId);
@@ -78,7 +78,7 @@ export function handleBlock(block: ethereum.Block): void {
   usdcVaultPps.save();
 
   /** WETH vault price per share */
-  const wethVaultEntityId = `${
+  const wethVaultEntityId = `${block.number}:${
     block.timestamp
   }:${WETH_VAULT_ADDRESS.toHexString()}`;
   const wethVaultPps = new VaultPricePerShare(wethVaultEntityId);
@@ -93,7 +93,7 @@ export function handleBlock(block: ethereum.Block): void {
   wethVaultPps.save();
 
   /** WBTC vault price per share */
-  const wbtcVaultEntityId = `${
+  const wbtcVaultEntityId = `${block.number}:${
     block.timestamp
   }:${WBTC_VAULT_ADDRESS.toHexString()}`;
   const wbtcVaultPps = new VaultPricePerShare(wbtcVaultEntityId);
@@ -109,7 +109,7 @@ export function handleBlock(block: ethereum.Block): void {
   wbtcVaultPps.save();
 
   /** UNI vault price per share */
-  const uniVaultEntityId = `${
+  const uniVaultEntityId = `${block.number}:${
     block.timestamp
   }:${UNI_VAULT_ADDRESS.toHexString()}`;
   const uniVaultPps = new VaultPricePerShare(uniVaultEntityId);
@@ -125,7 +125,7 @@ export function handleBlock(block: ethereum.Block): void {
   uniVaultPps.save();
 
   /** LINK vault price per share */
-  const linkVaultEntityId = `${
+  const linkVaultEntityId = `${block.number}:${
     block.timestamp
   }:${LINK_VAULT_ADDRESS.toHexString()}`;
   const linkVaultPps = new VaultPricePerShare(linkVaultEntityId);
