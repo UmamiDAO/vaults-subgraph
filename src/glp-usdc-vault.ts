@@ -47,7 +47,7 @@ export function handleTransfer(event: GlpUsdcTransferEvent): void {
     fromHistoricalBalance.block = event.block.number;
     fromHistoricalBalance.timestamp = event.block.timestamp;
     fromHistoricalBalance.txHash = event.transaction.hash.toHex();
-    fromHistoricalBalance.vault = USDC_VAULT_ADDRESS.toString();
+    fromHistoricalBalance.vault = USDC_VAULT_ADDRESS.toHexString();
     fromHistoricalBalance.user = from;
     fromHistoricalBalance.value = fromTotal.usdc;
     fromHistoricalBalance.event = balanceEvent;
@@ -77,7 +77,7 @@ export function handleTransfer(event: GlpUsdcTransferEvent): void {
     toHistoricalBalance.block = event.block.number;
     toHistoricalBalance.timestamp = event.block.timestamp;
     toHistoricalBalance.txHash = event.transaction.hash.toHex();
-    toHistoricalBalance.vault = USDC_VAULT_ADDRESS.toString();
+    toHistoricalBalance.vault = USDC_VAULT_ADDRESS.toHexString();
     toHistoricalBalance.user = to;
     toHistoricalBalance.value = toTotal.usdc;
     toHistoricalBalance.event = balanceEvent;

@@ -49,7 +49,7 @@ export function handleGlpWethVaultTransfer(
     fromHistoricalBalance.block = event.block.number;
     fromHistoricalBalance.timestamp = event.block.timestamp;
     fromHistoricalBalance.txHash = event.transaction.hash.toHex();
-    fromHistoricalBalance.vault = WETH_VAULT_ADDRESS.toString();
+    fromHistoricalBalance.vault = WETH_VAULT_ADDRESS.toHexString();
     fromHistoricalBalance.user = from;
     fromHistoricalBalance.value = fromTotal.weth;
     fromHistoricalBalance.event = balanceEvent;
@@ -79,7 +79,7 @@ export function handleGlpWethVaultTransfer(
     toHistoricalBalance.block = event.block.number;
     toHistoricalBalance.timestamp = event.block.timestamp;
     toHistoricalBalance.txHash = event.transaction.hash.toHex();
-    toHistoricalBalance.vault = WETH_VAULT_ADDRESS.toString();
+    toHistoricalBalance.vault = WETH_VAULT_ADDRESS.toHexString();
     toHistoricalBalance.user = to;
     toHistoricalBalance.value = toTotal.weth;
     toHistoricalBalance.event = balanceEvent;

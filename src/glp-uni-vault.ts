@@ -49,7 +49,7 @@ export function handleGlpUniVaultTransfer(
     fromHistoricalBalance.block = event.block.number;
     fromHistoricalBalance.timestamp = event.block.timestamp;
     fromHistoricalBalance.txHash = event.transaction.hash.toHex();
-    fromHistoricalBalance.vault = UNI_VAULT_ADDRESS.toString();
+    fromHistoricalBalance.vault = UNI_VAULT_ADDRESS.toHexString();
     fromHistoricalBalance.user = from;
     fromHistoricalBalance.value = fromTotal.uni;
     fromHistoricalBalance.event = balanceEvent;
@@ -79,7 +79,7 @@ export function handleGlpUniVaultTransfer(
     toHistoricalBalance.block = event.block.number;
     toHistoricalBalance.timestamp = event.block.timestamp;
     toHistoricalBalance.txHash = event.transaction.hash.toHex();
-    toHistoricalBalance.vault = UNI_VAULT_ADDRESS.toString();
+    toHistoricalBalance.vault = UNI_VAULT_ADDRESS.toHexString();
     toHistoricalBalance.user = to;
     toHistoricalBalance.value = toTotal.uni;
     toHistoricalBalance.event = balanceEvent;

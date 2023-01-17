@@ -21,26 +21,12 @@ dataSources:
         - name: AggregateVault
           file: ./abis/AggregateVault.json
       eventHandlers:
-        - event: CallbackHandlerUpdated(indexed bytes4,indexed address,bool)
-          handler: handleCallbackHandlerUpdated
         - event: CloseRebalance(uint256)
           handler: handleCloseRebalance
         - event: CollectVaultFees(uint256,uint256,uint256,address)
           handler: handleCollectVaultFees
-        - event: Cycle(uint256,uint256)
-          handler: handleCycle
-        - event: DefaultHandlerContractUpdated(indexed bytes4,indexed address)
-          handler: handleDefaultHandlerContractUpdated
-        - event: HandlerContractUpdated(indexed address,bool)
-          handler: handleHandlerContractUpdated
-        - event: OpenRebalance(uint256,uint256[5],uint256[5],int256[5])
-          handler: handleOpenRebalance
-        - event: Paused(address)
-          handler: handlePaused
-        - event: SwapHandlerUpdated(indexed address,bool)
-          handler: handleSwapHandlerUpdated
-        - event: Unpaused(address)
-          handler: handleUnpaused
+      blockHandlers:
+        - handler: handleBlock
       file: ./src/aggregate-vault.ts
   - kind: ethereum
     name: GlpUsdcVault
@@ -60,20 +46,8 @@ dataSources:
         - name: GlpUsdcVault
           file: ./abis/GlpUsdcVault.json
       eventHandlers:
-        - event: Approval(indexed address,indexed address,uint256)
-          handler: handleApproval
-        - event: Deposit(indexed address,indexed address,uint256,uint256)
-          handler: handleDeposit
-        - event: GlpUsdcVaultPaused(address)
-          handler: handleGlpUsdcVaultPaused
-        - event: RebalanceRequest(address,address)
-          handler: handleRebalanceRequest
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-        - event: GlpUsdcVaultUnpaused(address)
-          handler: handleGlpUsdcVaultUnpaused
-        - event: Withdraw(indexed address,indexed address,indexed address,uint256,uint256)
-          handler: handleWithdraw
       file: ./src/glp-usdc-vault.ts
   - kind: ethereum
     name: GlpWethVault
@@ -93,21 +67,8 @@ dataSources:
         - name: GlpWethVault
           file: ./abis/GlpWethVault.json
       eventHandlers:
-        - event: GlpWethVaultApproval(indexed address,indexed address,uint256)
-          handler: handleGlpWethVaultApproval
-        - event: GlpWethVaultDeposit(indexed address,indexed address,uint256,uint256)
-          handler: handleGlpWethVaultDeposit
-        - event: GlpWethVaultPaused(address)
-          handler: handleGlpWethVaultPaused
-        - event: GlpWethVaultRebalanceRequest(address,address)
-          handler: handleGlpWethVaultRebalanceRequest
         - event: GlpWethVaultTransfer(indexed address,indexed address,uint256)
           handler: handleGlpWethVaultTransfer
-        - event: GlpWethVaultUnpaused(address)
-          handler: handleGlpWethVaultUnpaused
-        - event: GlpWethVaultWithdraw(indexed address,indexed address,indexed
-            address,uint256,uint256)
-          handler: handleGlpWethVaultWithdraw
       file: ./src/glp-weth-vault.ts
   - kind: ethereum
     name: GlpWbtcVault
@@ -127,21 +88,8 @@ dataSources:
         - name: GlpWbtcVault
           file: ./abis/GlpWbtcVault.json
       eventHandlers:
-        - event: GlpWbtcVaultApproval(indexed address,indexed address,uint256)
-          handler: handleGlpWbtcVaultApproval
-        - event: GlpWbtcVaultDeposit(indexed address,indexed address,uint256,uint256)
-          handler: handleGlpWbtcVaultDeposit
-        - event: GlpWbtcVaultPaused(address)
-          handler: handleGlpWbtcVaultPaused
-        - event: GlpWbtcVaultRebalanceRequest(address,address)
-          handler: handleGlpWbtcVaultRebalanceRequest
         - event: GlpWbtcVaultTransfer(indexed address,indexed address,uint256)
           handler: handleGlpWbtcVaultTransfer
-        - event: GlpWbtcVaultUnpaused(address)
-          handler: handleGlpWbtcVaultUnpaused
-        - event: GlpWbtcVaultWithdraw(indexed address,indexed address,indexed
-            address,uint256,uint256)
-          handler: handleGlpWbtcVaultWithdraw
       file: ./src/glp-wbtc-vault.ts
   - kind: ethereum
     name: GlpLinkVault
@@ -161,21 +109,8 @@ dataSources:
         - name: GlpLinkVault
           file: ./abis/GlpLinkVault.json
       eventHandlers:
-        - event: GlpLinkVaultApproval(indexed address,indexed address,uint256)
-          handler: handleGlpLinkVaultApproval
-        - event: GlpLinkVaultDeposit(indexed address,indexed address,uint256,uint256)
-          handler: handleGlpLinkVaultDeposit
-        - event: GlpLinkVaultPaused(address)
-          handler: handleGlpLinkVaultPaused
-        - event: GlpLinkVaultRebalanceRequest(address,address)
-          handler: handleGlpLinkVaultRebalanceRequest
         - event: GlpLinkVaultTransfer(indexed address,indexed address,uint256)
           handler: handleGlpLinkVaultTransfer
-        - event: GlpLinkVaultUnpaused(address)
-          handler: handleGlpLinkVaultUnpaused
-        - event: GlpLinkVaultWithdraw(indexed address,indexed address,indexed
-            address,uint256,uint256)
-          handler: handleGlpLinkVaultWithdraw
       file: ./src/glp-link-vault.ts
   - kind: ethereum
     name: GlpUniVault
@@ -195,19 +130,6 @@ dataSources:
         - name: GlpUniVault
           file: ./abis/GlpUniVault.json
       eventHandlers:
-        - event: GlpUniVaultApproval(indexed address,indexed address,uint256)
-          handler: handleGlpUniVaultApproval
-        - event: GlpUniVaultDeposit(indexed address,indexed address,uint256,uint256)
-          handler: handleGlpUniVaultDeposit
-        - event: GlpUniVaultPaused(address)
-          handler: handleGlpUniVaultPaused
-        - event: GlpUniVaultRebalanceRequest(address,address)
-          handler: handleGlpUniVaultRebalanceRequest
         - event: GlpUniVaultTransfer(indexed address,indexed address,uint256)
           handler: handleGlpUniVaultTransfer
-        - event: GlpUniVaultUnpaused(address)
-          handler: handleGlpUniVaultUnpaused
-        - event: GlpUniVaultWithdraw(indexed address,indexed address,indexed
-            address,uint256,uint256)
-          handler: handleGlpUniVaultWithdraw
       file: ./src/glp-uni-vault.ts

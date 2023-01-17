@@ -49,7 +49,7 @@ export function handleGlpWbtcVaultTransfer(
     fromHistoricalBalance.block = event.block.number;
     fromHistoricalBalance.timestamp = event.block.timestamp;
     fromHistoricalBalance.txHash = event.transaction.hash.toHex();
-    fromHistoricalBalance.vault = WBTC_VAULT_ADDRESS.toString();
+    fromHistoricalBalance.vault = WBTC_VAULT_ADDRESS.toHexString();
     fromHistoricalBalance.user = from;
     fromHistoricalBalance.value = fromTotal.wbtc;
     fromHistoricalBalance.event = balanceEvent;
@@ -79,7 +79,7 @@ export function handleGlpWbtcVaultTransfer(
     toHistoricalBalance.block = event.block.number;
     toHistoricalBalance.timestamp = event.block.timestamp;
     toHistoricalBalance.txHash = event.transaction.hash.toHex();
-    toHistoricalBalance.vault = WBTC_VAULT_ADDRESS.toString();
+    toHistoricalBalance.vault = WBTC_VAULT_ADDRESS.toHexString();
     toHistoricalBalance.user = to;
     toHistoricalBalance.value = toTotal.wbtc;
     toHistoricalBalance.event = balanceEvent;
