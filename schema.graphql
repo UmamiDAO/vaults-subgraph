@@ -6,6 +6,11 @@ type VaultPricePerShare @entity(immutable: true) {
   pricePerShare: BigInt!
 }
 
+type VaultPpsLastTimestamp @entity {
+  id: ID!
+  timestamp: BigInt!
+}
+
 type VaultTVL @entity(immutable: true) {
   id: ID!
   block: BigInt!
@@ -15,6 +20,16 @@ type VaultTVL @entity(immutable: true) {
 }
 
 type VaultFeesCollection @entity(immutable: true) {
+  id: ID!
+  block: BigInt!
+  timestamp: BigInt!
+  vault: String!
+  performanceFees: BigInt!
+  managementFees: BigInt!
+  totalFees: BigInt!
+}
+
+type VaultsRebalance @entity(immutable: true) {
   id: ID!
   block: BigInt!
   timestamp: BigInt!

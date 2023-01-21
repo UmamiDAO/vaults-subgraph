@@ -25,11 +25,3 @@ export const LINK_VAULT_ADDRESS = Address.fromString(
 export const UNI_VAULT_ADDRESS = Address.fromString(
   "0x836289A0Ee618C48f8403f3Ee9e0237133ffC9c6"
 );
-
-export const VAULTS_ARRAY = [
-  USDC_VAULT_ADDRESS,
-  WETH_VAULT_ADDRESS,
-  WBTC_VAULT_ADDRESS,
-  LINK_VAULT_ADDRESS,
-  UNI_VAULT_ADDRESS,
-];

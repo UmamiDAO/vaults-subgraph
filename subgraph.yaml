@@ -17,6 +17,7 @@ dataSources:
         - VaultPricePerShare
         - VaultTVL
         - VaultFeesCollection
+        - VaultPpsLastTimestamp
       abis:
         - name: AggregateVault
           file: ./abis/AggregateVault.json

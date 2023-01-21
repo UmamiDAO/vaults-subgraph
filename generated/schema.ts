@@ -81,6 +81,52 @@ export class VaultPricePerShare extends Entity {
   }
 }
 
+export class VaultPpsLastTimestamp extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save VaultPpsLastTimestamp entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type VaultPpsLastTimestamp must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("VaultPpsLastTimestamp", id.toString(), this);
+    }
+  }
+
+  static load(id: string): VaultPpsLastTimestamp | null {
+    return changetype<VaultPpsLastTimestamp | null>(
+      store.get("VaultPpsLastTimestamp", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+}
+
 export class VaultTVL extends Entity {
   constructor(id: string) {
     super();
@@ -171,6 +217,92 @@ export class VaultFeesCollection extends Entity {
     return changetype<VaultFeesCollection | null>(
       store.get("VaultFeesCollection", id)
     );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get block(): BigInt {
+    let value = this.get("block");
+    return value!.toBigInt();
+  }
+
+  set block(value: BigInt) {
+    this.set("block", Value.fromBigInt(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get vault(): string {
+    let value = this.get("vault");
+    return value!.toString();
+  }
+
+  set vault(value: string) {
+    this.set("vault", Value.fromString(value));
+  }
+
+  get performanceFees(): BigInt {
+    let value = this.get("performanceFees");
+    return value!.toBigInt();
+  }
+
+  set performanceFees(value: BigInt) {
+    this.set("performanceFees", Value.fromBigInt(value));
+  }
+
+  get managementFees(): BigInt {
+    let value = this.get("managementFees");
+    return value!.toBigInt();
+  }
+
+  set managementFees(value: BigInt) {
+    this.set("managementFees", Value.fromBigInt(value));
+  }
+
+  get totalFees(): BigInt {
+    let value = this.get("totalFees");
+    return value!.toBigInt();
+  }
+
+  set totalFees(value: BigInt) {
+    this.set("totalFees", Value.fromBigInt(value));
+  }
+}
+
+export class VaultsRebalance extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save VaultsRebalance entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type VaultsRebalance must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("VaultsRebalance", id.toString(), this);
+    }
+  }
+
+  static load(id: string): VaultsRebalance | null {
+    return changetype<VaultsRebalance | null>(store.get("VaultsRebalance", id));
   }
 
   get id(): string {
