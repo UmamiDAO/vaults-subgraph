@@ -8,7 +8,10 @@ import {
   Paused,
   Unpaused,
 } from "../generated/AggregateVault/AggregateVault";
+import { GmxVault } from "../generated/GmxVault/GmxVault";
+import { Manager } from "../generated/Manager/Manager";
 import {
+  TmpRebalanceSnapshot,
   VaultFeesCollection,
   VaultPpsLastTimestamp,
   VaultPricePerShare,
@@ -16,10 +19,16 @@ import {
 } from "../generated/schema";
 import {
   AGGREGATE_VAULT_ADDRESS,
+  GMX_VAULT_ADDRESS,
+  LINK_ADDRESS,
   LINK_VAULT_ADDRESS,
+  UNI_ADDRESS,
   UNI_VAULT_ADDRESS,
+  USDC_ADDRESS,
   USDC_VAULT_ADDRESS,
+  WBTC_ADDRESS,
   WBTC_VAULT_ADDRESS,
+  WETH_ADDRESS,
   WETH_VAULT_ADDRESS,
 } from "./constants";
 
@@ -29,12 +38,15 @@ export function handleBlock(block: ethereum.Block): void {
   /** Wait a minute to register a new PPS */
   if (
     lastPpsTimestamp == null ||
-    block.timestamp.gt(lastPpsTimestamp.timestamp.plus(BigInt.fromString("60")))
+    block.timestamp.gt(
+      lastPpsTimestamp.timestamp.plus(BigInt.fromString("1800"))
+    )
   ) {
     if (lastPpsTimestamp == null) {
       lastPpsTimestamp = new VaultPpsLastTimestamp("timestamp");
     }
     lastPpsTimestamp.timestamp = block.timestamp;
+    lastPpsTimestamp.save();
 
     const aggregateVaultContract = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
 
@@ -193,8 +205,6 @@ export function handleBlock(block: ethereum.Block): void {
   }
 }
 
-export function handleCloseRebalance(event: CloseRebalance): void {}
-
 export function handleCollectVaultFees(event: CollectVaultFees): void {
   const vaultAddress = event.params._assetVault;
   const entityId = `${event.block.timestamp}:${vaultAddress.toHexString()}`;
@@ -212,7 +222,127 @@ export function handleCollectVaultFees(event: CollectVaultFees): void {
 
 export function handleCycle(event: Cycle): void {}
 
-export function handleOpenRebalance(event: OpenRebalance): void {}
+export function handleOpenRebalance(event: OpenRebalance): void {
+  const aggregateVaultContract = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
+  const gmxVault = GmxVault.bind(GMX_VAULT_ADDRESS);
+  const glpManager = Manager.bind(GMX_VAULT_ADDRESS);
+  const snapshot = new TmpRebalanceSnapshot(event.transaction.hash.toHex());
+  snapshot.block = event.block.number;
+  snapshot.timestamp = event.block.timestamp;
+  snapshot.txHash = event.transaction.hash.toHex();
+  snapshot.event = "open";
+  snapshot.glpPrice = glpManager.getGlpPrice1();
+
+  const rebalanceState = aggregateVaultContract.getRebalanceState();
+
+  snapshot.glpComposition = rebalanceState.getGlpComposition();
+  snapshot.vaultsGlpAlloc = rebalanceState.getGlpAllocation();
+  snapshot.vaultsPps = [
+    aggregateVaultContract.getVaultPPS(USDC_VAULT_ADDRESS),
+    aggregateVaultContract.getVaultPPS(WETH_VAULT_ADDRESS),
+    aggregateVaultContract.getVaultPPS(WBTC_VAULT_ADDRESS),
+    aggregateVaultContract.getVaultPPS(LINK_VAULT_ADDRESS),
+    aggregateVaultContract.getVaultPPS(UNI_VAULT_ADDRESS),
+  ];
+  snapshot.vaultsTVL = [
+    aggregateVaultContract.getVaultTVL(USDC_VAULT_ADDRESS),
+    aggregateVaultContract.getVaultTVL(WETH_VAULT_ADDRESS),
+    aggregateVaultContract.getVaultTVL(WBTC_VAULT_ADDRESS),
+    aggregateVaultContract.getVaultTVL(LINK_VAULT_ADDRESS),
+    aggregateVaultContract.getVaultTVL(UNI_VAULT_ADDRESS),
+  ];
+  snapshot.usdcHedgesAlloc = rebalanceState.getExternalPositions()[0];
+  snapshot.wethHedgesAlloc = rebalanceState.getExternalPositions()[1];
+  snapshot.wbtcHedgesAlloc = rebalanceState.getExternalPositions()[2];
+  snapshot.linkHedgesAlloc = rebalanceState.getExternalPositions()[3];
+  snapshot.uniHedgesAlloc = rebalanceState.getExternalPositions()[4];
+
+  const usdcMinPrice = gmxVault.getMinPrice(USDC_ADDRESS);
+  const usdcMaxPrice = gmxVault.getMaxPrice(USDC_ADDRESS);
+
+  const wethMinPrice = gmxVault.getMinPrice(WETH_ADDRESS);
+  const wethMaxPrice = gmxVault.getMaxPrice(WETH_ADDRESS);
+
+  const wbtcMinPrice = gmxVault.getMinPrice(WBTC_ADDRESS);
+  const wbtcMaxPrice = gmxVault.getMaxPrice(WBTC_ADDRESS);
+
+  const linkMinPrice = gmxVault.getMinPrice(LINK_ADDRESS);
+  const linkMaxPrice = gmxVault.getMaxPrice(LINK_ADDRESS);
+
+  const uniMinPrice = gmxVault.getMinPrice(UNI_ADDRESS);
+  const uniMaxPrice = gmxVault.getMaxPrice(UNI_ADDRESS);
+
+  snapshot.assetsPrices = [
+    usdcMinPrice.plus(usdcMaxPrice).div(BigInt.fromString("2")),
+    wethMinPrice.plus(wethMaxPrice).div(BigInt.fromString("2")),
+    wbtcMinPrice.plus(wbtcMaxPrice).div(BigInt.fromString("2")),
+    linkMinPrice.plus(linkMaxPrice).div(BigInt.fromString("2")),
+    uniMinPrice.plus(uniMaxPrice).div(BigInt.fromString("2")),
+  ];
+
+  snapshot.save();
+}
+
+export function handleCloseRebalance(event: CloseRebalance): void {
+  const aggregateVaultContract = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
+  const gmxVault = GmxVault.bind(GMX_VAULT_ADDRESS);
+  const glpManager = Manager.bind(GMX_VAULT_ADDRESS);
+  const snapshot = new TmpRebalanceSnapshot(event.transaction.hash.toHex());
+  snapshot.block = event.block.number;
+  snapshot.timestamp = event.block.timestamp;
+  snapshot.txHash = event.transaction.hash.toHex();
+  snapshot.event = "close";
+  snapshot.glpPrice = glpManager.getGlpPrice1();
+
+  const rebalanceState = aggregateVaultContract.getRebalanceState();
+
+  snapshot.glpComposition = rebalanceState.getGlpComposition();
+  snapshot.vaultsGlpAlloc = rebalanceState.getGlpAllocation();
+  snapshot.vaultsPps = [
+    aggregateVaultContract.getVaultPPS(USDC_VAULT_ADDRESS),
+    aggregateVaultContract.getVaultPPS(WETH_VAULT_ADDRESS),
+    aggregateVaultContract.getVaultPPS(WBTC_VAULT_ADDRESS),
+    aggregateVaultContract.getVaultPPS(LINK_VAULT_ADDRESS),
+    aggregateVaultContract.getVaultPPS(UNI_VAULT_ADDRESS),
+  ];
+  snapshot.vaultsTVL = [
+    aggregateVaultContract.getVaultTVL(USDC_VAULT_ADDRESS),
+    aggregateVaultContract.getVaultTVL(WETH_VAULT_ADDRESS),
+    aggregateVaultContract.getVaultTVL(WBTC_VAULT_ADDRESS),
+    aggregateVaultContract.getVaultTVL(LINK_VAULT_ADDRESS),
+    aggregateVaultContract.getVaultTVL(UNI_VAULT_ADDRESS),
+  ];
+  snapshot.usdcHedgesAlloc = rebalanceState.getExternalPositions()[0];
+  snapshot.wethHedgesAlloc = rebalanceState.getExternalPositions()[1];
+  snapshot.wbtcHedgesAlloc = rebalanceState.getExternalPositions()[2];
+  snapshot.linkHedgesAlloc = rebalanceState.getExternalPositions()[3];
+  snapshot.uniHedgesAlloc = rebalanceState.getExternalPositions()[4];
+
+  const usdcMinPrice = gmxVault.getMinPrice(USDC_ADDRESS);
+  const usdcMaxPrice = gmxVault.getMaxPrice(USDC_ADDRESS);
+
+  const wethMinPrice = gmxVault.getMinPrice(WETH_ADDRESS);
+  const wethMaxPrice = gmxVault.getMaxPrice(WETH_ADDRESS);
+
+  const wbtcMinPrice = gmxVault.getMinPrice(WBTC_ADDRESS);
+  const wbtcMaxPrice = gmxVault.getMaxPrice(WBTC_ADDRESS);
+
+  const linkMinPrice = gmxVault.getMinPrice(LINK_ADDRESS);
+  const linkMaxPrice = gmxVault.getMaxPrice(LINK_ADDRESS);
+
+  const uniMinPrice = gmxVault.getMinPrice(UNI_ADDRESS);
+  const uniMaxPrice = gmxVault.getMaxPrice(UNI_ADDRESS);
+
+  snapshot.assetsPrices = [
+    usdcMinPrice.plus(usdcMaxPrice).div(BigInt.fromString("2")),
+    wethMinPrice.plus(wethMaxPrice).div(BigInt.fromString("2")),
+    wbtcMinPrice.plus(wbtcMaxPrice).div(BigInt.fromString("2")),
+    linkMinPrice.plus(linkMaxPrice).div(BigInt.fromString("2")),
+    uniMinPrice.plus(uniMaxPrice).div(BigInt.fromString("2")),
+  ];
+
+  snapshot.save();
+}
 
 export function handlePaused(event: Paused): void {}
 

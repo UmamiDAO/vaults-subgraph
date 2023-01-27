@@ -29,16 +29,6 @@ type VaultFeesCollection @entity(immutable: true) {
   totalFees: BigInt!
 }
 
-type VaultsRebalance @entity(immutable: true) {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  vault: String!
-  performanceFees: BigInt!
-  managementFees: BigInt!
-  totalFees: BigInt!
-}
-
 type UserVaultBalanceTotal @entity {
   id: ID!
   usdc: BigInt!
@@ -57,4 +47,23 @@ type UserVaultBalance @entity(immutable: true) {
   value: BigInt!
   user: String!
   vault: String!
+}
+
+type TmpRebalanceSnapshot @entity(immutable: true) {
+  id: ID!
+  timestamp: BigInt!
+  block: BigInt!
+  txHash: String!
+  event: String!
+  glpPrice: BigInt!
+  vaultsTVL: [BigInt!]!
+  vaultsPps: [BigInt!]!
+  vaultsGlpAlloc: [BigInt!]!
+  usdcHedgesAlloc: [BigInt!]!
+  wethHedgesAlloc: [BigInt!]!
+  wbtcHedgesAlloc: [BigInt!]!
+  linkHedgesAlloc: [BigInt!]!
+  uniHedgesAlloc: [BigInt!]!
+  glpComposition: [BigInt!]!
+  assetsPrices: [BigInt!]!
 }

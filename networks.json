@@ -17,6 +17,12 @@
     },
     "GlpUniVault": {
       "address": "0x836289A0Ee618C48f8403f3Ee9e0237133ffC9c6"
+    },
+    "GmxVault": {
+      "address": "0x489ee077994b6658eafa855c308275ead8097c4a"
+    },
+    "Manager": {
+      "address": "0x46af23a5d55d058712fddaf232b6b1b7ba1c1942"
     }
   }
 }

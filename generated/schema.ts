@@ -283,92 +283,6 @@ export class VaultFeesCollection extends Entity {
   }
 }
 
-export class VaultsRebalance extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save VaultsRebalance entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type VaultsRebalance must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
-      );
-      store.set("VaultsRebalance", id.toString(), this);
-    }
-  }
-
-  static load(id: string): VaultsRebalance | null {
-    return changetype<VaultsRebalance | null>(store.get("VaultsRebalance", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get block(): BigInt {
-    let value = this.get("block");
-    return value!.toBigInt();
-  }
-
-  set block(value: BigInt) {
-    this.set("block", Value.fromBigInt(value));
-  }
-
-  get timestamp(): BigInt {
-    let value = this.get("timestamp");
-    return value!.toBigInt();
-  }
-
-  set timestamp(value: BigInt) {
-    this.set("timestamp", Value.fromBigInt(value));
-  }
-
-  get vault(): string {
-    let value = this.get("vault");
-    return value!.toString();
-  }
-
-  set vault(value: string) {
-    this.set("vault", Value.fromString(value));
-  }
-
-  get performanceFees(): BigInt {
-    let value = this.get("performanceFees");
-    return value!.toBigInt();
-  }
-
-  set performanceFees(value: BigInt) {
-    this.set("performanceFees", Value.fromBigInt(value));
-  }
-
-  get managementFees(): BigInt {
-    let value = this.get("managementFees");
-    return value!.toBigInt();
-  }
-
-  set managementFees(value: BigInt) {
-    this.set("managementFees", Value.fromBigInt(value));
-  }
-
-  get totalFees(): BigInt {
-    let value = this.get("totalFees");
-    return value!.toBigInt();
-  }
-
-  set totalFees(value: BigInt) {
-    this.set("totalFees", Value.fromBigInt(value));
-  }
-}
-
 export class UserVaultBalanceTotal extends Entity {
   constructor(id: string) {
     super();
@@ -545,5 +459,174 @@ export class UserVaultBalance extends Entity {
 
   set vault(value: string) {
     this.set("vault", Value.fromString(value));
+  }
+}
+
+export class TmpRebalanceSnapshot extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save TmpRebalanceSnapshot entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type TmpRebalanceSnapshot must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("TmpRebalanceSnapshot", id.toString(), this);
+    }
+  }
+
+  static load(id: string): TmpRebalanceSnapshot | null {
+    return changetype<TmpRebalanceSnapshot | null>(
+      store.get("TmpRebalanceSnapshot", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get block(): BigInt {
+    let value = this.get("block");
+    return value!.toBigInt();
+  }
+
+  set block(value: BigInt) {
+    this.set("block", Value.fromBigInt(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
+  }
+
+  get event(): string {
+    let value = this.get("event");
+    return value!.toString();
+  }
+
+  set event(value: string) {
+    this.set("event", Value.fromString(value));
+  }
+
+  get glpPrice(): BigInt {
+    let value = this.get("glpPrice");
+    return value!.toBigInt();
+  }
+
+  set glpPrice(value: BigInt) {
+    this.set("glpPrice", Value.fromBigInt(value));
+  }
+
+  get vaultsTVL(): Array<BigInt> {
+    let value = this.get("vaultsTVL");
+    return value!.toBigIntArray();
+  }
+
+  set vaultsTVL(value: Array<BigInt>) {
+    this.set("vaultsTVL", Value.fromBigIntArray(value));
+  }
+
+  get vaultsPps(): Array<BigInt> {
+    let value = this.get("vaultsPps");
+    return value!.toBigIntArray();
+  }
+
+  set vaultsPps(value: Array<BigInt>) {
+    this.set("vaultsPps", Value.fromBigIntArray(value));
+  }
+
+  get vaultsGlpAlloc(): Array<BigInt> {
+    let value = this.get("vaultsGlpAlloc");
+    return value!.toBigIntArray();
+  }
+
+  set vaultsGlpAlloc(value: Array<BigInt>) {
+    this.set("vaultsGlpAlloc", Value.fromBigIntArray(value));
+  }
+
+  get usdcHedgesAlloc(): Array<BigInt> {
+    let value = this.get("usdcHedgesAlloc");
+    return value!.toBigIntArray();
+  }
+
+  set usdcHedgesAlloc(value: Array<BigInt>) {
+    this.set("usdcHedgesAlloc", Value.fromBigIntArray(value));
+  }
+
+  get wethHedgesAlloc(): Array<BigInt> {
+    let value = this.get("wethHedgesAlloc");
+    return value!.toBigIntArray();
+  }
+
+  set wethHedgesAlloc(value: Array<BigInt>) {
+    this.set("wethHedgesAlloc", Value.fromBigIntArray(value));
+  }
+
+  get wbtcHedgesAlloc(): Array<BigInt> {
+    let value = this.get("wbtcHedgesAlloc");
+    return value!.toBigIntArray();
+  }
+
+  set wbtcHedgesAlloc(value: Array<BigInt>) {
+    this.set("wbtcHedgesAlloc", Value.fromBigIntArray(value));
+  }
+
+  get linkHedgesAlloc(): Array<BigInt> {
+    let value = this.get("linkHedgesAlloc");
+    return value!.toBigIntArray();
+  }
+
+  set linkHedgesAlloc(value: Array<BigInt>) {
+    this.set("linkHedgesAlloc", Value.fromBigIntArray(value));
+  }
+
+  get uniHedgesAlloc(): Array<BigInt> {
+    let value = this.get("uniHedgesAlloc");
+    return value!.toBigIntArray();
+  }
+
+  set uniHedgesAlloc(value: Array<BigInt>) {
+    this.set("uniHedgesAlloc", Value.fromBigIntArray(value));
+  }
+
+  get glpComposition(): Array<BigInt> {
+    let value = this.get("glpComposition");
+    return value!.toBigIntArray();
+  }
+
+  set glpComposition(value: Array<BigInt>) {
+    this.set("glpComposition", Value.fromBigIntArray(value));
+  }
+
+  get assetsPrices(): Array<BigInt> {
+    let value = this.get("assetsPrices");
+    return value!.toBigIntArray();
+  }
+
+  set assetsPrices(value: Array<BigInt>) {
+    this.set("assetsPrices", Value.fromBigIntArray(value));
   }
 }
