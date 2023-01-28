@@ -22,6 +22,10 @@ dataSources:
       abis:
         - name: AggregateVault
           file: ./abis/AggregateVault.json
+        - name: Manager
+          file: ./abis/Manager.json
+        - name: GmxVault
+          file: ./abis/GmxVault.json
       eventHandlers:
         - event: CloseRebalance(uint256)
           handler: handleCloseRebalance

@@ -231,9 +231,10 @@ export function handleOpenRebalance(event: OpenRebalance): void {
   snapshot.timestamp = event.block.timestamp;
   snapshot.txHash = event.transaction.hash.toHex();
   snapshot.event = "open";
-  snapshot.glpPrice = glpManager.getGlpPrice1();
 
   const rebalanceState = aggregateVaultContract.getRebalanceState();
+  const glpPrice1 = glpManager.try_getGlpPrice1();
+  snapshot.glpPrice = glpPrice1.reverted ? BigInt.zero() : glpPrice1.value;
 
   snapshot.glpComposition = rebalanceState.getGlpComposition();
   snapshot.vaultsGlpAlloc = rebalanceState.getGlpAllocation();
@@ -292,9 +293,10 @@ export function handleCloseRebalance(event: CloseRebalance): void {
   snapshot.timestamp = event.block.timestamp;
   snapshot.txHash = event.transaction.hash.toHex();
   snapshot.event = "close";
-  snapshot.glpPrice = glpManager.getGlpPrice1();
 
   const rebalanceState = aggregateVaultContract.getRebalanceState();
+  const glpPrice1 = glpManager.try_getGlpPrice1();
+  snapshot.glpPrice = glpPrice1.reverted ? BigInt.zero() : glpPrice1.value;
 
   snapshot.glpComposition = rebalanceState.getGlpComposition();
   snapshot.vaultsGlpAlloc = rebalanceState.getGlpAllocation();
