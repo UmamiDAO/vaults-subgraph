@@ -27,6 +27,8 @@ dataSources:
         - name: GmxVault
           file: ./abis/GmxVault.json
       eventHandlers:
+        - event: OpenRebalance(uint256,uint256[5],uint256[5],int256[5])
+          handler: handleOpenRebalance
         - event: CloseRebalance(uint256)
           handler: handleCloseRebalance
         - event: CollectVaultFees(uint256,uint256,uint256,address)
