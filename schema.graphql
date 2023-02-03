@@ -59,11 +59,17 @@ type TmpRebalanceSnapshot @entity(immutable: true) {
   vaultsTVL: [BigInt!]!
   vaultsPps: [BigInt!]!
   vaultsGlpAlloc: [BigInt!]!
-  usdcHedgesAlloc: [BigInt!]!
-  wethHedgesAlloc: [BigInt!]!
-  wbtcHedgesAlloc: [BigInt!]!
-  linkHedgesAlloc: [BigInt!]!
-  uniHedgesAlloc: [BigInt!]!
+  aggregatePositions: [BigInt!]!
+  usdcVaultExposures: [BigInt!]!
+  wethVaultExposures: [BigInt!]!
+  wbtcVaultExposures: [BigInt!]!
+  linkVaultExposures: [BigInt!]!
+  uniVaultExposures: [BigInt!]!
+  usdcVaultInternalNetting: [BigInt!]!
+  wethVaultInternalNetting: [BigInt!]!
+  wbtcVaultInternalNetting: [BigInt!]!
+  linkVaultInternalNetting: [BigInt!]!
+  uniVaultInternalNetting: [BigInt!]!
   glpComposition: [BigInt!]!
   assetsPrices: [BigInt!]!
 }

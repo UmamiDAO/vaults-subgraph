@@ -567,49 +567,103 @@ export class TmpRebalanceSnapshot extends Entity {
     this.set("vaultsGlpAlloc", Value.fromBigIntArray(value));
   }
 
-  get usdcHedgesAlloc(): Array<BigInt> {
-    let value = this.get("usdcHedgesAlloc");
+  get aggregatePositions(): Array<BigInt> {
+    let value = this.get("aggregatePositions");
     return value!.toBigIntArray();
   }
 
-  set usdcHedgesAlloc(value: Array<BigInt>) {
-    this.set("usdcHedgesAlloc", Value.fromBigIntArray(value));
+  set aggregatePositions(value: Array<BigInt>) {
+    this.set("aggregatePositions", Value.fromBigIntArray(value));
   }
 
-  get wethHedgesAlloc(): Array<BigInt> {
-    let value = this.get("wethHedgesAlloc");
+  get usdcVaultExposures(): Array<BigInt> {
+    let value = this.get("usdcVaultExposures");
     return value!.toBigIntArray();
   }
 
-  set wethHedgesAlloc(value: Array<BigInt>) {
-    this.set("wethHedgesAlloc", Value.fromBigIntArray(value));
+  set usdcVaultExposures(value: Array<BigInt>) {
+    this.set("usdcVaultExposures", Value.fromBigIntArray(value));
   }
 
-  get wbtcHedgesAlloc(): Array<BigInt> {
-    let value = this.get("wbtcHedgesAlloc");
+  get wethVaultExposures(): Array<BigInt> {
+    let value = this.get("wethVaultExposures");
     return value!.toBigIntArray();
   }
 
-  set wbtcHedgesAlloc(value: Array<BigInt>) {
-    this.set("wbtcHedgesAlloc", Value.fromBigIntArray(value));
+  set wethVaultExposures(value: Array<BigInt>) {
+    this.set("wethVaultExposures", Value.fromBigIntArray(value));
   }
 
-  get linkHedgesAlloc(): Array<BigInt> {
-    let value = this.get("linkHedgesAlloc");
+  get wbtcVaultExposures(): Array<BigInt> {
+    let value = this.get("wbtcVaultExposures");
     return value!.toBigIntArray();
   }
 
-  set linkHedgesAlloc(value: Array<BigInt>) {
-    this.set("linkHedgesAlloc", Value.fromBigIntArray(value));
+  set wbtcVaultExposures(value: Array<BigInt>) {
+    this.set("wbtcVaultExposures", Value.fromBigIntArray(value));
   }
 
-  get uniHedgesAlloc(): Array<BigInt> {
-    let value = this.get("uniHedgesAlloc");
+  get linkVaultExposures(): Array<BigInt> {
+    let value = this.get("linkVaultExposures");
     return value!.toBigIntArray();
   }
 
-  set uniHedgesAlloc(value: Array<BigInt>) {
-    this.set("uniHedgesAlloc", Value.fromBigIntArray(value));
+  set linkVaultExposures(value: Array<BigInt>) {
+    this.set("linkVaultExposures", Value.fromBigIntArray(value));
+  }
+
+  get uniVaultExposures(): Array<BigInt> {
+    let value = this.get("uniVaultExposures");
+    return value!.toBigIntArray();
+  }
+
+  set uniVaultExposures(value: Array<BigInt>) {
+    this.set("uniVaultExposures", Value.fromBigIntArray(value));
+  }
+
+  get usdcVaultInternalNetting(): Array<BigInt> {
+    let value = this.get("usdcVaultInternalNetting");
+    return value!.toBigIntArray();
+  }
+
+  set usdcVaultInternalNetting(value: Array<BigInt>) {
+    this.set("usdcVaultInternalNetting", Value.fromBigIntArray(value));
+  }
+
+  get wethVaultInternalNetting(): Array<BigInt> {
+    let value = this.get("wethVaultInternalNetting");
+    return value!.toBigIntArray();
+  }
+
+  set wethVaultInternalNetting(value: Array<BigInt>) {
+    this.set("wethVaultInternalNetting", Value.fromBigIntArray(value));
+  }
+
+  get wbtcVaultInternalNetting(): Array<BigInt> {
+    let value = this.get("wbtcVaultInternalNetting");
+    return value!.toBigIntArray();
+  }
+
+  set wbtcVaultInternalNetting(value: Array<BigInt>) {
+    this.set("wbtcVaultInternalNetting", Value.fromBigIntArray(value));
+  }
+
+  get linkVaultInternalNetting(): Array<BigInt> {
+    let value = this.get("linkVaultInternalNetting");
+    return value!.toBigIntArray();
+  }
+
+  set linkVaultInternalNetting(value: Array<BigInt>) {
+    this.set("linkVaultInternalNetting", Value.fromBigIntArray(value));
+  }
+
+  get uniVaultInternalNetting(): Array<BigInt> {
+    let value = this.get("uniVaultInternalNetting");
+    return value!.toBigIntArray();
+  }
+
+  set uniVaultInternalNetting(value: Array<BigInt>) {
+    this.set("uniVaultInternalNetting", Value.fromBigIntArray(value));
   }
 
   get glpComposition(): Array<BigInt> {

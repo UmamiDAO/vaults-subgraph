@@ -23,6 +23,9 @@
     },
     "Manager": {
       "address": "0x46af23a5d55d058712fddaf232b6b1b7ba1c1942"
+    },
+    "VaultHelper": {
+      "address": "0x49fe379529db8af3720a0c4a8d13ecd587d1b55b"
     }
   }
 }

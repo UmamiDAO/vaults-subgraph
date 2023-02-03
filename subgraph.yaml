@@ -26,6 +26,8 @@ dataSources:
           file: ./abis/Manager.json
         - name: GmxVault
           file: ./abis/GmxVault.json
+        - name: VaultHelper
+          file: ./abis/VaultHelper.json
       eventHandlers:
         - event: OpenRebalance(uint256,uint256[5],uint256[5],int256[5])
           handler: handleOpenRebalance

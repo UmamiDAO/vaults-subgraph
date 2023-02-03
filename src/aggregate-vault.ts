@@ -8,8 +8,12 @@ import {
   Paused,
   Unpaused,
 } from "../generated/AggregateVault/AggregateVault";
-import { GmxVault } from "../generated/GmxVault/GmxVault";
-import { Manager } from "../generated/Manager/Manager";
+import { GmxVault } from "../generated/AggregateVault/GmxVault";
+import { Manager } from "../generated/AggregateVault/Manager";
+import {
+  VaultHelper,
+  VaultHelper__getVaultStateResult_vaultStateStruct,
+} from "../generated/AggregateVault/VaultHelper";
 import {
   TmpRebalanceSnapshot,
   VaultFeesCollection,
@@ -19,13 +23,16 @@ import {
 } from "../generated/schema";
 import {
   AGGREGATE_VAULT_ADDRESS,
+  GLP_HANDLER_ADDRESS,
   GMX_VAULT_ADDRESS,
+  KEEPER_ADDRESS,
   LINK_ADDRESS,
   LINK_VAULT_ADDRESS,
   UNI_ADDRESS,
   UNI_VAULT_ADDRESS,
   USDC_ADDRESS,
   USDC_VAULT_ADDRESS,
+  VAULT_HELPER_ADDRESS,
   WBTC_ADDRESS,
   WBTC_VAULT_ADDRESS,
   WETH_ADDRESS,
@@ -224,20 +231,17 @@ export function handleCycle(event: Cycle): void {}
 
 export function handleOpenRebalance(event: OpenRebalance): void {
   const aggregateVaultContract = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
-  const gmxVault = GmxVault.bind(GMX_VAULT_ADDRESS);
-  const glpManager = Manager.bind(GMX_VAULT_ADDRESS);
+  const gmxVaultContract = GmxVault.bind(GMX_VAULT_ADDRESS);
+  const glpManagerContract = Manager.bind(GLP_HANDLER_ADDRESS);
+  const vaultHelperContract = VaultHelper.bind(VAULT_HELPER_ADDRESS);
+
   const snapshot = new TmpRebalanceSnapshot(event.transaction.hash.toHex());
+
   snapshot.block = event.block.number;
   snapshot.timestamp = event.block.timestamp;
   snapshot.txHash = event.transaction.hash.toHex();
   snapshot.event = "open";
 
-  const rebalanceState = aggregateVaultContract.getRebalanceState();
-  const glpPrice1 = glpManager.try_getGlpPrice1();
-  snapshot.glpPrice = glpPrice1.reverted ? BigInt.zero() : glpPrice1.value;
-
-  snapshot.glpComposition = rebalanceState.getGlpComposition();
-  snapshot.vaultsGlpAlloc = rebalanceState.getGlpAllocation();
   snapshot.vaultsPps = [
     aggregateVaultContract.getVaultPPS(USDC_VAULT_ADDRESS),
     aggregateVaultContract.getVaultPPS(WETH_VAULT_ADDRESS),
@@ -252,26 +256,41 @@ export function handleOpenRebalance(event: OpenRebalance): void {
     aggregateVaultContract.getVaultTVL(LINK_VAULT_ADDRESS),
     aggregateVaultContract.getVaultTVL(UNI_VAULT_ADDRESS),
   ];
-  snapshot.usdcHedgesAlloc = rebalanceState.getExternalPositions()[0];
-  snapshot.wethHedgesAlloc = rebalanceState.getExternalPositions()[1];
-  snapshot.wbtcHedgesAlloc = rebalanceState.getExternalPositions()[2];
-  snapshot.linkHedgesAlloc = rebalanceState.getExternalPositions()[3];
-  snapshot.uniHedgesAlloc = rebalanceState.getExternalPositions()[4];
 
-  const usdcMinPrice = gmxVault.getMinPrice(USDC_ADDRESS);
-  const usdcMaxPrice = gmxVault.getMaxPrice(USDC_ADDRESS);
+  const rebalanceState = aggregateVaultContract.getRebalanceState();
 
-  const wethMinPrice = gmxVault.getMinPrice(WETH_ADDRESS);
-  const wethMaxPrice = gmxVault.getMaxPrice(WETH_ADDRESS);
+  snapshot.glpComposition = rebalanceState.getGlpComposition();
+  snapshot.vaultsGlpAlloc = rebalanceState.getGlpAllocation();
+  snapshot.aggregatePositions = rebalanceState.getAggregatePositions();
 
-  const wbtcMinPrice = gmxVault.getMinPrice(WBTC_ADDRESS);
-  const wbtcMaxPrice = gmxVault.getMaxPrice(WBTC_ADDRESS);
+  snapshot.usdcVaultExposures = rebalanceState.getExternalPositions()[0];
+  snapshot.wethVaultExposures = rebalanceState.getExternalPositions()[1];
+  snapshot.wbtcVaultExposures = rebalanceState.getExternalPositions()[2];
+  snapshot.linkVaultExposures = rebalanceState.getExternalPositions()[3];
+  snapshot.uniVaultExposures = rebalanceState.getExternalPositions()[4];
 
-  const linkMinPrice = gmxVault.getMinPrice(LINK_ADDRESS);
-  const linkMaxPrice = gmxVault.getMaxPrice(LINK_ADDRESS);
+  snapshot.usdcVaultInternalNetting = vaultHelperContract.getNettedPositions()[0];
+  snapshot.wethVaultInternalNetting = vaultHelperContract.getNettedPositions()[1];
+  snapshot.wbtcVaultInternalNetting = vaultHelperContract.getNettedPositions()[2];
+  snapshot.linkVaultInternalNetting = vaultHelperContract.getNettedPositions()[3];
+  snapshot.uniVaultInternalNetting = vaultHelperContract.getNettedPositions()[4];
 
-  const uniMinPrice = gmxVault.getMinPrice(UNI_ADDRESS);
-  const uniMaxPrice = gmxVault.getMaxPrice(UNI_ADDRESS);
+  snapshot.glpPrice = glpManagerContract.getGlpPrice1();
+
+  const usdcMinPrice = gmxVaultContract.getMinPrice(USDC_ADDRESS);
+  const usdcMaxPrice = gmxVaultContract.getMaxPrice(USDC_ADDRESS);
+
+  const wethMinPrice = gmxVaultContract.getMinPrice(WETH_ADDRESS);
+  const wethMaxPrice = gmxVaultContract.getMaxPrice(WETH_ADDRESS);
+
+  const wbtcMinPrice = gmxVaultContract.getMinPrice(WBTC_ADDRESS);
+  const wbtcMaxPrice = gmxVaultContract.getMaxPrice(WBTC_ADDRESS);
+
+  const linkMinPrice = gmxVaultContract.getMinPrice(LINK_ADDRESS);
+  const linkMaxPrice = gmxVaultContract.getMaxPrice(LINK_ADDRESS);
+
+  const uniMinPrice = gmxVaultContract.getMinPrice(UNI_ADDRESS);
+  const uniMaxPrice = gmxVaultContract.getMaxPrice(UNI_ADDRESS);
 
   snapshot.assetsPrices = [
     usdcMinPrice.plus(usdcMaxPrice).div(BigInt.fromString("2")),
@@ -286,20 +305,18 @@ export function handleOpenRebalance(event: OpenRebalance): void {
 
 export function handleCloseRebalance(event: CloseRebalance): void {
   const aggregateVaultContract = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
-  const gmxVault = GmxVault.bind(GMX_VAULT_ADDRESS);
-  const glpManager = Manager.bind(GMX_VAULT_ADDRESS);
+  const gmxVaultContract = GmxVault.bind(GMX_VAULT_ADDRESS);
+  const glpManagerContract = Manager.bind(GLP_HANDLER_ADDRESS);
+
+  const vaultHelperContract = VaultHelper.bind(VAULT_HELPER_ADDRESS);
+
   const snapshot = new TmpRebalanceSnapshot(event.transaction.hash.toHex());
+
   snapshot.block = event.block.number;
   snapshot.timestamp = event.block.timestamp;
   snapshot.txHash = event.transaction.hash.toHex();
   snapshot.event = "close";
 
-  const rebalanceState = aggregateVaultContract.getRebalanceState();
-  const glpPrice1 = glpManager.try_getGlpPrice1();
-  snapshot.glpPrice = glpPrice1.reverted ? BigInt.zero() : glpPrice1.value;
-
-  snapshot.glpComposition = rebalanceState.getGlpComposition();
-  snapshot.vaultsGlpAlloc = rebalanceState.getGlpAllocation();
   snapshot.vaultsPps = [
     aggregateVaultContract.getVaultPPS(USDC_VAULT_ADDRESS),
     aggregateVaultContract.getVaultPPS(WETH_VAULT_ADDRESS),
@@ -314,26 +331,41 @@ export function handleCloseRebalance(event: CloseRebalance): void {
     aggregateVaultContract.getVaultTVL(LINK_VAULT_ADDRESS),
     aggregateVaultContract.getVaultTVL(UNI_VAULT_ADDRESS),
   ];
-  snapshot.usdcHedgesAlloc = rebalanceState.getExternalPositions()[0];
-  snapshot.wethHedgesAlloc = rebalanceState.getExternalPositions()[1];
-  snapshot.wbtcHedgesAlloc = rebalanceState.getExternalPositions()[2];
-  snapshot.linkHedgesAlloc = rebalanceState.getExternalPositions()[3];
-  snapshot.uniHedgesAlloc = rebalanceState.getExternalPositions()[4];
 
-  const usdcMinPrice = gmxVault.getMinPrice(USDC_ADDRESS);
-  const usdcMaxPrice = gmxVault.getMaxPrice(USDC_ADDRESS);
+  const rebalanceState = aggregateVaultContract.getRebalanceState();
 
-  const wethMinPrice = gmxVault.getMinPrice(WETH_ADDRESS);
-  const wethMaxPrice = gmxVault.getMaxPrice(WETH_ADDRESS);
+  snapshot.glpComposition = rebalanceState.getGlpComposition();
+  snapshot.vaultsGlpAlloc = rebalanceState.getGlpAllocation();
 
-  const wbtcMinPrice = gmxVault.getMinPrice(WBTC_ADDRESS);
-  const wbtcMaxPrice = gmxVault.getMaxPrice(WBTC_ADDRESS);
+  snapshot.aggregatePositions = rebalanceState.getAggregatePositions();
+  snapshot.usdcVaultExposures = rebalanceState.getExternalPositions()[0];
+  snapshot.wethVaultExposures = rebalanceState.getExternalPositions()[1];
+  snapshot.wbtcVaultExposures = rebalanceState.getExternalPositions()[2];
+  snapshot.linkVaultExposures = rebalanceState.getExternalPositions()[3];
+  snapshot.uniVaultExposures = rebalanceState.getExternalPositions()[4];
 
-  const linkMinPrice = gmxVault.getMinPrice(LINK_ADDRESS);
-  const linkMaxPrice = gmxVault.getMaxPrice(LINK_ADDRESS);
+  snapshot.usdcVaultInternalNetting = vaultHelperContract.getNettedPositions()[0];
+  snapshot.wethVaultInternalNetting = vaultHelperContract.getNettedPositions()[1];
+  snapshot.wbtcVaultInternalNetting = vaultHelperContract.getNettedPositions()[2];
+  snapshot.linkVaultInternalNetting = vaultHelperContract.getNettedPositions()[3];
+  snapshot.uniVaultInternalNetting = vaultHelperContract.getNettedPositions()[4];
 
-  const uniMinPrice = gmxVault.getMinPrice(UNI_ADDRESS);
-  const uniMaxPrice = gmxVault.getMaxPrice(UNI_ADDRESS);
+  snapshot.glpPrice = glpManagerContract.getGlpPrice1();
+
+  const usdcMinPrice = gmxVaultContract.getMinPrice(USDC_ADDRESS);
+  const usdcMaxPrice = gmxVaultContract.getMaxPrice(USDC_ADDRESS);
+
+  const wethMinPrice = gmxVaultContract.getMinPrice(WETH_ADDRESS);
+  const wethMaxPrice = gmxVaultContract.getMaxPrice(WETH_ADDRESS);
+
+  const wbtcMinPrice = gmxVaultContract.getMinPrice(WBTC_ADDRESS);
+  const wbtcMaxPrice = gmxVaultContract.getMaxPrice(WBTC_ADDRESS);
+
+  const linkMinPrice = gmxVaultContract.getMinPrice(LINK_ADDRESS);
+  const linkMaxPrice = gmxVaultContract.getMaxPrice(LINK_ADDRESS);
+
+  const uniMinPrice = gmxVaultContract.getMinPrice(UNI_ADDRESS);
+  const uniMaxPrice = gmxVaultContract.getMaxPrice(UNI_ADDRESS);
 
   snapshot.assetsPrices = [
     usdcMinPrice.plus(usdcMaxPrice).div(BigInt.fromString("2")),

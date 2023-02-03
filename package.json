@@ -8,6 +8,7 @@
     "create-local": "graph create --node http://65.109.58.74:8020/ vaults",
     "remove-local": "graph remove --node http://65.109.58.74:8020/ vaults",
     "deploy-local": "graph deploy --node http://65.109.58.74:8020/ --ipfs http://65.109.58.74:5001 vaults",
+    "redeploy-local": "yarn remove-local && yarn create-local && yarn deploy-local",
     "test": "graph test"
   },
   "dependencies": {
