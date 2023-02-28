@@ -6,8 +6,8 @@ export const KEEPER_ADDRESS = Address.fromString(
   "0x72273a8317f789ee944fbaa692cc562077261ed3"
 );
 
-export const AGGREGATE_VAULT_ADDRESS = Address.fromString(
-  "0x7f5C4f910a672763BA343A71e03730c2518A7d18"
+export const AGGREGATE_VAULT_HELPER_ADDRESS = Address.fromString(
+  "0x5573e7535efb06c757350068a8f0d6fed43f1ad0"
 );
 
 export const VAULT_HELPER_ADDRESS = Address.fromString(

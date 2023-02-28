@@ -53,8 +53,30 @@ export class CollectVaultFees__Params {
     return this._event.parameters[2].value.toBigInt();
   }
 
+  get slowReleaseMintAmount(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
   get _assetVault(): Address {
-    return this._event.parameters[3].value.toAddress();
+    return this._event.parameters[4].value.toAddress();
+  }
+}
+
+export class CompoundDistributeYield extends ethereum.Event {
+  get params(): CompoundDistributeYield__Params {
+    return new CompoundDistributeYield__Params(this);
+  }
+}
+
+export class CompoundDistributeYield__Params {
+  _event: CompoundDistributeYield;
+
+  constructor(event: CompoundDistributeYield) {
+    this._event = event;
+  }
+
+  get glpYieldPerVault(): Array<BigInt> {
+    return this._event.parameters[0].value.toBigIntArray();
   }
 }
 
@@ -110,29 +132,101 @@ export class OpenRebalance__Params {
   }
 }
 
-export class VaultHelper__getAssetVaultEntriesResult_assetVaultEntryStruct extends ethereum.Tuple {
-  get vault(): Address {
-    return this[0].toAddress();
-  }
-
-  get token(): Address {
-    return this[1].toAddress();
-  }
-
-  get feeWatermarkBalance(): BigInt {
-    return this[2].toBigInt();
-  }
-
-  get epochDelta(): BigInt {
-    return this[3].toBigInt();
-  }
-
-  get lastCheckpointTvl(): BigInt {
-    return this[4].toBigInt();
+export class RebalanceGlpPosition extends ethereum.Event {
+  get params(): RebalanceGlpPosition__Params {
+    return new RebalanceGlpPosition__Params(this);
   }
 }
 
-export class VaultHelper__getLastNettedPriceResult_nettedPricesStruct extends ethereum.Tuple {
+export class RebalanceGlpPosition__Params {
+  _event: RebalanceGlpPosition;
+
+  constructor(event: RebalanceGlpPosition) {
+    this._event = event;
+  }
+
+  get vaultGlpAttributionBefore(): Array<BigInt> {
+    return this._event.parameters[0].value.toBigIntArray();
+  }
+
+  get vaultGlpAttributionAfter(): Array<BigInt> {
+    return this._event.parameters[1].value.toBigIntArray();
+  }
+
+  get targetGlpAllocation(): Array<BigInt> {
+    return this._event.parameters[2].value.toBigIntArray();
+  }
+
+  get vaultGlpDeltaToExecute(): Array<BigInt> {
+    return this._event.parameters[3].value.toBigIntArray();
+  }
+
+  get totalVaultGlpDelta(): Array<BigInt> {
+    return this._event.parameters[4].value.toBigIntArray();
+  }
+}
+
+export class SettleNettedPositionPnl extends ethereum.Event {
+  get params(): SettleNettedPositionPnl__Params {
+    return new SettleNettedPositionPnl__Params(this);
+  }
+}
+
+export class SettleNettedPositionPnl__Params {
+  _event: SettleNettedPositionPnl;
+
+  constructor(event: SettleNettedPositionPnl) {
+    this._event = event;
+  }
+
+  get previousGlpAmount(): Array<BigInt> {
+    return this._event.parameters[0].value.toBigIntArray();
+  }
+
+  get settledGlpAmount(): Array<BigInt> {
+    return this._event.parameters[1].value.toBigIntArray();
+  }
+
+  get glpPnl(): Array<BigInt> {
+    return this._event.parameters[2].value.toBigIntArray();
+  }
+
+  get dollarPnl(): Array<BigInt> {
+    return this._event.parameters[3].value.toBigIntArray();
+  }
+
+  get percentPriceChange(): Array<BigInt> {
+    return this._event.parameters[4].value.toBigIntArray();
+  }
+}
+
+export class UpdateNettingCheckpointPrice extends ethereum.Event {
+  get params(): UpdateNettingCheckpointPrice__Params {
+    return new UpdateNettingCheckpointPrice__Params(this);
+  }
+}
+
+export class UpdateNettingCheckpointPrice__Params {
+  _event: UpdateNettingCheckpointPrice;
+
+  constructor(event: UpdateNettingCheckpointPrice) {
+    this._event = event;
+  }
+
+  get oldPrices(): UpdateNettingCheckpointPriceOldPricesStruct {
+    return changetype<UpdateNettingCheckpointPriceOldPricesStruct>(
+      this._event.parameters[0].value.toTuple()
+    );
+  }
+
+  get newPrices(): UpdateNettingCheckpointPriceNewPricesStruct {
+    return changetype<UpdateNettingCheckpointPriceNewPricesStruct>(
+      this._event.parameters[1].value.toTuple()
+    );
+  }
+}
+
+export class UpdateNettingCheckpointPriceOldPricesStruct extends ethereum.Tuple {
   get stable(): BigInt {
     return this[0].toBigInt();
   }
@@ -154,7 +248,103 @@ export class VaultHelper__getLastNettedPriceResult_nettedPricesStruct extends et
   }
 }
 
-export class VaultHelper__getRebalanceStateResult_rebalanceStateStruct extends ethereum.Tuple {
+export class UpdateNettingCheckpointPriceNewPricesStruct extends ethereum.Tuple {
+  get stable(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get eth(): BigInt {
+    return this[1].toBigInt();
+  }
+
+  get btc(): BigInt {
+    return this[2].toBigInt();
+  }
+
+  get link(): BigInt {
+    return this[3].toBigInt();
+  }
+
+  get uni(): BigInt {
+    return this[4].toBigInt();
+  }
+}
+
+export class AggregateVaultHelper___getCurrentPricesResult_pricesStruct extends ethereum.Tuple {
+  get stable(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get eth(): BigInt {
+    return this[1].toBigInt();
+  }
+
+  get btc(): BigInt {
+    return this[2].toBigInt();
+  }
+
+  get link(): BigInt {
+    return this[3].toBigInt();
+  }
+
+  get uni(): BigInt {
+    return this[4].toBigInt();
+  }
+}
+
+export class AggregateVaultHelper__getAssetVaultEntriesResult_assetVaultEntryStruct extends ethereum.Tuple {
+  get vault(): Address {
+    return this[0].toAddress();
+  }
+
+  get token(): Address {
+    return this[1].toAddress();
+  }
+
+  get feeWatermarkPPS(): BigInt {
+    return this[2].toBigInt();
+  }
+
+  get feeWatermarkDate(): BigInt {
+    return this[3].toBigInt();
+  }
+
+  get epochDelta(): BigInt {
+    return this[4].toBigInt();
+  }
+
+  get lastCheckpointTvl(): BigInt {
+    return this[5].toBigInt();
+  }
+
+  get slowReleaseStaking(): Address {
+    return this[6].toAddress();
+  }
+}
+
+export class AggregateVaultHelper__getLastNettedPriceResult_nettedPricesStruct extends ethereum.Tuple {
+  get stable(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get eth(): BigInt {
+    return this[1].toBigInt();
+  }
+
+  get btc(): BigInt {
+    return this[2].toBigInt();
+  }
+
+  get link(): BigInt {
+    return this[3].toBigInt();
+  }
+
+  get uni(): BigInt {
+    return this[4].toBigInt();
+  }
+}
+
+export class AggregateVaultHelper__getRebalanceStateResult_rebalanceStateStruct extends ethereum.Tuple {
   get glpAllocation(): Array<BigInt> {
     return this[0].toBigIntArray();
   }
@@ -180,7 +370,37 @@ export class VaultHelper__getRebalanceStateResult_rebalanceStateStruct extends e
   }
 }
 
-export class VaultHelper__getVaultStateResult_vaultStateStruct extends ethereum.Tuple {
+export class AggregateVaultHelper__getVaultFromAssetResultVaultStruct extends ethereum.Tuple {
+  get vault(): Address {
+    return this[0].toAddress();
+  }
+
+  get token(): Address {
+    return this[1].toAddress();
+  }
+
+  get feeWatermarkPPS(): BigInt {
+    return this[2].toBigInt();
+  }
+
+  get feeWatermarkDate(): BigInt {
+    return this[3].toBigInt();
+  }
+
+  get epochDelta(): BigInt {
+    return this[4].toBigInt();
+  }
+
+  get lastCheckpointTvl(): BigInt {
+    return this[5].toBigInt();
+  }
+
+  get slowReleaseStaking(): Address {
+    return this[6].toAddress();
+  }
+}
+
+export class AggregateVaultHelper__getVaultStateResult_vaultStateStruct extends ethereum.Tuple {
   get epoch(): BigInt {
     return this[0].toBigInt();
   }
@@ -206,9 +426,70 @@ export class VaultHelper__getVaultStateResult_vaultStateStruct extends ethereum.
   }
 }
 
-export class VaultHelper extends ethereum.SmartContract {
-  static bind(address: Address): VaultHelper {
-    return new VaultHelper("VaultHelper", address);
+export class AggregateVaultHelper__getVaultTVLBreakdownResult {
+  value0: BigInt;
+  value1: BigInt;
+  value2: BigInt;
+  value3: BigInt;
+
+  constructor(value0: BigInt, value1: BigInt, value2: BigInt, value3: BigInt) {
+    this.value0 = value0;
+    this.value1 = value1;
+    this.value2 = value2;
+    this.value3 = value3;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
+    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
+    map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
+    map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
+    return map;
+  }
+
+  get_total(): BigInt {
+    return this.value0;
+  }
+
+  get_buffer(): BigInt {
+    return this.value1;
+  }
+
+  get_glp(): BigInt {
+    return this.value2;
+  }
+
+  get_hedges(): BigInt {
+    return this.value3;
+  }
+}
+
+export class AggregateVaultHelper__getWithdrawalRequestRecieptsResult_withdrawalRequestRecieptsStruct extends ethereum.Tuple {
+  get assetVault(): Address {
+    return this[0].toAddress();
+  }
+
+  get asset(): Address {
+    return this[1].toAddress();
+  }
+
+  get user(): Address {
+    return this[2].toAddress();
+  }
+
+  get tokenAmount(): BigInt {
+    return this[3].toBigInt();
+  }
+
+  get underlyingAmount(): BigInt {
+    return this[4].toBigInt();
+  }
+}
+
+export class AggregateVaultHelper extends ethereum.SmartContract {
+  static bind(address: Address): AggregateVaultHelper {
+    return new AggregateVaultHelper("AggregateVaultHelper", address);
   }
 
   STORAGE_SLOT(): Bytes {
@@ -224,6 +505,62 @@ export class VaultHelper extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
+  _getAllAssetVaultsHedgeAtribution(): Array<Array<BigInt>> {
+    let result = super.call(
+      "_getAllAssetVaultsHedgeAtribution",
+      "_getAllAssetVaultsHedgeAtribution():(uint256[4][5])",
+      []
+    );
+
+    return result[0].toBigIntMatrix();
+  }
+
+  try__getAllAssetVaultsHedgeAtribution(): ethereum.CallResult<
+    Array<Array<BigInt>>
+  > {
+    let result = super.tryCall(
+      "_getAllAssetVaultsHedgeAtribution",
+      "_getAllAssetVaultsHedgeAtribution():(uint256[4][5])",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigIntMatrix());
+  }
+
+  _getCurrentPrices(): AggregateVaultHelper___getCurrentPricesResult_pricesStruct {
+    let result = super.call(
+      "_getCurrentPrices",
+      "_getCurrentPrices():((uint256,uint256,uint256,uint256,uint256))",
+      []
+    );
+
+    return changetype<
+      AggregateVaultHelper___getCurrentPricesResult_pricesStruct
+    >(result[0].toTuple());
+  }
+
+  try__getCurrentPrices(): ethereum.CallResult<
+    AggregateVaultHelper___getCurrentPricesResult_pricesStruct
+  > {
+    let result = super.tryCall(
+      "_getCurrentPrices",
+      "_getCurrentPrices():((uint256,uint256,uint256,uint256,uint256))",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      changetype<AggregateVaultHelper___getCurrentPricesResult_pricesStruct>(
+        value[0].toTuple()
+      )
+    );
   }
 
   callbackSigs(): Array<Bytes> {
@@ -288,25 +625,27 @@ export class VaultHelper extends ethereum.SmartContract {
   }
 
   getAssetVaultEntries(): Array<
-    VaultHelper__getAssetVaultEntriesResult_assetVaultEntryStruct
+    AggregateVaultHelper__getAssetVaultEntriesResult_assetVaultEntryStruct
   > {
     let result = super.call(
       "getAssetVaultEntries",
-      "getAssetVaultEntries():((address,address,uint256,int256,uint256)[5])",
+      "getAssetVaultEntries():((address,address,uint256,uint256,int256,uint256,address)[5])",
       []
     );
 
     return result[0].toTupleArray<
-      VaultHelper__getAssetVaultEntriesResult_assetVaultEntryStruct
+      AggregateVaultHelper__getAssetVaultEntriesResult_assetVaultEntryStruct
     >();
   }
 
   try_getAssetVaultEntries(): ethereum.CallResult<
-    Array<VaultHelper__getAssetVaultEntriesResult_assetVaultEntryStruct>
+    Array<
+      AggregateVaultHelper__getAssetVaultEntriesResult_assetVaultEntryStruct
+    >
   > {
     let result = super.tryCall(
       "getAssetVaultEntries",
-      "getAssetVaultEntries():((address,address,uint256,int256,uint256)[5])",
+      "getAssetVaultEntries():((address,address,uint256,uint256,int256,uint256,address)[5])",
       []
     );
     if (result.reverted) {
@@ -315,7 +654,7 @@ export class VaultHelper extends ethereum.SmartContract {
     let value = result.value;
     return ethereum.CallResult.fromValue(
       value[0].toTupleArray<
-        VaultHelper__getAssetVaultEntriesResult_assetVaultEntryStruct
+        AggregateVaultHelper__getAssetVaultEntriesResult_assetVaultEntryStruct
       >()
     );
   }
@@ -345,22 +684,22 @@ export class VaultHelper extends ethereum.SmartContract {
 
   getLastNettedPrice(
     _epoch: BigInt
-  ): VaultHelper__getLastNettedPriceResult_nettedPricesStruct {
+  ): AggregateVaultHelper__getLastNettedPriceResult_nettedPricesStruct {
     let result = super.call(
       "getLastNettedPrice",
       "getLastNettedPrice(uint256):((uint256,uint256,uint256,uint256,uint256))",
       [ethereum.Value.fromUnsignedBigInt(_epoch)]
     );
 
-    return changetype<VaultHelper__getLastNettedPriceResult_nettedPricesStruct>(
-      result[0].toTuple()
-    );
+    return changetype<
+      AggregateVaultHelper__getLastNettedPriceResult_nettedPricesStruct
+    >(result[0].toTuple());
   }
 
   try_getLastNettedPrice(
     _epoch: BigInt
   ): ethereum.CallResult<
-    VaultHelper__getLastNettedPriceResult_nettedPricesStruct
+    AggregateVaultHelper__getLastNettedPriceResult_nettedPricesStruct
   > {
     let result = super.tryCall(
       "getLastNettedPrice",
@@ -372,9 +711,9 @@ export class VaultHelper extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      changetype<VaultHelper__getLastNettedPriceResult_nettedPricesStruct>(
-        value[0].toTuple()
-      )
+      changetype<
+        AggregateVaultHelper__getLastNettedPriceResult_nettedPricesStruct
+      >(value[0].toTuple())
     );
   }
 
@@ -424,7 +763,7 @@ export class VaultHelper extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddressArray());
   }
 
-  getRebalanceState(): VaultHelper__getRebalanceStateResult_rebalanceStateStruct {
+  getRebalanceState(): AggregateVaultHelper__getRebalanceStateResult_rebalanceStateStruct {
     let result = super.call(
       "getRebalanceState",
       "getRebalanceState():((uint256[5],uint256[5],int256[5][5],int256[5],uint256,int256[5][5]))",
@@ -432,12 +771,12 @@ export class VaultHelper extends ethereum.SmartContract {
     );
 
     return changetype<
-      VaultHelper__getRebalanceStateResult_rebalanceStateStruct
+      AggregateVaultHelper__getRebalanceStateResult_rebalanceStateStruct
     >(result[0].toTuple());
   }
 
   try_getRebalanceState(): ethereum.CallResult<
-    VaultHelper__getRebalanceStateResult_rebalanceStateStruct
+    AggregateVaultHelper__getRebalanceStateResult_rebalanceStateStruct
   > {
     let result = super.tryCall(
       "getRebalanceState",
@@ -449,9 +788,9 @@ export class VaultHelper extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      changetype<VaultHelper__getRebalanceStateResult_rebalanceStateStruct>(
-        value[0].toTuple()
-      )
+      changetype<
+        AggregateVaultHelper__getRebalanceStateResult_rebalanceStateStruct
+      >(value[0].toTuple())
     );
   }
 
@@ -470,19 +809,39 @@ export class VaultHelper extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigIntArray());
   }
 
-  getTotalGlp(): BigInt {
-    let result = super.call("getTotalGlp", "getTotalGlp():(uint256)", []);
+  getVaultFromAsset(
+    _asset: Address
+  ): AggregateVaultHelper__getVaultFromAssetResultVaultStruct {
+    let result = super.call(
+      "getVaultFromAsset",
+      "getVaultFromAsset(address):((address,address,uint256,uint256,int256,uint256,address))",
+      [ethereum.Value.fromAddress(_asset)]
+    );
 
-    return result[0].toBigInt();
+    return changetype<AggregateVaultHelper__getVaultFromAssetResultVaultStruct>(
+      result[0].toTuple()
+    );
   }
 
-  try_getTotalGlp(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("getTotalGlp", "getTotalGlp():(uint256)", []);
+  try_getVaultFromAsset(
+    _asset: Address
+  ): ethereum.CallResult<
+    AggregateVaultHelper__getVaultFromAssetResultVaultStruct
+  > {
+    let result = super.tryCall(
+      "getVaultFromAsset",
+      "getVaultFromAsset(address):((address,address,uint256,uint256,int256,uint256,address))",
+      [ethereum.Value.fromAddress(_asset)]
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
+    return ethereum.CallResult.fromValue(
+      changetype<AggregateVaultHelper__getVaultFromAssetResultVaultStruct>(
+        value[0].toTuple()
+      )
+    );
   }
 
   getVaultGlpAttribution(): Array<BigInt> {
@@ -529,20 +888,20 @@ export class VaultHelper extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  getVaultState(): VaultHelper__getVaultStateResult_vaultStateStruct {
+  getVaultState(): AggregateVaultHelper__getVaultStateResult_vaultStateStruct {
     let result = super.call(
       "getVaultState",
       "getVaultState():((uint256,bool,uint256[5],int256[5],int256[5][5],address))",
       []
     );
 
-    return changetype<VaultHelper__getVaultStateResult_vaultStateStruct>(
-      result[0].toTuple()
-    );
+    return changetype<
+      AggregateVaultHelper__getVaultStateResult_vaultStateStruct
+    >(result[0].toTuple());
   }
 
   try_getVaultState(): ethereum.CallResult<
-    VaultHelper__getVaultStateResult_vaultStateStruct
+    AggregateVaultHelper__getVaultStateResult_vaultStateStruct
   > {
     let result = super.tryCall(
       "getVaultState",
@@ -554,7 +913,7 @@ export class VaultHelper extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      changetype<VaultHelper__getVaultStateResult_vaultStateStruct>(
+      changetype<AggregateVaultHelper__getVaultStateResult_vaultStateStruct>(
         value[0].toTuple()
       )
     );
@@ -581,6 +940,114 @@ export class VaultHelper extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  getVaultTVLBreakdown(
+    _assetVault: Address
+  ): AggregateVaultHelper__getVaultTVLBreakdownResult {
+    let result = super.call(
+      "getVaultTVLBreakdown",
+      "getVaultTVLBreakdown(address):(uint256,uint256,uint256,uint256)",
+      [ethereum.Value.fromAddress(_assetVault)]
+    );
+
+    return new AggregateVaultHelper__getVaultTVLBreakdownResult(
+      result[0].toBigInt(),
+      result[1].toBigInt(),
+      result[2].toBigInt(),
+      result[3].toBigInt()
+    );
+  }
+
+  try_getVaultTVLBreakdown(
+    _assetVault: Address
+  ): ethereum.CallResult<AggregateVaultHelper__getVaultTVLBreakdownResult> {
+    let result = super.tryCall(
+      "getVaultTVLBreakdown",
+      "getVaultTVLBreakdown(address):(uint256,uint256,uint256,uint256)",
+      [ethereum.Value.fromAddress(_assetVault)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new AggregateVaultHelper__getVaultTVLBreakdownResult(
+        value[0].toBigInt(),
+        value[1].toBigInt(),
+        value[2].toBigInt(),
+        value[3].toBigInt()
+      )
+    );
+  }
+
+  getVaultsGlp(): Array<BigInt> {
+    let result = super.call("getVaultsGlp", "getVaultsGlp():(uint256[5])", []);
+
+    return result[0].toBigIntArray();
+  }
+
+  try_getVaultsGlp(): ethereum.CallResult<Array<BigInt>> {
+    let result = super.tryCall(
+      "getVaultsGlp",
+      "getVaultsGlp():(uint256[5])",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigIntArray());
+  }
+
+  getWithdrawalRequestReciepts(): Array<
+    AggregateVaultHelper__getWithdrawalRequestRecieptsResult_withdrawalRequestRecieptsStruct
+  > {
+    let result = super.call(
+      "getWithdrawalRequestReciepts",
+      "getWithdrawalRequestReciepts():((address,address,address,uint256,uint256)[])",
+      []
+    );
+
+    return result[0].toTupleArray<
+      AggregateVaultHelper__getWithdrawalRequestRecieptsResult_withdrawalRequestRecieptsStruct
+    >();
+  }
+
+  try_getWithdrawalRequestReciepts(): ethereum.CallResult<
+    Array<
+      AggregateVaultHelper__getWithdrawalRequestRecieptsResult_withdrawalRequestRecieptsStruct
+    >
+  > {
+    let result = super.tryCall(
+      "getWithdrawalRequestReciepts",
+      "getWithdrawalRequestReciepts():((address,address,address,uint256,uint256)[])",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      value[0].toTupleArray<
+        AggregateVaultHelper__getWithdrawalRequestRecieptsResult_withdrawalRequestRecieptsStruct
+      >()
+    );
+  }
+
+  router(): Address {
+    let result = super.call("router", "router():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_router(): ethereum.CallResult<Address> {
+    let result = super.tryCall("router", "router():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   tokenToAssetVaultIndex(_token: Address): BigInt {
     let result = super.call(
       "tokenToAssetVaultIndex",
@@ -596,52 +1063,6 @@ export class VaultHelper extends ethereum.SmartContract {
       "tokenToAssetVaultIndex",
       "tokenToAssetVaultIndex(address):(uint256)",
       [ethereum.Value.fromAddress(_token)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  vaultGlpAttribution(): Array<BigInt> {
-    let result = super.call(
-      "vaultGlpAttribution",
-      "vaultGlpAttribution():(uint256[5])",
-      []
-    );
-
-    return result[0].toBigIntArray();
-  }
-
-  try_vaultGlpAttribution(): ethereum.CallResult<Array<BigInt>> {
-    let result = super.tryCall(
-      "vaultGlpAttribution",
-      "vaultGlpAttribution():(uint256[5])",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigIntArray());
-  }
-
-  vaultGlpAttribution1(_idx: BigInt): BigInt {
-    let result = super.call(
-      "vaultGlpAttribution",
-      "vaultGlpAttribution(uint256):(uint256)",
-      [ethereum.Value.fromUnsignedBigInt(_idx)]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_vaultGlpAttribution1(_idx: BigInt): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "vaultGlpAttribution",
-      "vaultGlpAttribution(uint256):(uint256)",
-      [ethereum.Value.fromUnsignedBigInt(_idx)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -806,37 +1227,105 @@ export class GetVaultTVLCall__Outputs {
   }
 }
 
-export class MulticallCall extends ethereum.Call {
-  get inputs(): MulticallCall__Inputs {
-    return new MulticallCall__Inputs(this);
+export class GetVaultTVLBreakdownCall extends ethereum.Call {
+  get inputs(): GetVaultTVLBreakdownCall__Inputs {
+    return new GetVaultTVLBreakdownCall__Inputs(this);
   }
 
-  get outputs(): MulticallCall__Outputs {
-    return new MulticallCall__Outputs(this);
-  }
-}
-
-export class MulticallCall__Inputs {
-  _call: MulticallCall;
-
-  constructor(call: MulticallCall) {
-    this._call = call;
-  }
-
-  get data(): Array<Bytes> {
-    return this._call.inputValues[0].value.toBytesArray();
+  get outputs(): GetVaultTVLBreakdownCall__Outputs {
+    return new GetVaultTVLBreakdownCall__Outputs(this);
   }
 }
 
-export class MulticallCall__Outputs {
-  _call: MulticallCall;
+export class GetVaultTVLBreakdownCall__Inputs {
+  _call: GetVaultTVLBreakdownCall;
 
-  constructor(call: MulticallCall) {
+  constructor(call: GetVaultTVLBreakdownCall) {
     this._call = call;
   }
 
-  get results(): Array<Bytes> {
-    return this._call.outputValues[0].value.toBytesArray();
+  get _assetVault(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class GetVaultTVLBreakdownCall__Outputs {
+  _call: GetVaultTVLBreakdownCall;
+
+  constructor(call: GetVaultTVLBreakdownCall) {
+    this._call = call;
+  }
+
+  get _total(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
+  }
+
+  get _buffer(): BigInt {
+    return this._call.outputValues[1].value.toBigInt();
+  }
+
+  get _glp(): BigInt {
+    return this._call.outputValues[2].value.toBigInt();
+  }
+
+  get _hedges(): BigInt {
+    return this._call.outputValues[3].value.toBigInt();
+  }
+}
+
+export class HandleGlpRewardsCall extends ethereum.Call {
+  get inputs(): HandleGlpRewardsCall__Inputs {
+    return new HandleGlpRewardsCall__Inputs(this);
+  }
+
+  get outputs(): HandleGlpRewardsCall__Outputs {
+    return new HandleGlpRewardsCall__Outputs(this);
+  }
+}
+
+export class HandleGlpRewardsCall__Inputs {
+  _call: HandleGlpRewardsCall;
+
+  constructor(call: HandleGlpRewardsCall) {
+    this._call = call;
+  }
+
+  get compound(): boolean {
+    return this._call.inputValues[0].value.toBoolean();
+  }
+}
+
+export class HandleGlpRewardsCall__Outputs {
+  _call: HandleGlpRewardsCall;
+
+  constructor(call: HandleGlpRewardsCall) {
+    this._call = call;
+  }
+}
+
+export class ProcessWithdrawalRequestsCall extends ethereum.Call {
+  get inputs(): ProcessWithdrawalRequestsCall__Inputs {
+    return new ProcessWithdrawalRequestsCall__Inputs(this);
+  }
+
+  get outputs(): ProcessWithdrawalRequestsCall__Outputs {
+    return new ProcessWithdrawalRequestsCall__Outputs(this);
+  }
+}
+
+export class ProcessWithdrawalRequestsCall__Inputs {
+  _call: ProcessWithdrawalRequestsCall;
+
+  constructor(call: ProcessWithdrawalRequestsCall) {
+    this._call = call;
+  }
+}
+
+export class ProcessWithdrawalRequestsCall__Outputs {
+  _call: ProcessWithdrawalRequestsCall;
+
+  constructor(call: ProcessWithdrawalRequestsCall) {
+    this._call = call;
   }
 }
 
@@ -1032,28 +1521,62 @@ export class RollToNextEpochCall__Outputs {
   }
 }
 
-export class SetExternalPositionsAdjustedCall extends ethereum.Call {
-  get inputs(): SetExternalPositionsAdjustedCall__Inputs {
-    return new SetExternalPositionsAdjustedCall__Inputs(this);
+export class SetNettedPositionsCall extends ethereum.Call {
+  get inputs(): SetNettedPositionsCall__Inputs {
+    return new SetNettedPositionsCall__Inputs(this);
   }
 
-  get outputs(): SetExternalPositionsAdjustedCall__Outputs {
-    return new SetExternalPositionsAdjustedCall__Outputs(this);
+  get outputs(): SetNettedPositionsCall__Outputs {
+    return new SetNettedPositionsCall__Outputs(this);
   }
 }
 
-export class SetExternalPositionsAdjustedCall__Inputs {
-  _call: SetExternalPositionsAdjustedCall;
+export class SetNettedPositionsCall__Inputs {
+  _call: SetNettedPositionsCall;
 
-  constructor(call: SetExternalPositionsAdjustedCall) {
+  constructor(call: SetNettedPositionsCall) {
+    this._call = call;
+  }
+
+  get _nettedPositions(): Array<Array<BigInt>> {
+    return this._call.inputValues[0].value.toBigIntMatrix();
+  }
+}
+
+export class SetNettedPositionsCall__Outputs {
+  _call: SetNettedPositionsCall;
+
+  constructor(call: SetNettedPositionsCall) {
     this._call = call;
   }
 }
 
-export class SetExternalPositionsAdjustedCall__Outputs {
-  _call: SetExternalPositionsAdjustedCall;
+export class SetNettingPriceToleranceCall extends ethereum.Call {
+  get inputs(): SetNettingPriceToleranceCall__Inputs {
+    return new SetNettingPriceToleranceCall__Inputs(this);
+  }
 
-  constructor(call: SetExternalPositionsAdjustedCall) {
+  get outputs(): SetNettingPriceToleranceCall__Outputs {
+    return new SetNettingPriceToleranceCall__Outputs(this);
+  }
+}
+
+export class SetNettingPriceToleranceCall__Inputs {
+  _call: SetNettingPriceToleranceCall;
+
+  constructor(call: SetNettingPriceToleranceCall) {
+    this._call = call;
+  }
+
+  get _tolerance(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetNettingPriceToleranceCall__Outputs {
+  _call: SetNettingPriceToleranceCall;
+
+  constructor(call: SetNettingPriceToleranceCall) {
     this._call = call;
   }
 }
@@ -1265,31 +1788,5 @@ export class UpdateNettingCheckpointPriceCallAssetPricesStruct extends ethereum.
 
   get uni(): BigInt {
     return this[4].toBigInt();
-  }
-}
-
-export class UpdateTotalGlpCall extends ethereum.Call {
-  get inputs(): UpdateTotalGlpCall__Inputs {
-    return new UpdateTotalGlpCall__Inputs(this);
-  }
-
-  get outputs(): UpdateTotalGlpCall__Outputs {
-    return new UpdateTotalGlpCall__Outputs(this);
-  }
-}
-
-export class UpdateTotalGlpCall__Inputs {
-  _call: UpdateTotalGlpCall;
-
-  constructor(call: UpdateTotalGlpCall) {
-    this._call = call;
-  }
-}
-
-export class UpdateTotalGlpCall__Outputs {
-  _call: UpdateTotalGlpCall;
-
-  constructor(call: UpdateTotalGlpCall) {
-    this._call = call;
   }
 }
