@@ -45,6 +45,10 @@ import {
 export function handleBlock(block: ethereum.Block): void {
   let lastPpsTimestamp = VaultPpsLastTimestamp.load("timestamp");
 
+  if (block.number.mod(BigInt.fromString("500")).gt(BigInt.zero())) {
+    return;
+  }
+
   /** Wait a minute to register a new PPS */
   if (
     lastPpsTimestamp == null ||
