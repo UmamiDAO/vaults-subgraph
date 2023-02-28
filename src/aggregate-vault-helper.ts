@@ -226,19 +226,49 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   snapshot.timestamp = event.block.timestamp;
   snapshot.txHash = event.transaction.hash.toHex();
   snapshot.event = "close";
+  const usdcVaultPpsTry = aggregateVaultHelper.try_getVaultPPS(
+    USDC_VAULT_ADDRESS
+  );
+  const wethVaultPpsTry = aggregateVaultHelper.try_getVaultPPS(
+    WETH_VAULT_ADDRESS
+  );
+  const wbtcVaultPpsTry = aggregateVaultHelper.try_getVaultPPS(
+    WBTC_VAULT_ADDRESS
+  );
+  const linkVaultPpsTry = aggregateVaultHelper.try_getVaultPPS(
+    LINK_VAULT_ADDRESS
+  );
+  const uniVaultPpsTry = aggregateVaultHelper.try_getVaultPPS(
+    UNI_VAULT_ADDRESS
+  );
   snapshot.vaultsPps = [
-    aggregateVaultHelper.getVaultPPS(USDC_VAULT_ADDRESS),
-    aggregateVaultHelper.getVaultPPS(WETH_VAULT_ADDRESS),
-    aggregateVaultHelper.getVaultPPS(WBTC_VAULT_ADDRESS),
-    aggregateVaultHelper.getVaultPPS(LINK_VAULT_ADDRESS),
-    aggregateVaultHelper.getVaultPPS(UNI_VAULT_ADDRESS),
+    usdcVaultPpsTry.reverted ? BigInt.zero() : usdcVaultPpsTry.value,
+    wethVaultPpsTry.reverted ? BigInt.zero() : wethVaultPpsTry.value,
+    wbtcVaultPpsTry.reverted ? BigInt.zero() : wbtcVaultPpsTry.value,
+    linkVaultPpsTry.reverted ? BigInt.zero() : linkVaultPpsTry.value,
+    uniVaultPpsTry.reverted ? BigInt.zero() : uniVaultPpsTry.value,
   ];
+  const usdcVaultTvlTry = aggregateVaultHelper.try_getVaultTVL(
+    USDC_VAULT_ADDRESS
+  );
+  const wethVaulTvlTry = aggregateVaultHelper.try_getVaultTVL(
+    WETH_VAULT_ADDRESS
+  );
+  const wbtcVaultTvlTry = aggregateVaultHelper.try_getVaultTVL(
+    WBTC_VAULT_ADDRESS
+  );
+  const linkVaultTvlTry = aggregateVaultHelper.try_getVaultTVL(
+    LINK_VAULT_ADDRESS
+  );
+  const uniVaultTvlTry = aggregateVaultHelper.try_getVaultTVL(
+    UNI_VAULT_ADDRESS
+  );
   snapshot.vaultsTVL = [
-    aggregateVaultHelper.getVaultTVL(USDC_VAULT_ADDRESS),
-    aggregateVaultHelper.getVaultTVL(WETH_VAULT_ADDRESS),
-    aggregateVaultHelper.getVaultTVL(WBTC_VAULT_ADDRESS),
-    aggregateVaultHelper.getVaultTVL(LINK_VAULT_ADDRESS),
-    aggregateVaultHelper.getVaultTVL(UNI_VAULT_ADDRESS),
+    usdcVaultTvlTry.reverted ? BigInt.zero() : usdcVaultTvlTry.value,
+    wethVaulTvlTry.reverted ? BigInt.zero() : wethVaulTvlTry.value,
+    wbtcVaultTvlTry.reverted ? BigInt.zero() : wbtcVaultTvlTry.value,
+    linkVaultTvlTry.reverted ? BigInt.zero() : linkVaultTvlTry.value,
+    uniVaultTvlTry.reverted ? BigInt.zero() : uniVaultTvlTry.value,
   ];
   const rebalanceState = aggregateVaultHelper.getRebalanceState();
   snapshot.glpComposition = rebalanceState.glpComposition;
@@ -487,19 +517,49 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   snapshot.timestamp = event.block.timestamp;
   snapshot.txHash = event.transaction.hash.toHex();
   snapshot.event = "open";
+  const usdcVaultPpsTry = aggregateVaultHelper.try_getVaultPPS(
+    USDC_VAULT_ADDRESS
+  );
+  const wethVaultPpsTry = aggregateVaultHelper.try_getVaultPPS(
+    WETH_VAULT_ADDRESS
+  );
+  const wbtcVaultPpsTry = aggregateVaultHelper.try_getVaultPPS(
+    WBTC_VAULT_ADDRESS
+  );
+  const linkVaultPpsTry = aggregateVaultHelper.try_getVaultPPS(
+    LINK_VAULT_ADDRESS
+  );
+  const uniVaultPpsTry = aggregateVaultHelper.try_getVaultPPS(
+    UNI_VAULT_ADDRESS
+  );
   snapshot.vaultsPps = [
-    aggregateVaultHelper.getVaultPPS(USDC_VAULT_ADDRESS),
-    aggregateVaultHelper.getVaultPPS(WETH_VAULT_ADDRESS),
-    aggregateVaultHelper.getVaultPPS(WBTC_VAULT_ADDRESS),
-    aggregateVaultHelper.getVaultPPS(LINK_VAULT_ADDRESS),
-    aggregateVaultHelper.getVaultPPS(UNI_VAULT_ADDRESS),
+    usdcVaultPpsTry.reverted ? BigInt.zero() : usdcVaultPpsTry.value,
+    wethVaultPpsTry.reverted ? BigInt.zero() : wethVaultPpsTry.value,
+    wbtcVaultPpsTry.reverted ? BigInt.zero() : wbtcVaultPpsTry.value,
+    linkVaultPpsTry.reverted ? BigInt.zero() : linkVaultPpsTry.value,
+    uniVaultPpsTry.reverted ? BigInt.zero() : uniVaultPpsTry.value,
   ];
+  const usdcVaultTvlTry = aggregateVaultHelper.try_getVaultTVL(
+    USDC_VAULT_ADDRESS
+  );
+  const wethVaulTvlTry = aggregateVaultHelper.try_getVaultTVL(
+    WETH_VAULT_ADDRESS
+  );
+  const wbtcVaultTvlTry = aggregateVaultHelper.try_getVaultTVL(
+    WBTC_VAULT_ADDRESS
+  );
+  const linkVaultTvlTry = aggregateVaultHelper.try_getVaultTVL(
+    LINK_VAULT_ADDRESS
+  );
+  const uniVaultTvlTry = aggregateVaultHelper.try_getVaultTVL(
+    UNI_VAULT_ADDRESS
+  );
   snapshot.vaultsTVL = [
-    aggregateVaultHelper.getVaultTVL(USDC_VAULT_ADDRESS),
-    aggregateVaultHelper.getVaultTVL(WETH_VAULT_ADDRESS),
-    aggregateVaultHelper.getVaultTVL(WBTC_VAULT_ADDRESS),
-    aggregateVaultHelper.getVaultTVL(LINK_VAULT_ADDRESS),
-    aggregateVaultHelper.getVaultTVL(UNI_VAULT_ADDRESS),
+    usdcVaultTvlTry.reverted ? BigInt.zero() : usdcVaultTvlTry.value,
+    wethVaulTvlTry.reverted ? BigInt.zero() : wethVaulTvlTry.value,
+    wbtcVaultTvlTry.reverted ? BigInt.zero() : wbtcVaultTvlTry.value,
+    linkVaultTvlTry.reverted ? BigInt.zero() : linkVaultTvlTry.value,
+    uniVaultTvlTry.reverted ? BigInt.zero() : uniVaultTvlTry.value,
   ];
   const rebalanceState = aggregateVaultHelper.getRebalanceState();
   snapshot.glpComposition = rebalanceState.glpComposition;
