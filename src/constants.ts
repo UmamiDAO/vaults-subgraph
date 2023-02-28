@@ -10,8 +10,8 @@ export const AGGREGATE_VAULT_HELPER_ADDRESS = Address.fromString(
   "0x5573e7535efb06c757350068a8f0d6fed43f1ad0"
 );
 
-export const VAULT_HELPER_ADDRESS = Address.fromString(
-  "0x49fe379529db8af3720a0c4a8d13ecd587d1b55b"
+export const AGGREGATE_VAULT_ADDRESS = Address.fromString(
+  "0x6E258BE26e713387a058F8644F514aE7ED3320Ad"
 );
 
 export const USDC_VAULT_ADDRESS = Address.fromString(
