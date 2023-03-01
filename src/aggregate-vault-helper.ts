@@ -1,4 +1,4 @@
-import { BigInt, ethereum } from "@graphprotocol/graph-ts";
+import { BigInt, ethereum, log } from "@graphprotocol/graph-ts";
 import {
   AggregateVaultHelper,
   CloseRebalance as CloseRebalanceEvent,
@@ -10,6 +10,7 @@ import {
   SettleNettedPositionPnl as SettleNettedPositionPnlEvent,
   UpdateNettingCheckpointPrice as UpdateNettingCheckpointPriceEvent,
 } from "../generated/AggregateVaultHelper/AggregateVaultHelper";
+import { AggregateVault } from "../generated/AggregateVault/AggregateVault";
 import { GmxVault } from "../generated/AggregateVaultHelper/GmxVault";
 import { Manager } from "../generated/AggregateVaultHelper/Manager";
 import {
@@ -55,13 +56,15 @@ export function handleBlock(block: ethereum.Block): void {
       lastPpsTimestamp.timestamp.plus(BigInt.fromString("1800"))
     )
   ) {
+    log.warning("Success handle block !", []);
+
     if (lastPpsTimestamp == null) {
       lastPpsTimestamp = new VaultPpsLastTimestamp("timestamp");
     }
     lastPpsTimestamp.timestamp = block.timestamp;
     lastPpsTimestamp.save();
 
-    const aggregateVaultHelper = AggregateVaultHelper.bind(
+    const aggregateVaultHelper = AggregateVault.bind(
       AGGREGATE_VAULT_HELPER_ADDRESS
     );
 
@@ -75,10 +78,13 @@ export function handleBlock(block: ethereum.Block): void {
     usdcVaultPps.block = block.number;
     usdcVaultPps.timestamp = block.timestamp;
     usdcVaultPps.vault = USDC_VAULT_ADDRESS.toHexString();
-    const usdcPpsTry = aggregateVaultHelper.try_getVaultPPS(USDC_VAULT_ADDRESS);
-    usdcVaultPps.pricePerShare = usdcPpsTry.reverted
-      ? BigInt.zero()
-      : usdcPpsTry.value;
+    const test = aggregateVaultHelper.try_getVaultPPS(USDC_VAULT_ADDRESS);
+    log.warning("Try ? {}, {}", [
+      test.reverted ? "reverted" : "okay",
+      test.value.toString(),
+    ]);
+
+    usdcVaultPps.pricePerShare = test.reverted ? BigInt.zero() : test.value;
     usdcVaultPps.save();
 
     /** TVL */
@@ -88,8 +94,7 @@ export function handleBlock(block: ethereum.Block): void {
     usdcVaultTvl.block = block.number;
     usdcVaultTvl.timestamp = block.timestamp;
     usdcVaultTvl.vault = USDC_VAULT_ADDRESS.toHexString();
-    const usdcTvlTry = aggregateVaultHelper.try_getVaultTVL(USDC_VAULT_ADDRESS);
-    usdcVaultTvl.tvl = usdcTvlTry.reverted ? BigInt.zero() : usdcTvlTry.value;
+    usdcVaultTvl.tvl = aggregateVaultHelper.getVaultTVL(USDC_VAULT_ADDRESS);
     usdcVaultTvl.save();
 
     /** WETH vault */
@@ -102,10 +107,9 @@ export function handleBlock(block: ethereum.Block): void {
     wethVaultPps.block = block.number;
     wethVaultPps.timestamp = block.timestamp;
     wethVaultPps.vault = WETH_VAULT_ADDRESS.toHexString();
-    const wethPpsTry = aggregateVaultHelper.try_getVaultPPS(WETH_VAULT_ADDRESS);
-    wethVaultPps.pricePerShare = wethPpsTry.reverted
-      ? BigInt.zero()
-      : wethPpsTry.value;
+    wethVaultPps.pricePerShare = aggregateVaultHelper.getVaultPPS(
+      WETH_VAULT_ADDRESS
+    );
     wethVaultPps.save();
 
     /** TVL */
@@ -114,8 +118,7 @@ export function handleBlock(block: ethereum.Block): void {
     wethVaulTvl.block = block.number;
     wethVaulTvl.timestamp = block.timestamp;
     wethVaulTvl.vault = WETH_VAULT_ADDRESS.toHexString();
-    const wethTvlTry = aggregateVaultHelper.try_getVaultTVL(WETH_VAULT_ADDRESS);
-    wethVaulTvl.tvl = wethTvlTry.reverted ? BigInt.zero() : wethTvlTry.value;
+    wethVaulTvl.tvl = aggregateVaultHelper.getVaultTVL(WETH_VAULT_ADDRESS);
     wethVaulTvl.save();
 
     /** WBTC vault */
@@ -128,11 +131,9 @@ export function handleBlock(block: ethereum.Block): void {
     wbtcVaultPps.block = block.number;
     wbtcVaultPps.timestamp = block.timestamp;
     wbtcVaultPps.vault = WBTC_VAULT_ADDRESS.toHexString();
-    const wbtcPpsTry = aggregateVaultHelper.try_getVaultPPS(WBTC_VAULT_ADDRESS);
-    wbtcVaultPps.pricePerShare = wbtcPpsTry.reverted
-      ? BigInt.zero()
-      : wbtcPpsTry.value;
-
+    wbtcVaultPps.pricePerShare = aggregateVaultHelper.getVaultPPS(
+      WBTC_VAULT_ADDRESS
+    );
     wbtcVaultPps.save();
 
     /** TVL */
@@ -142,8 +143,7 @@ export function handleBlock(block: ethereum.Block): void {
     wbtcVaultTvl.block = block.number;
     wbtcVaultTvl.timestamp = block.timestamp;
     wbtcVaultTvl.vault = WBTC_VAULT_ADDRESS.toHexString();
-    const wbtcTvlTry = aggregateVaultHelper.try_getVaultTVL(WBTC_VAULT_ADDRESS);
-    wbtcVaultTvl.tvl = wbtcTvlTry.reverted ? BigInt.zero() : wbtcTvlTry.value;
+    wbtcVaultTvl.tvl = aggregateVaultHelper.getVaultTVL(WBTC_VAULT_ADDRESS);
     wbtcVaultTvl.save();
 
     /** UNI vault */
@@ -156,11 +156,9 @@ export function handleBlock(block: ethereum.Block): void {
     uniVaultPps.block = block.number;
     uniVaultPps.timestamp = block.timestamp;
     uniVaultPps.vault = UNI_VAULT_ADDRESS.toHexString();
-    const uniPpsTry = aggregateVaultHelper.try_getVaultPPS(UNI_VAULT_ADDRESS);
-    uniVaultPps.pricePerShare = uniPpsTry.reverted
-      ? BigInt.zero()
-      : uniPpsTry.value;
-
+    uniVaultPps.pricePerShare = aggregateVaultHelper.getVaultPPS(
+      UNI_VAULT_ADDRESS
+    );
     uniVaultPps.save();
 
     /** TVL */
@@ -170,8 +168,7 @@ export function handleBlock(block: ethereum.Block): void {
     uniVaultTvl.block = block.number;
     uniVaultTvl.timestamp = block.timestamp;
     uniVaultTvl.vault = UNI_VAULT_ADDRESS.toHexString();
-    const uniTvlTry = aggregateVaultHelper.try_getVaultTVL(UNI_VAULT_ADDRESS);
-    uniVaultTvl.tvl = uniTvlTry.reverted ? BigInt.zero() : uniTvlTry.value;
+    uniVaultTvl.tvl = aggregateVaultHelper.getVaultTVL(UNI_VAULT_ADDRESS);
     uniVaultTvl.save();
 
     /** LINK vault */
@@ -185,10 +182,9 @@ export function handleBlock(block: ethereum.Block): void {
     linkVaultPps.block = block.number;
     linkVaultPps.timestamp = block.timestamp;
     linkVaultPps.vault = LINK_VAULT_ADDRESS.toHexString();
-    const linkPpsTry = aggregateVaultHelper.try_getVaultPPS(LINK_VAULT_ADDRESS);
-    linkVaultPps.pricePerShare = linkPpsTry.reverted
-      ? BigInt.zero()
-      : linkPpsTry.value;
+    linkVaultPps.pricePerShare = aggregateVaultHelper.getVaultPPS(
+      LINK_VAULT_ADDRESS
+    );
     linkVaultPps.save();
 
     /** TVL */
@@ -198,8 +194,7 @@ export function handleBlock(block: ethereum.Block): void {
     linkVaultTvl.block = block.number;
     linkVaultTvl.timestamp = block.timestamp;
     linkVaultTvl.vault = LINK_VAULT_ADDRESS.toHexString();
-    const linkTvlTry = aggregateVaultHelper.try_getVaultTVL(LINK_VAULT_ADDRESS);
-    linkVaultTvl.tvl = linkTvlTry.reverted ? BigInt.zero() : linkTvlTry.value;
+    linkVaultTvl.tvl = aggregateVaultHelper.getVaultTVL(LINK_VAULT_ADDRESS);
     linkVaultTvl.save();
   }
 }
