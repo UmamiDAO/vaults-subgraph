@@ -60,18 +60,28 @@ type RebalanceSnapshot @entity(immutable: true) {
   vaultsPps: [BigInt!]!
   vaultsGlpAlloc: [BigInt!]!
   aggregatePositions: [BigInt!]!
-  usdcVaultExposures: [BigInt!]!
-  wethVaultExposures: [BigInt!]!
-  wbtcVaultExposures: [BigInt!]!
-  linkVaultExposures: [BigInt!]!
-  uniVaultExposures: [BigInt!]!
-  usdcVaultInternalNetting: [BigInt!]!
-  wethVaultInternalNetting: [BigInt!]!
-  wbtcVaultInternalNetting: [BigInt!]!
-  linkVaultInternalNetting: [BigInt!]!
-  uniVaultInternalNetting: [BigInt!]!
+  usdcVaultExternalPositions: [BigInt!]!
+  wethVaultExternalPositions: [BigInt!]!
+  wbtcVaultExternalPositions: [BigInt!]!
+  linkVaultExternalPositions: [BigInt!]!
+  uniVaultExternalPositions: [BigInt!]!
+  usdcVaultNettedPositions: [BigInt!]!
+  wethVaultNettedPositions: [BigInt!]!
+  wbtcVaultNettedPositions: [BigInt!]!
+  linkVaultNettedPositions: [BigInt!]!
+  uniVaultNettedPositions: [BigInt!]!
   glpComposition: [BigInt!]!
   assetsPrices: [BigInt!]!
+}
+
+type OpenRebalance @entity(immutable: true) {
+  id: ID!
+  timestamp: BigInt! # uint256
+  block: BigInt! # uint256
+  epoch: BigInt! # uint256
+  nextVaultGlpAlloc: [BigInt!]! # uint256[5]
+  nextGlpComp: [BigInt!]! # uint256[5]
+  adjustedPositions: [BigInt!]! # int256[5]
 }
 
 type CloseRebalance @entity(immutable: true) {
@@ -107,16 +117,6 @@ type Cycle @entity(immutable: true) {
   block: BigInt! # uint256
   epoch: BigInt! # uint256
   round: BigInt! # uint256
-}
-
-type OpenRebalance @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt! # uint256
-  block: BigInt! # uint256
-  epoch: BigInt! # uint256
-  nextVaultGlpAlloc: [BigInt!]! # uint256[5]
-  nextGlpComp: [BigInt!]! # uint256[5]
-  adjustedPositions: [BigInt!]! # int256[5]
 }
 
 type RebalanceGlpPosition @entity(immutable: true) {

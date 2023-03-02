@@ -1,4 +1,4 @@
-import { BigInt, ethereum, log } from "@graphprotocol/graph-ts";
+import { BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 import {
   AggregateVaultHelper,
   CloseRebalance as CloseRebalanceEvent,
@@ -75,8 +75,15 @@ export function handleBlock(block: ethereum.Block): void {
     usdcVaultPps.block = block.number;
     usdcVaultPps.timestamp = block.timestamp;
     usdcVaultPps.vault = USDC_VAULT_ADDRESS.toHexString();
-
-    usdcVaultPps.pricePerShare = aggregateVault.getVaultPPS(USDC_VAULT_ADDRESS);
+    const usdcVaultPpsTry = aggregateVault.try_getVaultPPS(USDC_VAULT_ADDRESS);
+    if (usdcVaultPpsTry.reverted) {
+      log.info("REVERT_PPS handleBlock USDC at block {} ", [
+        block.number.toString(),
+      ]);
+    }
+    usdcVaultPps.pricePerShare = usdcVaultPpsTry.reverted
+      ? BigInt.zero()
+      : usdcVaultPpsTry.value;
     usdcVaultPps.save();
 
     /** TVL */
@@ -86,7 +93,15 @@ export function handleBlock(block: ethereum.Block): void {
     usdcVaultTvl.block = block.number;
     usdcVaultTvl.timestamp = block.timestamp;
     usdcVaultTvl.vault = USDC_VAULT_ADDRESS.toHexString();
-    usdcVaultTvl.tvl = aggregateVault.getVaultTVL(USDC_VAULT_ADDRESS);
+    const usdcVaultTVLTry = aggregateVault.try_getVaultTVL(USDC_VAULT_ADDRESS);
+    if (usdcVaultTVLTry.reverted) {
+      log.info("REVERT_TVL handleBlock USDC at block {} ", [
+        block.number.toString(),
+      ]);
+    }
+    usdcVaultTvl.tvl = usdcVaultTVLTry.reverted
+      ? BigInt.zero()
+      : usdcVaultTVLTry.value;
     usdcVaultTvl.save();
 
     /** WETH vault */
@@ -99,7 +114,15 @@ export function handleBlock(block: ethereum.Block): void {
     wethVaultPps.block = block.number;
     wethVaultPps.timestamp = block.timestamp;
     wethVaultPps.vault = WETH_VAULT_ADDRESS.toHexString();
-    wethVaultPps.pricePerShare = aggregateVault.getVaultPPS(WETH_VAULT_ADDRESS);
+    const wethVaultPpsTry = aggregateVault.try_getVaultPPS(WETH_VAULT_ADDRESS);
+    if (wethVaultPpsTry.reverted) {
+      log.info("REVERT_PPS handleBlock wETH at block {} ", [
+        block.number.toString(),
+      ]);
+    }
+    wethVaultPps.pricePerShare = wethVaultPpsTry.reverted
+      ? BigInt.zero()
+      : wethVaultPpsTry.value;
     wethVaultPps.save();
 
     /** TVL */
@@ -108,7 +131,15 @@ export function handleBlock(block: ethereum.Block): void {
     wethVaulTvl.block = block.number;
     wethVaulTvl.timestamp = block.timestamp;
     wethVaulTvl.vault = WETH_VAULT_ADDRESS.toHexString();
-    wethVaulTvl.tvl = aggregateVault.getVaultTVL(WETH_VAULT_ADDRESS);
+    const wethVaultTVLTry = aggregateVault.try_getVaultTVL(WETH_VAULT_ADDRESS);
+    if (wethVaultTVLTry.reverted) {
+      log.info("REVERT_TVL handleBlock wETH at block {} ", [
+        block.number.toString(),
+      ]);
+    }
+    wethVaulTvl.tvl = wethVaultTVLTry.reverted
+      ? BigInt.zero()
+      : wethVaultTVLTry.value;
     wethVaulTvl.save();
 
     /** WBTC vault */
@@ -121,7 +152,15 @@ export function handleBlock(block: ethereum.Block): void {
     wbtcVaultPps.block = block.number;
     wbtcVaultPps.timestamp = block.timestamp;
     wbtcVaultPps.vault = WBTC_VAULT_ADDRESS.toHexString();
-    wbtcVaultPps.pricePerShare = aggregateVault.getVaultPPS(WBTC_VAULT_ADDRESS);
+    const wbtcVaultPpsTry = aggregateVault.try_getVaultPPS(WBTC_VAULT_ADDRESS);
+    if (wbtcVaultPpsTry.reverted) {
+      log.info("REVERT_PPS handleBlock wBTC at block {} ", [
+        block.number.toString(),
+      ]);
+    }
+    wbtcVaultPps.pricePerShare = wbtcVaultPpsTry.reverted
+      ? BigInt.zero()
+      : wbtcVaultPpsTry.value;
     wbtcVaultPps.save();
 
     /** TVL */
@@ -131,7 +170,15 @@ export function handleBlock(block: ethereum.Block): void {
     wbtcVaultTvl.block = block.number;
     wbtcVaultTvl.timestamp = block.timestamp;
     wbtcVaultTvl.vault = WBTC_VAULT_ADDRESS.toHexString();
-    wbtcVaultTvl.tvl = aggregateVault.getVaultTVL(WBTC_VAULT_ADDRESS);
+    const wbtcVaultTVLTry = aggregateVault.try_getVaultTVL(WBTC_VAULT_ADDRESS);
+    if (wbtcVaultTVLTry.reverted) {
+      log.info("REVERT_TVL handleBlock wBTC at block {} ", [
+        block.number.toString(),
+      ]);
+    }
+    wbtcVaultTvl.tvl = wbtcVaultTVLTry.reverted
+      ? BigInt.zero()
+      : wbtcVaultTVLTry.value;
     wbtcVaultTvl.save();
 
     /** UNI vault */
@@ -144,7 +191,15 @@ export function handleBlock(block: ethereum.Block): void {
     uniVaultPps.block = block.number;
     uniVaultPps.timestamp = block.timestamp;
     uniVaultPps.vault = UNI_VAULT_ADDRESS.toHexString();
-    uniVaultPps.pricePerShare = aggregateVault.getVaultPPS(UNI_VAULT_ADDRESS);
+    const uniVaultPpsTry = aggregateVault.try_getVaultPPS(UNI_VAULT_ADDRESS);
+    if (uniVaultPpsTry.reverted) {
+      log.info("REVERT_PPS handleBlock UNI at block {} ", [
+        block.number.toString(),
+      ]);
+    }
+    uniVaultPps.pricePerShare = uniVaultPpsTry.reverted
+      ? BigInt.zero()
+      : uniVaultPpsTry.value;
     uniVaultPps.save();
 
     /** TVL */
@@ -154,7 +209,15 @@ export function handleBlock(block: ethereum.Block): void {
     uniVaultTvl.block = block.number;
     uniVaultTvl.timestamp = block.timestamp;
     uniVaultTvl.vault = UNI_VAULT_ADDRESS.toHexString();
-    uniVaultTvl.tvl = aggregateVault.getVaultTVL(UNI_VAULT_ADDRESS);
+    const uniVaultTVLTry = aggregateVault.try_getVaultTVL(UNI_VAULT_ADDRESS);
+    if (uniVaultTVLTry.reverted) {
+      log.info("REVERT_TVL handleBlock UNI at block {} ", [
+        block.number.toString(),
+      ]);
+    }
+    uniVaultTvl.tvl = uniVaultTVLTry.reverted
+      ? BigInt.zero()
+      : uniVaultTVLTry.value;
     uniVaultTvl.save();
 
     /** LINK vault */
@@ -168,7 +231,15 @@ export function handleBlock(block: ethereum.Block): void {
     linkVaultPps.block = block.number;
     linkVaultPps.timestamp = block.timestamp;
     linkVaultPps.vault = LINK_VAULT_ADDRESS.toHexString();
-    linkVaultPps.pricePerShare = aggregateVault.getVaultPPS(LINK_VAULT_ADDRESS);
+    const linkVaultPpsTry = aggregateVault.try_getVaultPPS(LINK_VAULT_ADDRESS);
+    if (linkVaultPpsTry.reverted) {
+      log.info("REVERT_PPS handleBlock LINK at block {} ", [
+        block.number.toString(),
+      ]);
+    }
+    linkVaultPps.pricePerShare = linkVaultPpsTry.reverted
+      ? BigInt.zero()
+      : linkVaultPpsTry.value;
     linkVaultPps.save();
 
     /** TVL */
@@ -178,7 +249,15 @@ export function handleBlock(block: ethereum.Block): void {
     linkVaultTvl.block = block.number;
     linkVaultTvl.timestamp = block.timestamp;
     linkVaultTvl.vault = LINK_VAULT_ADDRESS.toHexString();
-    linkVaultTvl.tvl = aggregateVault.getVaultTVL(LINK_VAULT_ADDRESS);
+    const linkVaultTVLTry = aggregateVault.try_getVaultTVL(LINK_VAULT_ADDRESS);
+    if (linkVaultTVLTry.reverted) {
+      log.info("REVERT_TVL handleBlock LINK at block {} ", [
+        block.number.toString(),
+      ]);
+    }
+    linkVaultTvl.tvl = linkVaultTVLTry.reverted
+      ? BigInt.zero()
+      : linkVaultTVLTry.value;
     linkVaultTvl.save();
   }
 }
@@ -220,20 +299,45 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
     aggregateVault.getVaultTVL(LINK_VAULT_ADDRESS),
     aggregateVault.getVaultTVL(UNI_VAULT_ADDRESS),
   ];
-  const rebalanceState = aggregateVaultHelper.getRebalanceState();
-  snapshot.glpComposition = rebalanceState.glpComposition;
-  snapshot.vaultsGlpAlloc = rebalanceState.glpAllocation;
-  snapshot.aggregatePositions = rebalanceState.aggregatePositions;
-  snapshot.usdcVaultExposures = rebalanceState.externalPositions[0];
-  snapshot.wethVaultExposures = rebalanceState.externalPositions[1];
-  snapshot.wbtcVaultExposures = rebalanceState.externalPositions[2];
-  snapshot.linkVaultExposures = rebalanceState.externalPositions[3];
-  snapshot.uniVaultExposures = rebalanceState.externalPositions[4];
-  snapshot.usdcVaultInternalNetting = aggregateVaultHelper.getNettedPositions()[0];
-  snapshot.wethVaultInternalNetting = aggregateVaultHelper.getNettedPositions()[1];
-  snapshot.wbtcVaultInternalNetting = aggregateVaultHelper.getNettedPositions()[2];
-  snapshot.linkVaultInternalNetting = aggregateVaultHelper.getNettedPositions()[3];
-  snapshot.uniVaultInternalNetting = aggregateVaultHelper.getNettedPositions()[4];
+  const rebalanceState = aggregateVault.getRebalanceState();
+  snapshot.glpComposition = rebalanceState.getGlpComposition();
+  snapshot.vaultsGlpAlloc = rebalanceState.getGlpAllocation();
+  snapshot.aggregatePositions = rebalanceState.getAggregatePositions();
+  snapshot.usdcVaultExternalPositions = rebalanceState.getExternalPositions()[0];
+  snapshot.wethVaultExternalPositions = rebalanceState.getExternalPositions()[1];
+  snapshot.wbtcVaultExternalPositions = rebalanceState.getExternalPositions()[2];
+  snapshot.linkVaultExternalPositions = rebalanceState.getExternalPositions()[3];
+  snapshot.uniVaultExternalPositions = rebalanceState.getExternalPositions()[4];
+  const viewResult = aggregateVault.delegateview(
+    AGGREGATE_VAULT_HELPER_ADDRESS,
+    Bytes.fromHexString("0x6c2e656c")
+  );
+
+  let decoded = ethereum.decode("int[5][5]", viewResult.get_ret());
+  if (decoded !== null) {
+    log.error("decoded : {}", [decoded.toBigIntMatrix().toString()]);
+
+    const matrix = decoded.toBigIntMatrix();
+    snapshot.usdcVaultNettedPositions = matrix[0];
+    snapshot.wethVaultNettedPositions = matrix[1];
+    snapshot.wbtcVaultNettedPositions = matrix[2];
+    snapshot.linkVaultNettedPositions = matrix[3];
+    snapshot.uniVaultNettedPositions = matrix[4];
+  } else {
+    log.error("decoded undefined", []);
+    const emptyArray = [
+      BigInt.zero(),
+      BigInt.zero(),
+      BigInt.zero(),
+      BigInt.zero(),
+      BigInt.zero(),
+    ];
+    snapshot.wethVaultNettedPositions = emptyArray;
+    snapshot.usdcVaultNettedPositions = emptyArray;
+    snapshot.wbtcVaultNettedPositions = emptyArray;
+    snapshot.linkVaultNettedPositions = emptyArray;
+    snapshot.uniVaultNettedPositions = emptyArray;
+  }
   snapshot.glpPrice = glpManagerContract.getGlpPrice1();
   const usdcMinPrice = gmxVaultContract.getMinPrice(USDC_ADDRESS);
   const usdcMaxPrice = gmxVaultContract.getMaxPrice(USDC_ADDRESS);
@@ -255,6 +359,7 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   snapshot.save();
 
   const block = event.block;
+
   /** USDC vault */
   /** USDC vault price per share */
   const usdcVaultEntityId = `${block.number}:${
@@ -265,8 +370,15 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   usdcVaultPps.block = block.number;
   usdcVaultPps.timestamp = block.timestamp;
   usdcVaultPps.vault = USDC_VAULT_ADDRESS.toHexString();
-
-  usdcVaultPps.pricePerShare = aggregateVault.getVaultPPS(USDC_VAULT_ADDRESS);
+  const usdcVaultPpsTry = aggregateVault.try_getVaultPPS(USDC_VAULT_ADDRESS);
+  if (usdcVaultPpsTry.reverted) {
+    log.info("REVERT_PPS handleCloseRebalance USDC at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  usdcVaultPps.pricePerShare = usdcVaultPpsTry.reverted
+    ? BigInt.zero()
+    : usdcVaultPpsTry.value;
   usdcVaultPps.save();
 
   /** TVL */
@@ -276,7 +388,15 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   usdcVaultTvl.block = block.number;
   usdcVaultTvl.timestamp = block.timestamp;
   usdcVaultTvl.vault = USDC_VAULT_ADDRESS.toHexString();
-  usdcVaultTvl.tvl = aggregateVault.getVaultTVL(USDC_VAULT_ADDRESS);
+  const usdcVaultTVLTry = aggregateVault.try_getVaultTVL(USDC_VAULT_ADDRESS);
+  if (usdcVaultTVLTry.reverted) {
+    log.info("REVERT_TVL handleCloseRebalance USDC at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  usdcVaultTvl.tvl = usdcVaultTVLTry.reverted
+    ? BigInt.zero()
+    : usdcVaultTVLTry.value;
   usdcVaultTvl.save();
 
   /** WETH vault */
@@ -289,7 +409,15 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   wethVaultPps.block = block.number;
   wethVaultPps.timestamp = block.timestamp;
   wethVaultPps.vault = WETH_VAULT_ADDRESS.toHexString();
-  wethVaultPps.pricePerShare = aggregateVault.getVaultPPS(WETH_VAULT_ADDRESS);
+  const wethVaultPpsTry = aggregateVault.try_getVaultPPS(WETH_VAULT_ADDRESS);
+  if (wethVaultPpsTry.reverted) {
+    log.info("REVERT_PPS handleCloseRebalance wETH at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  wethVaultPps.pricePerShare = wethVaultPpsTry.reverted
+    ? BigInt.zero()
+    : wethVaultPpsTry.value;
   wethVaultPps.save();
 
   /** TVL */
@@ -298,7 +426,15 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   wethVaulTvl.block = block.number;
   wethVaulTvl.timestamp = block.timestamp;
   wethVaulTvl.vault = WETH_VAULT_ADDRESS.toHexString();
-  wethVaulTvl.tvl = aggregateVault.getVaultTVL(WETH_VAULT_ADDRESS);
+  const wethVaultTVLTry = aggregateVault.try_getVaultTVL(WETH_VAULT_ADDRESS);
+  if (wethVaultTVLTry.reverted) {
+    log.info("REVERT_TVL handleCloseRebalance wETH at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  wethVaulTvl.tvl = wethVaultTVLTry.reverted
+    ? BigInt.zero()
+    : wethVaultTVLTry.value;
   wethVaulTvl.save();
 
   /** WBTC vault */
@@ -311,7 +447,15 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   wbtcVaultPps.block = block.number;
   wbtcVaultPps.timestamp = block.timestamp;
   wbtcVaultPps.vault = WBTC_VAULT_ADDRESS.toHexString();
-  wbtcVaultPps.pricePerShare = aggregateVault.getVaultPPS(WBTC_VAULT_ADDRESS);
+  const wbtcVaultPpsTry = aggregateVault.try_getVaultPPS(WBTC_VAULT_ADDRESS);
+  if (wbtcVaultPpsTry.reverted) {
+    log.info("REVERT_PPS handleCloseRebalance wBTC at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  wbtcVaultPps.pricePerShare = wbtcVaultPpsTry.reverted
+    ? BigInt.zero()
+    : wbtcVaultPpsTry.value;
   wbtcVaultPps.save();
 
   /** TVL */
@@ -321,7 +465,15 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   wbtcVaultTvl.block = block.number;
   wbtcVaultTvl.timestamp = block.timestamp;
   wbtcVaultTvl.vault = WBTC_VAULT_ADDRESS.toHexString();
-  wbtcVaultTvl.tvl = aggregateVault.getVaultTVL(WBTC_VAULT_ADDRESS);
+  const wbtcVaultTVLTry = aggregateVault.try_getVaultTVL(WBTC_VAULT_ADDRESS);
+  if (wbtcVaultTVLTry.reverted) {
+    log.info("REVERT_TVL handleCloseRebalance wBTC at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  wbtcVaultTvl.tvl = wbtcVaultTVLTry.reverted
+    ? BigInt.zero()
+    : wbtcVaultTVLTry.value;
   wbtcVaultTvl.save();
 
   /** UNI vault */
@@ -334,7 +486,15 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   uniVaultPps.block = block.number;
   uniVaultPps.timestamp = block.timestamp;
   uniVaultPps.vault = UNI_VAULT_ADDRESS.toHexString();
-  uniVaultPps.pricePerShare = aggregateVault.getVaultPPS(UNI_VAULT_ADDRESS);
+  const uniVaultPpsTry = aggregateVault.try_getVaultPPS(UNI_VAULT_ADDRESS);
+  if (uniVaultPpsTry.reverted) {
+    log.info("REVERT_PPS handleCloseRebalance UNI at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  uniVaultPps.pricePerShare = uniVaultPpsTry.reverted
+    ? BigInt.zero()
+    : uniVaultPpsTry.value;
   uniVaultPps.save();
 
   /** TVL */
@@ -344,7 +504,15 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   uniVaultTvl.block = block.number;
   uniVaultTvl.timestamp = block.timestamp;
   uniVaultTvl.vault = UNI_VAULT_ADDRESS.toHexString();
-  uniVaultTvl.tvl = aggregateVault.getVaultTVL(UNI_VAULT_ADDRESS);
+  const uniVaultTVLTry = aggregateVault.try_getVaultTVL(UNI_VAULT_ADDRESS);
+  if (uniVaultTVLTry.reverted) {
+    log.info("REVERT_TVL handleCloseRebalance UNI at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  uniVaultTvl.tvl = uniVaultTVLTry.reverted
+    ? BigInt.zero()
+    : uniVaultTVLTry.value;
   uniVaultTvl.save();
 
   /** LINK vault */
@@ -358,7 +526,15 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   linkVaultPps.block = block.number;
   linkVaultPps.timestamp = block.timestamp;
   linkVaultPps.vault = LINK_VAULT_ADDRESS.toHexString();
-  linkVaultPps.pricePerShare = aggregateVault.getVaultPPS(LINK_VAULT_ADDRESS);
+  const linkVaultPpsTry = aggregateVault.try_getVaultPPS(LINK_VAULT_ADDRESS);
+  if (linkVaultPpsTry.reverted) {
+    log.info("REVERT_PPS handleCloseRebalance LINK at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  linkVaultPps.pricePerShare = linkVaultPpsTry.reverted
+    ? BigInt.zero()
+    : linkVaultPpsTry.value;
   linkVaultPps.save();
 
   /** TVL */
@@ -368,7 +544,15 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   linkVaultTvl.block = block.number;
   linkVaultTvl.timestamp = block.timestamp;
   linkVaultTvl.vault = LINK_VAULT_ADDRESS.toHexString();
-  linkVaultTvl.tvl = aggregateVault.getVaultTVL(LINK_VAULT_ADDRESS);
+  const linkVaultTVLTry = aggregateVault.try_getVaultTVL(LINK_VAULT_ADDRESS);
+  if (linkVaultTVLTry.reverted) {
+    log.info("REVERT_TVL handleCloseRebalance LINK at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  linkVaultTvl.tvl = linkVaultTVLTry.reverted
+    ? BigInt.zero()
+    : linkVaultTVLTry.value;
   linkVaultTvl.save();
 }
 
@@ -462,20 +646,45 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
     aggregateVault.getVaultTVL(LINK_VAULT_ADDRESS),
     aggregateVault.getVaultTVL(UNI_VAULT_ADDRESS),
   ];
-  const rebalanceState = aggregateVaultHelper.getRebalanceState();
-  snapshot.glpComposition = rebalanceState.glpComposition;
-  snapshot.vaultsGlpAlloc = rebalanceState.glpAllocation;
-  snapshot.aggregatePositions = rebalanceState.aggregatePositions;
-  snapshot.usdcVaultExposures = rebalanceState.externalPositions[0];
-  snapshot.wethVaultExposures = rebalanceState.externalPositions[1];
-  snapshot.wbtcVaultExposures = rebalanceState.externalPositions[2];
-  snapshot.linkVaultExposures = rebalanceState.externalPositions[3];
-  snapshot.uniVaultExposures = rebalanceState.externalPositions[4];
-  snapshot.usdcVaultInternalNetting = aggregateVaultHelper.getNettedPositions()[0];
-  snapshot.wethVaultInternalNetting = aggregateVaultHelper.getNettedPositions()[1];
-  snapshot.wbtcVaultInternalNetting = aggregateVaultHelper.getNettedPositions()[2];
-  snapshot.linkVaultInternalNetting = aggregateVaultHelper.getNettedPositions()[3];
-  snapshot.uniVaultInternalNetting = aggregateVaultHelper.getNettedPositions()[4];
+  const rebalanceState = aggregateVault.getRebalanceState();
+  snapshot.glpComposition = rebalanceState.getGlpComposition();
+  snapshot.vaultsGlpAlloc = rebalanceState.getGlpAllocation();
+  snapshot.aggregatePositions = rebalanceState.getAggregatePositions();
+  snapshot.usdcVaultExternalPositions = rebalanceState.getExternalPositions()[0];
+  snapshot.wethVaultExternalPositions = rebalanceState.getExternalPositions()[1];
+  snapshot.wbtcVaultExternalPositions = rebalanceState.getExternalPositions()[2];
+  snapshot.linkVaultExternalPositions = rebalanceState.getExternalPositions()[3];
+  snapshot.uniVaultExternalPositions = rebalanceState.getExternalPositions()[4];
+  const viewResult = aggregateVault.delegateview(
+    AGGREGATE_VAULT_HELPER_ADDRESS,
+    Bytes.fromHexString("0x6c2e656c")
+  );
+
+  let decoded = ethereum.decode("int[5][5]", viewResult.get_ret());
+  if (decoded !== null) {
+    log.error("decoded : {}", [decoded.toBigIntMatrix().toString()]);
+
+    const matrix = decoded.toBigIntMatrix();
+    snapshot.usdcVaultNettedPositions = matrix[0];
+    snapshot.wethVaultNettedPositions = matrix[1];
+    snapshot.wbtcVaultNettedPositions = matrix[2];
+    snapshot.linkVaultNettedPositions = matrix[3];
+    snapshot.uniVaultNettedPositions = matrix[4];
+  } else {
+    log.error("decoded undefined", []);
+    const emptyArray = [
+      BigInt.zero(),
+      BigInt.zero(),
+      BigInt.zero(),
+      BigInt.zero(),
+      BigInt.zero(),
+    ];
+    snapshot.wethVaultNettedPositions = emptyArray;
+    snapshot.usdcVaultNettedPositions = emptyArray;
+    snapshot.wbtcVaultNettedPositions = emptyArray;
+    snapshot.linkVaultNettedPositions = emptyArray;
+    snapshot.uniVaultNettedPositions = emptyArray;
+  }
   snapshot.glpPrice = glpManagerContract.getGlpPrice1();
   const usdcMinPrice = gmxVaultContract.getMinPrice(USDC_ADDRESS);
   const usdcMaxPrice = gmxVaultContract.getMaxPrice(USDC_ADDRESS);
@@ -497,6 +706,7 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   snapshot.save();
 
   const block = event.block;
+
   /** USDC vault */
   /** USDC vault price per share */
   const usdcVaultEntityId = `${block.number}:${
@@ -507,8 +717,15 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   usdcVaultPps.block = block.number;
   usdcVaultPps.timestamp = block.timestamp;
   usdcVaultPps.vault = USDC_VAULT_ADDRESS.toHexString();
-
-  usdcVaultPps.pricePerShare = aggregateVault.getVaultPPS(USDC_VAULT_ADDRESS);
+  const usdcVaultPpsTry = aggregateVault.try_getVaultPPS(USDC_VAULT_ADDRESS);
+  if (usdcVaultPpsTry.reverted) {
+    log.info("REVERT_PPS handleOpenRebalance USDC at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  usdcVaultPps.pricePerShare = usdcVaultPpsTry.reverted
+    ? BigInt.zero()
+    : usdcVaultPpsTry.value;
   usdcVaultPps.save();
 
   /** TVL */
@@ -518,7 +735,15 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   usdcVaultTvl.block = block.number;
   usdcVaultTvl.timestamp = block.timestamp;
   usdcVaultTvl.vault = USDC_VAULT_ADDRESS.toHexString();
-  usdcVaultTvl.tvl = aggregateVault.getVaultTVL(USDC_VAULT_ADDRESS);
+  const usdcVaultTVLTry = aggregateVault.try_getVaultTVL(USDC_VAULT_ADDRESS);
+  if (usdcVaultTVLTry.reverted) {
+    log.info("REVERT_TVL handleOpenRebalance USDC at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  usdcVaultTvl.tvl = usdcVaultTVLTry.reverted
+    ? BigInt.zero()
+    : usdcVaultTVLTry.value;
   usdcVaultTvl.save();
 
   /** WETH vault */
@@ -531,7 +756,15 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   wethVaultPps.block = block.number;
   wethVaultPps.timestamp = block.timestamp;
   wethVaultPps.vault = WETH_VAULT_ADDRESS.toHexString();
-  wethVaultPps.pricePerShare = aggregateVault.getVaultPPS(WETH_VAULT_ADDRESS);
+  const wethVaultPpsTry = aggregateVault.try_getVaultPPS(WETH_VAULT_ADDRESS);
+  if (wethVaultPpsTry.reverted) {
+    log.info("REVERT_PPS handleOpenRebalance wETH at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  wethVaultPps.pricePerShare = wethVaultPpsTry.reverted
+    ? BigInt.zero()
+    : wethVaultPpsTry.value;
   wethVaultPps.save();
 
   /** TVL */
@@ -540,7 +773,15 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   wethVaulTvl.block = block.number;
   wethVaulTvl.timestamp = block.timestamp;
   wethVaulTvl.vault = WETH_VAULT_ADDRESS.toHexString();
-  wethVaulTvl.tvl = aggregateVault.getVaultTVL(WETH_VAULT_ADDRESS);
+  const wethVaultTVLTry = aggregateVault.try_getVaultTVL(WETH_VAULT_ADDRESS);
+  if (wethVaultTVLTry.reverted) {
+    log.info("REVERT_TVL handleOpenRebalance wETH at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  wethVaulTvl.tvl = wethVaultTVLTry.reverted
+    ? BigInt.zero()
+    : wethVaultTVLTry.value;
   wethVaulTvl.save();
 
   /** WBTC vault */
@@ -553,7 +794,15 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   wbtcVaultPps.block = block.number;
   wbtcVaultPps.timestamp = block.timestamp;
   wbtcVaultPps.vault = WBTC_VAULT_ADDRESS.toHexString();
-  wbtcVaultPps.pricePerShare = aggregateVault.getVaultPPS(WBTC_VAULT_ADDRESS);
+  const wbtcVaultPpsTry = aggregateVault.try_getVaultPPS(WBTC_VAULT_ADDRESS);
+  if (wbtcVaultPpsTry.reverted) {
+    log.info("REVERT_PPS handleOpenRebalance wBTC at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  wbtcVaultPps.pricePerShare = wbtcVaultPpsTry.reverted
+    ? BigInt.zero()
+    : wbtcVaultPpsTry.value;
   wbtcVaultPps.save();
 
   /** TVL */
@@ -563,7 +812,15 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   wbtcVaultTvl.block = block.number;
   wbtcVaultTvl.timestamp = block.timestamp;
   wbtcVaultTvl.vault = WBTC_VAULT_ADDRESS.toHexString();
-  wbtcVaultTvl.tvl = aggregateVault.getVaultTVL(WBTC_VAULT_ADDRESS);
+  const wbtcVaultTVLTry = aggregateVault.try_getVaultTVL(WBTC_VAULT_ADDRESS);
+  if (wbtcVaultTVLTry.reverted) {
+    log.info("REVERT_TVL handleOpenRebalance wBTC at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  wbtcVaultTvl.tvl = wbtcVaultTVLTry.reverted
+    ? BigInt.zero()
+    : wbtcVaultTVLTry.value;
   wbtcVaultTvl.save();
 
   /** UNI vault */
@@ -576,7 +833,15 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   uniVaultPps.block = block.number;
   uniVaultPps.timestamp = block.timestamp;
   uniVaultPps.vault = UNI_VAULT_ADDRESS.toHexString();
-  uniVaultPps.pricePerShare = aggregateVault.getVaultPPS(UNI_VAULT_ADDRESS);
+  const uniVaultPpsTry = aggregateVault.try_getVaultPPS(UNI_VAULT_ADDRESS);
+  if (uniVaultPpsTry.reverted) {
+    log.info("REVERT_PPS handleOpenRebalance UNI at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  uniVaultPps.pricePerShare = uniVaultPpsTry.reverted
+    ? BigInt.zero()
+    : uniVaultPpsTry.value;
   uniVaultPps.save();
 
   /** TVL */
@@ -586,7 +851,15 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   uniVaultTvl.block = block.number;
   uniVaultTvl.timestamp = block.timestamp;
   uniVaultTvl.vault = UNI_VAULT_ADDRESS.toHexString();
-  uniVaultTvl.tvl = aggregateVault.getVaultTVL(UNI_VAULT_ADDRESS);
+  const uniVaultTVLTry = aggregateVault.try_getVaultTVL(UNI_VAULT_ADDRESS);
+  if (uniVaultTVLTry.reverted) {
+    log.info("REVERT_TVL handleOpenRebalance UNI at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  uniVaultTvl.tvl = uniVaultTVLTry.reverted
+    ? BigInt.zero()
+    : uniVaultTVLTry.value;
   uniVaultTvl.save();
 
   /** LINK vault */
@@ -600,7 +873,15 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   linkVaultPps.block = block.number;
   linkVaultPps.timestamp = block.timestamp;
   linkVaultPps.vault = LINK_VAULT_ADDRESS.toHexString();
-  linkVaultPps.pricePerShare = aggregateVault.getVaultPPS(LINK_VAULT_ADDRESS);
+  const linkVaultPpsTry = aggregateVault.try_getVaultPPS(LINK_VAULT_ADDRESS);
+  if (linkVaultPpsTry.reverted) {
+    log.info("REVERT_PPS handleOpenRebalance LINK at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  linkVaultPps.pricePerShare = linkVaultPpsTry.reverted
+    ? BigInt.zero()
+    : linkVaultPpsTry.value;
   linkVaultPps.save();
 
   /** TVL */
@@ -610,7 +891,15 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   linkVaultTvl.block = block.number;
   linkVaultTvl.timestamp = block.timestamp;
   linkVaultTvl.vault = LINK_VAULT_ADDRESS.toHexString();
-  linkVaultTvl.tvl = aggregateVault.getVaultTVL(LINK_VAULT_ADDRESS);
+  const linkVaultTVLTry = aggregateVault.try_getVaultTVL(LINK_VAULT_ADDRESS);
+  if (linkVaultTVLTry.reverted) {
+    log.info("REVERT_TVL handleOpenRebalance LINK at block {} ", [
+      block.number.toString(),
+    ]);
+  }
+  linkVaultTvl.tvl = linkVaultTVLTry.reverted
+    ? BigInt.zero()
+    : linkVaultTVLTry.value;
   linkVaultTvl.save();
 }
 

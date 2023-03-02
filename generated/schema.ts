@@ -576,94 +576,94 @@ export class RebalanceSnapshot extends Entity {
     this.set("aggregatePositions", Value.fromBigIntArray(value));
   }
 
-  get usdcVaultExposures(): Array<BigInt> {
-    let value = this.get("usdcVaultExposures");
+  get usdcVaultExternalPositions(): Array<BigInt> {
+    let value = this.get("usdcVaultExternalPositions");
     return value!.toBigIntArray();
   }
 
-  set usdcVaultExposures(value: Array<BigInt>) {
-    this.set("usdcVaultExposures", Value.fromBigIntArray(value));
+  set usdcVaultExternalPositions(value: Array<BigInt>) {
+    this.set("usdcVaultExternalPositions", Value.fromBigIntArray(value));
   }
 
-  get wethVaultExposures(): Array<BigInt> {
-    let value = this.get("wethVaultExposures");
+  get wethVaultExternalPositions(): Array<BigInt> {
+    let value = this.get("wethVaultExternalPositions");
     return value!.toBigIntArray();
   }
 
-  set wethVaultExposures(value: Array<BigInt>) {
-    this.set("wethVaultExposures", Value.fromBigIntArray(value));
+  set wethVaultExternalPositions(value: Array<BigInt>) {
+    this.set("wethVaultExternalPositions", Value.fromBigIntArray(value));
   }
 
-  get wbtcVaultExposures(): Array<BigInt> {
-    let value = this.get("wbtcVaultExposures");
+  get wbtcVaultExternalPositions(): Array<BigInt> {
+    let value = this.get("wbtcVaultExternalPositions");
     return value!.toBigIntArray();
   }
 
-  set wbtcVaultExposures(value: Array<BigInt>) {
-    this.set("wbtcVaultExposures", Value.fromBigIntArray(value));
+  set wbtcVaultExternalPositions(value: Array<BigInt>) {
+    this.set("wbtcVaultExternalPositions", Value.fromBigIntArray(value));
   }
 
-  get linkVaultExposures(): Array<BigInt> {
-    let value = this.get("linkVaultExposures");
+  get linkVaultExternalPositions(): Array<BigInt> {
+    let value = this.get("linkVaultExternalPositions");
     return value!.toBigIntArray();
   }
 
-  set linkVaultExposures(value: Array<BigInt>) {
-    this.set("linkVaultExposures", Value.fromBigIntArray(value));
+  set linkVaultExternalPositions(value: Array<BigInt>) {
+    this.set("linkVaultExternalPositions", Value.fromBigIntArray(value));
   }
 
-  get uniVaultExposures(): Array<BigInt> {
-    let value = this.get("uniVaultExposures");
+  get uniVaultExternalPositions(): Array<BigInt> {
+    let value = this.get("uniVaultExternalPositions");
     return value!.toBigIntArray();
   }
 
-  set uniVaultExposures(value: Array<BigInt>) {
-    this.set("uniVaultExposures", Value.fromBigIntArray(value));
+  set uniVaultExternalPositions(value: Array<BigInt>) {
+    this.set("uniVaultExternalPositions", Value.fromBigIntArray(value));
   }
 
-  get usdcVaultInternalNetting(): Array<BigInt> {
-    let value = this.get("usdcVaultInternalNetting");
+  get usdcVaultNettedPositions(): Array<BigInt> {
+    let value = this.get("usdcVaultNettedPositions");
     return value!.toBigIntArray();
   }
 
-  set usdcVaultInternalNetting(value: Array<BigInt>) {
-    this.set("usdcVaultInternalNetting", Value.fromBigIntArray(value));
+  set usdcVaultNettedPositions(value: Array<BigInt>) {
+    this.set("usdcVaultNettedPositions", Value.fromBigIntArray(value));
   }
 
-  get wethVaultInternalNetting(): Array<BigInt> {
-    let value = this.get("wethVaultInternalNetting");
+  get wethVaultNettedPositions(): Array<BigInt> {
+    let value = this.get("wethVaultNettedPositions");
     return value!.toBigIntArray();
   }
 
-  set wethVaultInternalNetting(value: Array<BigInt>) {
-    this.set("wethVaultInternalNetting", Value.fromBigIntArray(value));
+  set wethVaultNettedPositions(value: Array<BigInt>) {
+    this.set("wethVaultNettedPositions", Value.fromBigIntArray(value));
   }
 
-  get wbtcVaultInternalNetting(): Array<BigInt> {
-    let value = this.get("wbtcVaultInternalNetting");
+  get wbtcVaultNettedPositions(): Array<BigInt> {
+    let value = this.get("wbtcVaultNettedPositions");
     return value!.toBigIntArray();
   }
 
-  set wbtcVaultInternalNetting(value: Array<BigInt>) {
-    this.set("wbtcVaultInternalNetting", Value.fromBigIntArray(value));
+  set wbtcVaultNettedPositions(value: Array<BigInt>) {
+    this.set("wbtcVaultNettedPositions", Value.fromBigIntArray(value));
   }
 
-  get linkVaultInternalNetting(): Array<BigInt> {
-    let value = this.get("linkVaultInternalNetting");
+  get linkVaultNettedPositions(): Array<BigInt> {
+    let value = this.get("linkVaultNettedPositions");
     return value!.toBigIntArray();
   }
 
-  set linkVaultInternalNetting(value: Array<BigInt>) {
-    this.set("linkVaultInternalNetting", Value.fromBigIntArray(value));
+  set linkVaultNettedPositions(value: Array<BigInt>) {
+    this.set("linkVaultNettedPositions", Value.fromBigIntArray(value));
   }
 
-  get uniVaultInternalNetting(): Array<BigInt> {
-    let value = this.get("uniVaultInternalNetting");
+  get uniVaultNettedPositions(): Array<BigInt> {
+    let value = this.get("uniVaultNettedPositions");
     return value!.toBigIntArray();
   }
 
-  set uniVaultInternalNetting(value: Array<BigInt>) {
-    this.set("uniVaultInternalNetting", Value.fromBigIntArray(value));
+  set uniVaultNettedPositions(value: Array<BigInt>) {
+    this.set("uniVaultNettedPositions", Value.fromBigIntArray(value));
   }
 
   get glpComposition(): Array<BigInt> {
@@ -682,6 +682,92 @@ export class RebalanceSnapshot extends Entity {
 
   set assetsPrices(value: Array<BigInt>) {
     this.set("assetsPrices", Value.fromBigIntArray(value));
+  }
+}
+
+export class OpenRebalance extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save OpenRebalance entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type OpenRebalance must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("OpenRebalance", id.toString(), this);
+    }
+  }
+
+  static load(id: string): OpenRebalance | null {
+    return changetype<OpenRebalance | null>(store.get("OpenRebalance", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get block(): BigInt {
+    let value = this.get("block");
+    return value!.toBigInt();
+  }
+
+  set block(value: BigInt) {
+    this.set("block", Value.fromBigInt(value));
+  }
+
+  get epoch(): BigInt {
+    let value = this.get("epoch");
+    return value!.toBigInt();
+  }
+
+  set epoch(value: BigInt) {
+    this.set("epoch", Value.fromBigInt(value));
+  }
+
+  get nextVaultGlpAlloc(): Array<BigInt> {
+    let value = this.get("nextVaultGlpAlloc");
+    return value!.toBigIntArray();
+  }
+
+  set nextVaultGlpAlloc(value: Array<BigInt>) {
+    this.set("nextVaultGlpAlloc", Value.fromBigIntArray(value));
+  }
+
+  get nextGlpComp(): Array<BigInt> {
+    let value = this.get("nextGlpComp");
+    return value!.toBigIntArray();
+  }
+
+  set nextGlpComp(value: Array<BigInt>) {
+    this.set("nextGlpComp", Value.fromBigIntArray(value));
+  }
+
+  get adjustedPositions(): Array<BigInt> {
+    let value = this.get("adjustedPositions");
+    return value!.toBigIntArray();
+  }
+
+  set adjustedPositions(value: Array<BigInt>) {
+    this.set("adjustedPositions", Value.fromBigIntArray(value));
   }
 }
 
@@ -988,92 +1074,6 @@ export class Cycle extends Entity {
 
   set round(value: BigInt) {
     this.set("round", Value.fromBigInt(value));
-  }
-}
-
-export class OpenRebalance extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save OpenRebalance entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type OpenRebalance must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
-      );
-      store.set("OpenRebalance", id.toString(), this);
-    }
-  }
-
-  static load(id: string): OpenRebalance | null {
-    return changetype<OpenRebalance | null>(store.get("OpenRebalance", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get timestamp(): BigInt {
-    let value = this.get("timestamp");
-    return value!.toBigInt();
-  }
-
-  set timestamp(value: BigInt) {
-    this.set("timestamp", Value.fromBigInt(value));
-  }
-
-  get block(): BigInt {
-    let value = this.get("block");
-    return value!.toBigInt();
-  }
-
-  set block(value: BigInt) {
-    this.set("block", Value.fromBigInt(value));
-  }
-
-  get epoch(): BigInt {
-    let value = this.get("epoch");
-    return value!.toBigInt();
-  }
-
-  set epoch(value: BigInt) {
-    this.set("epoch", Value.fromBigInt(value));
-  }
-
-  get nextVaultGlpAlloc(): Array<BigInt> {
-    let value = this.get("nextVaultGlpAlloc");
-    return value!.toBigIntArray();
-  }
-
-  set nextVaultGlpAlloc(value: Array<BigInt>) {
-    this.set("nextVaultGlpAlloc", Value.fromBigIntArray(value));
-  }
-
-  get nextGlpComp(): Array<BigInt> {
-    let value = this.get("nextGlpComp");
-    return value!.toBigIntArray();
-  }
-
-  set nextGlpComp(value: Array<BigInt>) {
-    this.set("nextGlpComp", Value.fromBigIntArray(value));
-  }
-
-  get adjustedPositions(): Array<BigInt> {
-    let value = this.get("adjustedPositions");
-    return value!.toBigIntArray();
-  }
-
-  set adjustedPositions(value: Array<BigInt>) {
-    this.set("adjustedPositions", Value.fromBigIntArray(value));
   }
 }
 

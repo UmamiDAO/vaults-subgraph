@@ -8,7 +8,7 @@ dataSources:
     source:
       address: "0x348fD77C569ff888Ab93c03860e7Cf5F59760D35"
       abi: GlpUsdcVault
-      startBlock: 62061504
+      startBlock: 63600000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -29,7 +29,7 @@ dataSources:
     source:
       address: "0xEaa2C841cC4901d93FAf85B48245C4C72A5FE8Aa"
       abi: GlpWethVault
-      startBlock: 62061539
+      startBlock: 63600000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -50,7 +50,7 @@ dataSources:
     source:
       address: "0x466683aBC221A38d02cF4da05258D203De118500"
       abi: GlpWbtcVault
-      startBlock: 62061573
+      startBlock: 63600000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -71,7 +71,7 @@ dataSources:
     source:
       address: "0x7387eB285C7e0Ddcff5Ce05D1895aD9573702218"
       abi: GlpLinkVault
-      startBlock: 62061603
+      startBlock: 63600000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -92,7 +92,7 @@ dataSources:
     source:
       address: "0x6528709f58A88511B887326Fe713bd93353062a7"
       abi: GlpUniVault
-      startBlock: 62061635
+      startBlock: 63600000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -113,7 +113,7 @@ dataSources:
     source:
       address: "0x6E258BE26e713387a058F8644F514aE7ED3320Ad"
       abi: AggregateVaultHelper
-      startBlock: 62061635
+      startBlock: 63600000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
