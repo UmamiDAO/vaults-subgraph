@@ -15,7 +15,6 @@ import { GmxVault } from "../generated/AggregateVaultHelper/GmxVault";
 import { Manager } from "../generated/AggregateVaultHelper/Manager";
 import {
   CloseRebalance,
-  CollectVaultFees,
   CompoundDistributeYield,
   Cycle,
   OpenRebalance,
@@ -23,6 +22,7 @@ import {
   RebalanceSnapshot,
   SettleNettedPositionPnl,
   UpdateNettingCheckpointPrice,
+  VaultFeesCollection,
   VaultPpsLastTimestamp,
   VaultPricePerShare,
   VaultTVL,
@@ -45,17 +45,11 @@ import {
 } from "./constants";
 
 export function handleBlock(block: ethereum.Block): void {
-  if (block.number.mod(BigInt.fromString("500")).gt(BigInt.zero())) {
-    return;
-  }
-
   let lastPpsTimestamp = VaultPpsLastTimestamp.load("timestamp");
   /** Wait a minute to register a new PPS */
   if (
     lastPpsTimestamp == null ||
-    block.timestamp.gt(
-      lastPpsTimestamp.timestamp.plus(BigInt.fromString("1800"))
-    )
+    block.timestamp.gt(lastPpsTimestamp.timestamp.plus(BigInt.fromString("60")))
   ) {
     if (lastPpsTimestamp == null) {
       lastPpsTimestamp = new VaultPpsLastTimestamp("timestamp");
@@ -557,7 +551,7 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
 }
 
 export function handleCollectVaultFees(event: CollectVaultFeesEvent): void {
-  let entity = new CollectVaultFees(
+  let entity = new VaultFeesCollection(
     event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   );
   const aggregateVaultHelper = AggregateVaultHelper.bind(
@@ -571,7 +565,7 @@ export function handleCollectVaultFees(event: CollectVaultFeesEvent): void {
   entity.performanceFeeInAsset = event.params.performanceFeeInAsset;
   entity.managementFeeInAsset = event.params.managementFeeInAsset;
   entity.slowReleaseMintAmount = event.params.slowReleaseMintAmount;
-  entity._assetVault = event.params._assetVault;
+  entity.assetVault = event.params._assetVault;
   entity.save();
 }
 

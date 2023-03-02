@@ -19,16 +19,6 @@ type VaultTVL @entity(immutable: true) {
   tvl: BigInt!
 }
 
-type VaultFeesCollection @entity(immutable: true) {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  vault: String!
-  performanceFees: BigInt!
-  managementFees: BigInt!
-  totalFees: BigInt!
-}
-
 type UserVaultBalanceTotal @entity {
   id: ID!
   usdc: BigInt!
@@ -91,7 +81,7 @@ type CloseRebalance @entity(immutable: true) {
   epoch: BigInt! # uint256
 }
 
-type CollectVaultFees @entity(immutable: true) {
+type VaultFeesCollection @entity(immutable: true) {
   id: ID!
   timestamp: BigInt! # uint256
   block: BigInt! # uint256
@@ -100,7 +90,7 @@ type CollectVaultFees @entity(immutable: true) {
   performanceFeeInAsset: BigInt! # uint256
   managementFeeInAsset: BigInt! # uint256
   slowReleaseMintAmount: BigInt! # uint256
-  _assetVault: Bytes! # address
+  assetVault: Bytes!
 }
 
 type CompoundDistributeYield @entity(immutable: true) {

@@ -120,7 +120,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - CloseRebalance
-        - CollectVaultFees
+        - VaultFeesCollection
         - CompoundDistributeYield
         - Cycle
         - OpenRebalance
