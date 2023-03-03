@@ -13,6 +13,7 @@ type VaultPricePerShare @entity(immutable: true) {
   block: BigInt!
   timestamp: BigInt!
   event: String!
+  txHash: String!
   vault: String!
   pricePerShare: BigInt!
 }
@@ -22,6 +23,7 @@ type VaultTVL @entity(immutable: true) {
   block: BigInt!
   timestamp: BigInt!
   event: String!
+  txHash: String!
   vault: String!
   tvl: BigInt!
 }
@@ -98,7 +100,7 @@ type VaultFeesCollection @entity(immutable: true) {
   performanceFeeInAsset: BigInt! # uint256
   managementFeeInAsset: BigInt! # uint256
   slowReleaseMintAmount: BigInt! # uint256
-  assetVault: Bytes!
+  vault: String!
 }
 
 type CompoundDistributeYield @entity(immutable: true) {

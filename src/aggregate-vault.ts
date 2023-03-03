@@ -74,6 +74,7 @@ export function handleBlock(block: ethereum.Block): void {
     usdcVaultPps.block = block.number;
     usdcVaultPps.timestamp = block.timestamp;
     usdcVaultPps.event = event;
+    usdcVaultPps.txHash = "";
     usdcVaultPps.vault = USDC_VAULT_ADDRESS.toHexString();
     const usdcVaultPpsTry = aggregateVault.try_getVaultPPS(USDC_VAULT_ADDRESS);
     if (usdcVaultPpsTry.reverted) {
@@ -93,6 +94,7 @@ export function handleBlock(block: ethereum.Block): void {
     usdcVaultTvl.block = block.number;
     usdcVaultTvl.timestamp = block.timestamp;
     usdcVaultTvl.event = event;
+    usdcVaultTvl.txHash = "";
     usdcVaultTvl.vault = USDC_VAULT_ADDRESS.toHexString();
     const usdcVaultTVLTry = aggregateVault.try_getVaultTVL(USDC_VAULT_ADDRESS);
     if (usdcVaultTVLTry.reverted) {
@@ -115,6 +117,7 @@ export function handleBlock(block: ethereum.Block): void {
     wethVaultPps.block = block.number;
     wethVaultPps.timestamp = block.timestamp;
     wethVaultPps.event = event;
+    wethVaultPps.txHash = "";
     wethVaultPps.vault = WETH_VAULT_ADDRESS.toHexString();
     const wethVaultPpsTry = aggregateVault.try_getVaultPPS(WETH_VAULT_ADDRESS);
     if (wethVaultPpsTry.reverted) {
@@ -132,8 +135,9 @@ export function handleBlock(block: ethereum.Block): void {
 
     wethVaulTvl.block = block.number;
     wethVaulTvl.timestamp = block.timestamp;
-    wethVaulTvl.vault = WETH_VAULT_ADDRESS.toHexString();
     wethVaulTvl.event = event;
+    wethVaulTvl.txHash = "";
+    wethVaulTvl.vault = WETH_VAULT_ADDRESS.toHexString();
     const wethVaultTVLTry = aggregateVault.try_getVaultTVL(WETH_VAULT_ADDRESS);
     if (wethVaultTVLTry.reverted) {
       log.info("REVERT_TVL handleBlock wETH at block {} ", [
@@ -155,6 +159,7 @@ export function handleBlock(block: ethereum.Block): void {
     wbtcVaultPps.block = block.number;
     wbtcVaultPps.timestamp = block.timestamp;
     wbtcVaultPps.event = event;
+    wbtcVaultPps.txHash = "";
     wbtcVaultPps.vault = WBTC_VAULT_ADDRESS.toHexString();
     const wbtcVaultPpsTry = aggregateVault.try_getVaultPPS(WBTC_VAULT_ADDRESS);
     if (wbtcVaultPpsTry.reverted) {
@@ -174,6 +179,7 @@ export function handleBlock(block: ethereum.Block): void {
     wbtcVaultTvl.block = block.number;
     wbtcVaultTvl.timestamp = block.timestamp;
     wbtcVaultTvl.event = event;
+    wbtcVaultTvl.txHash = "";
     wbtcVaultTvl.vault = WBTC_VAULT_ADDRESS.toHexString();
     const wbtcVaultTVLTry = aggregateVault.try_getVaultTVL(WBTC_VAULT_ADDRESS);
     if (wbtcVaultTVLTry.reverted) {
@@ -196,6 +202,7 @@ export function handleBlock(block: ethereum.Block): void {
     uniVaultPps.block = block.number;
     uniVaultPps.timestamp = block.timestamp;
     uniVaultPps.event = event;
+    uniVaultPps.txHash = "";
     uniVaultPps.vault = UNI_VAULT_ADDRESS.toHexString();
     const uniVaultPpsTry = aggregateVault.try_getVaultPPS(UNI_VAULT_ADDRESS);
     if (uniVaultPpsTry.reverted) {
@@ -216,6 +223,7 @@ export function handleBlock(block: ethereum.Block): void {
     uniVaultTvl.timestamp = block.timestamp;
     uniVaultTvl.vault = UNI_VAULT_ADDRESS.toHexString();
     uniVaultTvl.event = event;
+    uniVaultTvl.txHash = "";
     const uniVaultTVLTry = aggregateVault.try_getVaultTVL(UNI_VAULT_ADDRESS);
     if (uniVaultTVLTry.reverted) {
       log.info("REVERT_TVL handleBlock UNI at block {} ", [
@@ -238,6 +246,7 @@ export function handleBlock(block: ethereum.Block): void {
     linkVaultPps.block = block.number;
     linkVaultPps.timestamp = block.timestamp;
     linkVaultPps.event = event;
+    linkVaultPps.txHash = "";
     linkVaultPps.vault = LINK_VAULT_ADDRESS.toHexString();
     const linkVaultPpsTry = aggregateVault.try_getVaultPPS(LINK_VAULT_ADDRESS);
     if (linkVaultPpsTry.reverted) {
@@ -258,6 +267,7 @@ export function handleBlock(block: ethereum.Block): void {
     linkVaultTvl.timestamp = block.timestamp;
     linkVaultTvl.vault = LINK_VAULT_ADDRESS.toHexString();
     linkVaultTvl.event = event;
+    linkVaultTvl.txHash = "";
     const linkVaultTVLTry = aggregateVault.try_getVaultTVL(LINK_VAULT_ADDRESS);
     if (linkVaultTVLTry.reverted) {
       log.info("REVERT_TVL handleBlock LINK at block {} ", [
@@ -296,6 +306,7 @@ export function handleBlock(block: ethereum.Block): void {
     usdcVaultPps.block = block.number;
     usdcVaultPps.timestamp = block.timestamp;
     usdcVaultPps.event = event;
+    usdcVaultPps.txHash = "";
     usdcVaultPps.vault = USDC_VAULT_ADDRESS.toHexString();
     const usdcVaultPpsTry = aggregateVault.try_getVaultPPS(USDC_VAULT_ADDRESS);
     if (usdcVaultPpsTry.reverted) {
@@ -315,6 +326,7 @@ export function handleBlock(block: ethereum.Block): void {
     usdcVaultTvl.block = block.number;
     usdcVaultTvl.timestamp = block.timestamp;
     usdcVaultTvl.event = event;
+    usdcVaultTvl.txHash = "";
     usdcVaultTvl.vault = USDC_VAULT_ADDRESS.toHexString();
     const usdcVaultTVLTry = aggregateVault.try_getVaultTVL(USDC_VAULT_ADDRESS);
     if (usdcVaultTVLTry.reverted) {
@@ -337,6 +349,7 @@ export function handleBlock(block: ethereum.Block): void {
     wethVaultPps.block = block.number;
     wethVaultPps.timestamp = block.timestamp;
     wethVaultPps.event = event;
+    wethVaultPps.txHash = "";
     wethVaultPps.vault = WETH_VAULT_ADDRESS.toHexString();
     const wethVaultPpsTry = aggregateVault.try_getVaultPPS(WETH_VAULT_ADDRESS);
     if (wethVaultPpsTry.reverted) {
@@ -354,8 +367,8 @@ export function handleBlock(block: ethereum.Block): void {
 
     wethVaulTvl.block = block.number;
     wethVaulTvl.timestamp = block.timestamp;
+    wethVaulTvl.txHash = "";
     wethVaulTvl.vault = WETH_VAULT_ADDRESS.toHexString();
-    wethVaulTvl.event = event;
     const wethVaultTVLTry = aggregateVault.try_getVaultTVL(WETH_VAULT_ADDRESS);
     if (wethVaultTVLTry.reverted) {
       log.info("REVERT_TVL handleBlock wETH at block {} ", [
@@ -377,6 +390,7 @@ export function handleBlock(block: ethereum.Block): void {
     wbtcVaultPps.block = block.number;
     wbtcVaultPps.timestamp = block.timestamp;
     wbtcVaultPps.event = event;
+    wbtcVaultPps.txHash = "";
     wbtcVaultPps.vault = WBTC_VAULT_ADDRESS.toHexString();
     const wbtcVaultPpsTry = aggregateVault.try_getVaultPPS(WBTC_VAULT_ADDRESS);
     if (wbtcVaultPpsTry.reverted) {
@@ -396,6 +410,7 @@ export function handleBlock(block: ethereum.Block): void {
     wbtcVaultTvl.block = block.number;
     wbtcVaultTvl.timestamp = block.timestamp;
     wbtcVaultTvl.event = event;
+    wbtcVaultTvl.txHash = "";
     wbtcVaultTvl.vault = WBTC_VAULT_ADDRESS.toHexString();
     const wbtcVaultTVLTry = aggregateVault.try_getVaultTVL(WBTC_VAULT_ADDRESS);
     if (wbtcVaultTVLTry.reverted) {
@@ -418,6 +433,7 @@ export function handleBlock(block: ethereum.Block): void {
     uniVaultPps.block = block.number;
     uniVaultPps.timestamp = block.timestamp;
     uniVaultPps.event = event;
+    uniVaultPps.txHash = "";
     uniVaultPps.vault = UNI_VAULT_ADDRESS.toHexString();
     const uniVaultPpsTry = aggregateVault.try_getVaultPPS(UNI_VAULT_ADDRESS);
     if (uniVaultPpsTry.reverted) {
@@ -436,8 +452,9 @@ export function handleBlock(block: ethereum.Block): void {
 
     uniVaultTvl.block = block.number;
     uniVaultTvl.timestamp = block.timestamp;
-    uniVaultTvl.vault = UNI_VAULT_ADDRESS.toHexString();
     uniVaultTvl.event = event;
+    uniVaultTvl.txHash = "";
+    uniVaultTvl.vault = UNI_VAULT_ADDRESS.toHexString();
     const uniVaultTVLTry = aggregateVault.try_getVaultTVL(UNI_VAULT_ADDRESS);
     if (uniVaultTVLTry.reverted) {
       log.info("REVERT_TVL handleBlock UNI at block {} ", [
@@ -460,6 +477,7 @@ export function handleBlock(block: ethereum.Block): void {
     linkVaultPps.block = block.number;
     linkVaultPps.timestamp = block.timestamp;
     linkVaultPps.event = event;
+    linkVaultPps.txHash = "";
     linkVaultPps.vault = LINK_VAULT_ADDRESS.toHexString();
     const linkVaultPpsTry = aggregateVault.try_getVaultPPS(LINK_VAULT_ADDRESS);
     if (linkVaultPpsTry.reverted) {
@@ -478,8 +496,9 @@ export function handleBlock(block: ethereum.Block): void {
 
     linkVaultTvl.block = block.number;
     linkVaultTvl.timestamp = block.timestamp;
-    linkVaultTvl.vault = LINK_VAULT_ADDRESS.toHexString();
     linkVaultTvl.event = event;
+    linkVaultTvl.txHash = "";
+    linkVaultTvl.vault = LINK_VAULT_ADDRESS.toHexString();
     const linkVaultTVLTry = aggregateVault.try_getVaultTVL(LINK_VAULT_ADDRESS);
     if (linkVaultTVLTry.reverted) {
       log.info("REVERT_TVL handleBlock LINK at block {} ", [
@@ -618,6 +637,7 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   usdcVaultPps.block = block.number;
   usdcVaultPps.timestamp = block.timestamp;
   usdcVaultPps.event = eventLabel;
+  usdcVaultPps.txHash = event.transaction.hash.toHex();
   usdcVaultPps.vault = USDC_VAULT_ADDRESS.toHexString();
   const usdcVaultPpsTry = aggregateVault.try_getVaultPPS(USDC_VAULT_ADDRESS);
   if (usdcVaultPpsTry.reverted) {
@@ -637,6 +657,7 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   usdcVaultTvl.block = block.number;
   usdcVaultTvl.timestamp = block.timestamp;
   usdcVaultTvl.event = eventLabel;
+  usdcVaultTvl.txHash = event.transaction.hash.toHex();
   usdcVaultTvl.vault = USDC_VAULT_ADDRESS.toHexString();
   const usdcVaultTVLTry = aggregateVault.try_getVaultTVL(USDC_VAULT_ADDRESS);
   if (usdcVaultTVLTry.reverted) {
@@ -659,6 +680,7 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   wethVaultPps.block = block.number;
   wethVaultPps.timestamp = block.timestamp;
   wethVaultPps.event = eventLabel;
+  wethVaultPps.txHash = event.transaction.hash.toHex();
   wethVaultPps.vault = WETH_VAULT_ADDRESS.toHexString();
   const wethVaultPpsTry = aggregateVault.try_getVaultPPS(WETH_VAULT_ADDRESS);
   if (wethVaultPpsTry.reverted) {
@@ -677,6 +699,7 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   wethVaulTvl.block = block.number;
   wethVaulTvl.timestamp = block.timestamp;
   wethVaulTvl.event = eventLabel;
+  wethVaulTvl.txHash = event.transaction.hash.toHex();
   wethVaulTvl.vault = WETH_VAULT_ADDRESS.toHexString();
   const wethVaultTVLTry = aggregateVault.try_getVaultTVL(WETH_VAULT_ADDRESS);
   if (wethVaultTVLTry.reverted) {
@@ -699,6 +722,7 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   wbtcVaultPps.block = block.number;
   wbtcVaultPps.timestamp = block.timestamp;
   wbtcVaultPps.event = eventLabel;
+  wbtcVaultPps.txHash = event.transaction.hash.toHex();
   wbtcVaultPps.vault = WBTC_VAULT_ADDRESS.toHexString();
   const wbtcVaultPpsTry = aggregateVault.try_getVaultPPS(WBTC_VAULT_ADDRESS);
   if (wbtcVaultPpsTry.reverted) {
@@ -718,6 +742,7 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   wbtcVaultTvl.block = block.number;
   wbtcVaultTvl.timestamp = block.timestamp;
   wbtcVaultTvl.event = eventLabel;
+  wbtcVaultTvl.txHash = event.transaction.hash.toHex();
   wbtcVaultTvl.vault = WBTC_VAULT_ADDRESS.toHexString();
   const wbtcVaultTVLTry = aggregateVault.try_getVaultTVL(WBTC_VAULT_ADDRESS);
   if (wbtcVaultTVLTry.reverted) {
@@ -740,6 +765,7 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   uniVaultPps.block = block.number;
   uniVaultPps.timestamp = block.timestamp;
   uniVaultPps.event = eventLabel;
+  uniVaultPps.txHash = event.transaction.hash.toHex();
   uniVaultPps.vault = UNI_VAULT_ADDRESS.toHexString();
   const uniVaultPpsTry = aggregateVault.try_getVaultPPS(UNI_VAULT_ADDRESS);
   if (uniVaultPpsTry.reverted) {
@@ -759,6 +785,7 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   uniVaultTvl.block = block.number;
   uniVaultTvl.timestamp = block.timestamp;
   uniVaultTvl.event = eventLabel;
+  uniVaultTvl.txHash = event.transaction.hash.toHex();
   uniVaultTvl.vault = UNI_VAULT_ADDRESS.toHexString();
   const uniVaultTVLTry = aggregateVault.try_getVaultTVL(UNI_VAULT_ADDRESS);
   if (uniVaultTVLTry.reverted) {
@@ -782,6 +809,7 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   linkVaultPps.block = block.number;
   linkVaultPps.timestamp = block.timestamp;
   linkVaultPps.event = eventLabel;
+  linkVaultPps.txHash = event.transaction.hash.toHex();
   linkVaultPps.vault = LINK_VAULT_ADDRESS.toHexString();
   const linkVaultPpsTry = aggregateVault.try_getVaultPPS(LINK_VAULT_ADDRESS);
   if (linkVaultPpsTry.reverted) {
@@ -801,6 +829,7 @@ export function handleCloseRebalance(event: CloseRebalanceEvent): void {
   linkVaultTvl.block = block.number;
   linkVaultTvl.timestamp = block.timestamp;
   linkVaultTvl.event = eventLabel;
+  linkVaultTvl.txHash = event.transaction.hash.toHex();
   linkVaultTvl.vault = LINK_VAULT_ADDRESS.toHexString();
   const linkVaultTVLTry = aggregateVault.try_getVaultTVL(LINK_VAULT_ADDRESS);
   if (linkVaultTVLTry.reverted) {
@@ -841,7 +870,7 @@ export function handleCollectVaultFees(event: CollectVaultFeesEvent): void {
   entity.performanceFeeInAsset = event.params.performanceFeeInAsset;
   entity.managementFeeInAsset = event.params.managementFeeInAsset;
   entity.slowReleaseMintAmount = event.params.slowReleaseMintAmount;
-  entity.assetVault = event.params._assetVault;
+  entity.vault = event.params._assetVault.toHexString();
   entity.save();
 }
 
@@ -1029,6 +1058,7 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   usdcVaultPps.block = block.number;
   usdcVaultPps.timestamp = block.timestamp;
   usdcVaultPps.event = eventLabel;
+  usdcVaultPps.txHash = event.transaction.hash.toHex();
   usdcVaultPps.vault = USDC_VAULT_ADDRESS.toHexString();
   const usdcVaultPpsTry = aggregateVault.try_getVaultPPS(USDC_VAULT_ADDRESS);
   if (usdcVaultPpsTry.reverted) {
@@ -1048,6 +1078,7 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   usdcVaultTvl.block = block.number;
   usdcVaultTvl.timestamp = block.timestamp;
   usdcVaultTvl.event = eventLabel;
+  usdcVaultTvl.txHash = event.transaction.hash.toHex();
   usdcVaultTvl.vault = USDC_VAULT_ADDRESS.toHexString();
   const usdcVaultTVLTry = aggregateVault.try_getVaultTVL(USDC_VAULT_ADDRESS);
   if (usdcVaultTVLTry.reverted) {
@@ -1070,6 +1101,7 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   wethVaultPps.block = block.number;
   wethVaultPps.timestamp = block.timestamp;
   wethVaultPps.event = eventLabel;
+  wethVaultPps.txHash = event.transaction.hash.toHex();
   wethVaultPps.vault = WETH_VAULT_ADDRESS.toHexString();
   const wethVaultPpsTry = aggregateVault.try_getVaultPPS(WETH_VAULT_ADDRESS);
   if (wethVaultPpsTry.reverted) {
@@ -1088,6 +1120,7 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   wethVaulTvl.block = block.number;
   wethVaulTvl.timestamp = block.timestamp;
   wethVaulTvl.event = eventLabel;
+  wethVaulTvl.txHash = event.transaction.hash.toHex();
   wethVaulTvl.vault = WETH_VAULT_ADDRESS.toHexString();
   const wethVaultTVLTry = aggregateVault.try_getVaultTVL(WETH_VAULT_ADDRESS);
   if (wethVaultTVLTry.reverted) {
@@ -1110,6 +1143,7 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   wbtcVaultPps.block = block.number;
   wbtcVaultPps.timestamp = block.timestamp;
   wbtcVaultPps.event = eventLabel;
+  wbtcVaultPps.txHash = event.transaction.hash.toHex();
   wbtcVaultPps.vault = WBTC_VAULT_ADDRESS.toHexString();
   const wbtcVaultPpsTry = aggregateVault.try_getVaultPPS(WBTC_VAULT_ADDRESS);
   if (wbtcVaultPpsTry.reverted) {
@@ -1129,6 +1163,7 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   wbtcVaultTvl.block = block.number;
   wbtcVaultTvl.timestamp = block.timestamp;
   wbtcVaultTvl.event = eventLabel;
+  wbtcVaultTvl.txHash = event.transaction.hash.toHex();
   wbtcVaultTvl.vault = WBTC_VAULT_ADDRESS.toHexString();
   const wbtcVaultTVLTry = aggregateVault.try_getVaultTVL(WBTC_VAULT_ADDRESS);
   if (wbtcVaultTVLTry.reverted) {
@@ -1151,6 +1186,7 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   uniVaultPps.block = block.number;
   uniVaultPps.timestamp = block.timestamp;
   uniVaultPps.event = eventLabel;
+  uniVaultPps.txHash = event.transaction.hash.toHex();
   uniVaultPps.vault = UNI_VAULT_ADDRESS.toHexString();
   const uniVaultPpsTry = aggregateVault.try_getVaultPPS(UNI_VAULT_ADDRESS);
   if (uniVaultPpsTry.reverted) {
@@ -1170,6 +1206,7 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   uniVaultTvl.block = block.number;
   uniVaultTvl.timestamp = block.timestamp;
   uniVaultTvl.event = eventLabel;
+  uniVaultTvl.txHash = event.transaction.hash.toHex();
   uniVaultTvl.vault = UNI_VAULT_ADDRESS.toHexString();
   const uniVaultTVLTry = aggregateVault.try_getVaultTVL(UNI_VAULT_ADDRESS);
   if (uniVaultTVLTry.reverted) {
@@ -1193,6 +1230,7 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   linkVaultPps.block = block.number;
   linkVaultPps.timestamp = block.timestamp;
   linkVaultPps.event = eventLabel;
+  linkVaultPps.txHash = event.transaction.hash.toHex();
   linkVaultPps.vault = LINK_VAULT_ADDRESS.toHexString();
   const linkVaultPpsTry = aggregateVault.try_getVaultPPS(LINK_VAULT_ADDRESS);
   if (linkVaultPpsTry.reverted) {
@@ -1212,6 +1250,7 @@ export function handleOpenRebalance(event: OpenRebalanceEvent): void {
   linkVaultTvl.block = block.number;
   linkVaultTvl.timestamp = block.timestamp;
   linkVaultTvl.event = eventLabel;
+  linkVaultTvl.txHash = event.transaction.hash.toHex();
   linkVaultTvl.vault = LINK_VAULT_ADDRESS.toHexString();
   const linkVaultTVLTry = aggregateVault.try_getVaultTVL(LINK_VAULT_ADDRESS);
   if (linkVaultTVLTry.reverted) {

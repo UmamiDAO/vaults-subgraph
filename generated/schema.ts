@@ -163,6 +163,15 @@ export class VaultPricePerShare extends Entity {
     this.set("event", Value.fromString(value));
   }
 
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
+  }
+
   get vault(): string {
     let value = this.get("vault");
     return value!.toString();
@@ -238,6 +247,15 @@ export class VaultTVL extends Entity {
 
   set event(value: string) {
     this.set("event", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
   }
 
   get vault(): string {
@@ -911,13 +929,13 @@ export class VaultFeesCollection extends Entity {
     this.set("slowReleaseMintAmount", Value.fromBigInt(value));
   }
 
-  get assetVault(): Bytes {
-    let value = this.get("assetVault");
-    return value!.toBytes();
+  get vault(): string {
+    let value = this.get("vault");
+    return value!.toString();
   }
 
-  set assetVault(value: Bytes) {
-    this.set("assetVault", Value.fromBytes(value));
+  set vault(value: string) {
+    this.set("vault", Value.fromString(value));
   }
 }
 
