@@ -1,20 +1,27 @@
+type VaultPpsLastTimestampQuick @entity {
+  id: ID!
+  timestamp: BigInt!
+}
+
+type VaultPpsLastTimestampSlow @entity {
+  id: ID!
+  timestamp: BigInt!
+}
+
 type VaultPricePerShare @entity(immutable: true) {
   id: ID!
   block: BigInt!
   timestamp: BigInt!
+  event: String!
   vault: String!
   pricePerShare: BigInt!
-}
-
-type VaultPpsLastTimestamp @entity {
-  id: ID!
-  timestamp: BigInt!
 }
 
 type VaultTVL @entity(immutable: true) {
   id: ID!
   block: BigInt!
   timestamp: BigInt!
+  event: String!
   vault: String!
   tvl: BigInt!
 }
@@ -45,6 +52,7 @@ type RebalanceSnapshot @entity(immutable: true) {
   block: BigInt!
   txHash: String!
   event: String!
+  epoch: BigInt!
   glpPrice: BigInt!
   vaultsTVL: [BigInt!]!
   vaultsPps: [BigInt!]!

@@ -108,7 +108,7 @@ dataSources:
           handler: handleGlpUniVaultTransfer
       file: ./src/glp-uni-vault.ts
   - kind: ethereum
-    name: AggregateVaultHelper
+    name: AggregateVault
     network: arbitrum-one
     source:
       address: "0x6E258BE26e713387a058F8644F514aE7ED3320Ad"
@@ -129,7 +129,8 @@ dataSources:
         - UpdateNettingCheckpointPrice
         - VaultPricePerShare
         - VaultTVL
-        - VaultPpsLastTimestamp
+        - VaultPpsLastTimestampQuick
+        - VaultPpsLastTimestampSlow
         - RebalanceSnapshot
       abis:
         - name: AggregateVault
@@ -159,4 +160,4 @@ dataSources:
           handler: handleUpdateNettingCheckpointPrice
       blockHandlers:
         - handler: handleBlock
-      file: ./src/aggregate-vault-helper.ts
+      file: ./src/aggregate-vault.ts
