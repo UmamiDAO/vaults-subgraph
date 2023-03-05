@@ -221,8 +221,8 @@ export function handleBlock(block: ethereum.Block): void {
 
     uniVaultTvl.block = block.number;
     uniVaultTvl.timestamp = block.timestamp;
-    uniVaultTvl.vault = UNI_VAULT_ADDRESS.toHexString();
     uniVaultTvl.event = event;
+    uniVaultTvl.vault = UNI_VAULT_ADDRESS.toHexString();
     uniVaultTvl.txHash = "";
     const uniVaultTVLTry = aggregateVault.try_getVaultTVL(UNI_VAULT_ADDRESS);
     if (uniVaultTVLTry.reverted) {
@@ -265,9 +265,9 @@ export function handleBlock(block: ethereum.Block): void {
 
     linkVaultTvl.block = block.number;
     linkVaultTvl.timestamp = block.timestamp;
-    linkVaultTvl.vault = LINK_VAULT_ADDRESS.toHexString();
     linkVaultTvl.event = event;
     linkVaultTvl.txHash = "";
+    linkVaultTvl.vault = LINK_VAULT_ADDRESS.toHexString();
     const linkVaultTVLTry = aggregateVault.try_getVaultTVL(LINK_VAULT_ADDRESS);
     if (linkVaultTVLTry.reverted) {
       log.info("REVERT_TVL handleBlock LINK at block {} ", [
@@ -367,6 +367,7 @@ export function handleBlock(block: ethereum.Block): void {
 
     wethVaulTvl.block = block.number;
     wethVaulTvl.timestamp = block.timestamp;
+    wethVaulTvl.event = event;
     wethVaulTvl.txHash = "";
     wethVaulTvl.vault = WETH_VAULT_ADDRESS.toHexString();
     const wethVaultTVLTry = aggregateVault.try_getVaultTVL(WETH_VAULT_ADDRESS);
