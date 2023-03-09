@@ -10,16 +10,16 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class GlpLinkVaultApproval extends ethereum.Event {
-  get params(): GlpLinkVaultApproval__Params {
-    return new GlpLinkVaultApproval__Params(this);
+export class Approval extends ethereum.Event {
+  get params(): Approval__Params {
+    return new Approval__Params(this);
   }
 }
 
-export class GlpLinkVaultApproval__Params {
-  _event: GlpLinkVaultApproval;
+export class Approval__Params {
+  _event: Approval;
 
-  constructor(event: GlpLinkVaultApproval) {
+  constructor(event: Approval) {
     this._event = event;
   }
 
@@ -36,16 +36,16 @@ export class GlpLinkVaultApproval__Params {
   }
 }
 
-export class GlpLinkVaultDeposit extends ethereum.Event {
-  get params(): GlpLinkVaultDeposit__Params {
-    return new GlpLinkVaultDeposit__Params(this);
+export class Deposit extends ethereum.Event {
+  get params(): Deposit__Params {
+    return new Deposit__Params(this);
   }
 }
 
-export class GlpLinkVaultDeposit__Params {
-  _event: GlpLinkVaultDeposit;
+export class Deposit__Params {
+  _event: Deposit;
 
-  constructor(event: GlpLinkVaultDeposit) {
+  constructor(event: Deposit) {
     this._event = event;
   }
 
@@ -66,16 +66,16 @@ export class GlpLinkVaultDeposit__Params {
   }
 }
 
-export class GlpLinkVaultPaused extends ethereum.Event {
-  get params(): GlpLinkVaultPaused__Params {
-    return new GlpLinkVaultPaused__Params(this);
+export class Paused extends ethereum.Event {
+  get params(): Paused__Params {
+    return new Paused__Params(this);
   }
 }
 
-export class GlpLinkVaultPaused__Params {
-  _event: GlpLinkVaultPaused;
+export class Paused__Params {
+  _event: Paused;
 
-  constructor(event: GlpLinkVaultPaused) {
+  constructor(event: Paused) {
     this._event = event;
   }
 
@@ -84,16 +84,16 @@ export class GlpLinkVaultPaused__Params {
   }
 }
 
-export class GlpLinkVaultRebalanceRequest extends ethereum.Event {
-  get params(): GlpLinkVaultRebalanceRequest__Params {
-    return new GlpLinkVaultRebalanceRequest__Params(this);
+export class RebalanceRequest extends ethereum.Event {
+  get params(): RebalanceRequest__Params {
+    return new RebalanceRequest__Params(this);
   }
 }
 
-export class GlpLinkVaultRebalanceRequest__Params {
-  _event: GlpLinkVaultRebalanceRequest;
+export class RebalanceRequest__Params {
+  _event: RebalanceRequest;
 
-  constructor(event: GlpLinkVaultRebalanceRequest) {
+  constructor(event: RebalanceRequest) {
     this._event = event;
   }
 
@@ -106,16 +106,16 @@ export class GlpLinkVaultRebalanceRequest__Params {
   }
 }
 
-export class GlpLinkVaultTransfer extends ethereum.Event {
-  get params(): GlpLinkVaultTransfer__Params {
-    return new GlpLinkVaultTransfer__Params(this);
+export class Transfer extends ethereum.Event {
+  get params(): Transfer__Params {
+    return new Transfer__Params(this);
   }
 }
 
-export class GlpLinkVaultTransfer__Params {
-  _event: GlpLinkVaultTransfer;
+export class Transfer__Params {
+  _event: Transfer;
 
-  constructor(event: GlpLinkVaultTransfer) {
+  constructor(event: Transfer) {
     this._event = event;
   }
 
@@ -132,16 +132,16 @@ export class GlpLinkVaultTransfer__Params {
   }
 }
 
-export class GlpLinkVaultUnpaused extends ethereum.Event {
-  get params(): GlpLinkVaultUnpaused__Params {
-    return new GlpLinkVaultUnpaused__Params(this);
+export class Unpaused extends ethereum.Event {
+  get params(): Unpaused__Params {
+    return new Unpaused__Params(this);
   }
 }
 
-export class GlpLinkVaultUnpaused__Params {
-  _event: GlpLinkVaultUnpaused;
+export class Unpaused__Params {
+  _event: Unpaused;
 
-  constructor(event: GlpLinkVaultUnpaused) {
+  constructor(event: Unpaused) {
     this._event = event;
   }
 
@@ -150,16 +150,16 @@ export class GlpLinkVaultUnpaused__Params {
   }
 }
 
-export class GlpLinkVaultWithdraw extends ethereum.Event {
-  get params(): GlpLinkVaultWithdraw__Params {
-    return new GlpLinkVaultWithdraw__Params(this);
+export class Withdraw extends ethereum.Event {
+  get params(): Withdraw__Params {
+    return new Withdraw__Params(this);
   }
 }
 
-export class GlpLinkVaultWithdraw__Params {
-  _event: GlpLinkVaultWithdraw;
+export class Withdraw__Params {
+  _event: Withdraw;
 
-  constructor(event: GlpLinkVaultWithdraw) {
+  constructor(event: Withdraw) {
     this._event = event;
   }
 
@@ -317,6 +317,29 @@ export class GlpLinkVault extends ethereum.SmartContract {
     let result = super.tryCall("balanceOf", "balanceOf(address):(uint256)", [
       ethereum.Value.fromAddress(param0)
     ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  completeWithdrawalRequests(param0: Address): BigInt {
+    let result = super.call(
+      "completeWithdrawalRequests",
+      "completeWithdrawalRequests(address):(uint256)",
+      [ethereum.Value.fromAddress(param0)]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_completeWithdrawalRequests(param0: Address): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "completeWithdrawalRequests",
+      "completeWithdrawalRequests(address):(uint256)",
+      [ethereum.Value.fromAddress(param0)]
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -596,6 +619,29 @@ export class GlpLinkVault extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  previewDepositFee(size: BigInt): BigInt {
+    let result = super.call(
+      "previewDepositFee",
+      "previewDepositFee(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(size)]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_previewDepositFee(size: BigInt): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "previewDepositFee",
+      "previewDepositFee(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(size)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   previewMint(shares: BigInt): BigInt {
     let result = super.call("previewMint", "previewMint(uint256):(uint256)", [
       ethereum.Value.fromUnsignedBigInt(shares)
@@ -663,6 +709,29 @@ export class GlpLinkVault extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  previewWithdrawalFee(size: BigInt): BigInt {
+    let result = super.call(
+      "previewWithdrawalFee",
+      "previewWithdrawalFee(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(size)]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_previewWithdrawalFee(size: BigInt): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "previewWithdrawalFee",
+      "previewWithdrawalFee(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(size)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   redeem(shares: BigInt, receiver: Address, owner: Address): BigInt {
     let result = super.call(
       "redeem",
@@ -687,6 +756,45 @@ export class GlpLinkVault extends ethereum.SmartContract {
       "redeem(uint256,address,address):(uint256)",
       [
         ethereum.Value.fromUnsignedBigInt(shares),
+        ethereum.Value.fromAddress(receiver),
+        ethereum.Value.fromAddress(owner)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  requestRebalanceWithdraw(
+    assets: BigInt,
+    receiver: Address,
+    owner: Address
+  ): BigInt {
+    let result = super.call(
+      "requestRebalanceWithdraw",
+      "requestRebalanceWithdraw(uint256,address,address):(uint256)",
+      [
+        ethereum.Value.fromUnsignedBigInt(assets),
+        ethereum.Value.fromAddress(receiver),
+        ethereum.Value.fromAddress(owner)
+      ]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_requestRebalanceWithdraw(
+    assets: BigInt,
+    receiver: Address,
+    owner: Address
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "requestRebalanceWithdraw",
+      "requestRebalanceWithdraw(uint256,address,address):(uint256)",
+      [
+        ethereum.Value.fromUnsignedBigInt(assets),
         ethereum.Value.fromAddress(receiver),
         ethereum.Value.fromAddress(owner)
       ]
@@ -797,6 +905,45 @@ export class GlpLinkVault extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  whitelistDeposit(
+    assets: BigInt,
+    receiver: Address,
+    merkleProof: Array<Bytes>
+  ): BigInt {
+    let result = super.call(
+      "whitelistDeposit",
+      "whitelistDeposit(uint256,address,bytes32[]):(uint256)",
+      [
+        ethereum.Value.fromUnsignedBigInt(assets),
+        ethereum.Value.fromAddress(receiver),
+        ethereum.Value.fromFixedBytesArray(merkleProof)
+      ]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_whitelistDeposit(
+    assets: BigInt,
+    receiver: Address,
+    merkleProof: Array<Bytes>
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "whitelistDeposit",
+      "whitelistDeposit(uint256,address,bytes32[]):(uint256)",
+      [
+        ethereum.Value.fromUnsignedBigInt(assets),
+        ethereum.Value.fromAddress(receiver),
+        ethereum.Value.fromFixedBytesArray(merkleProof)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   withdraw(assets: BigInt, receiver: Address, owner: Address): BigInt {
@@ -915,6 +1062,32 @@ export class ApproveCall__Outputs {
   }
 }
 
+export class ClaimWithdrawalRequestCall extends ethereum.Call {
+  get inputs(): ClaimWithdrawalRequestCall__Inputs {
+    return new ClaimWithdrawalRequestCall__Inputs(this);
+  }
+
+  get outputs(): ClaimWithdrawalRequestCall__Outputs {
+    return new ClaimWithdrawalRequestCall__Outputs(this);
+  }
+}
+
+export class ClaimWithdrawalRequestCall__Inputs {
+  _call: ClaimWithdrawalRequestCall;
+
+  constructor(call: ClaimWithdrawalRequestCall) {
+    this._call = call;
+  }
+}
+
+export class ClaimWithdrawalRequestCall__Outputs {
+  _call: ClaimWithdrawalRequestCall;
+
+  constructor(call: ClaimWithdrawalRequestCall) {
+    this._call = call;
+  }
+}
+
 export class DepositCall extends ethereum.Call {
   get inputs(): DepositCall__Inputs {
     return new DepositCall__Inputs(this);
@@ -988,6 +1161,40 @@ export class MintCall__Outputs {
 
   get assets(): BigInt {
     return this._call.outputValues[0].value.toBigInt();
+  }
+}
+
+export class MintSlowReleaseCall extends ethereum.Call {
+  get inputs(): MintSlowReleaseCall__Inputs {
+    return new MintSlowReleaseCall__Inputs(this);
+  }
+
+  get outputs(): MintSlowReleaseCall__Outputs {
+    return new MintSlowReleaseCall__Outputs(this);
+  }
+}
+
+export class MintSlowReleaseCall__Inputs {
+  _call: MintSlowReleaseCall;
+
+  constructor(call: MintSlowReleaseCall) {
+    this._call = call;
+  }
+
+  get _mintAmount(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get _slowReleaseContract(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+}
+
+export class MintSlowReleaseCall__Outputs {
+  _call: MintSlowReleaseCall;
+
+  constructor(call: MintSlowReleaseCall) {
+    this._call = call;
   }
 }
 
@@ -1071,6 +1278,44 @@ export class PermitCall__Outputs {
   }
 }
 
+export class ProcessWithdrawalRequestCall extends ethereum.Call {
+  get inputs(): ProcessWithdrawalRequestCall__Inputs {
+    return new ProcessWithdrawalRequestCall__Inputs(this);
+  }
+
+  get outputs(): ProcessWithdrawalRequestCall__Outputs {
+    return new ProcessWithdrawalRequestCall__Outputs(this);
+  }
+}
+
+export class ProcessWithdrawalRequestCall__Inputs {
+  _call: ProcessWithdrawalRequestCall;
+
+  constructor(call: ProcessWithdrawalRequestCall) {
+    this._call = call;
+  }
+
+  get _user(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get _assetAmount(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+
+  get _shareAmount(): BigInt {
+    return this._call.inputValues[2].value.toBigInt();
+  }
+}
+
+export class ProcessWithdrawalRequestCall__Outputs {
+  _call: ProcessWithdrawalRequestCall;
+
+  constructor(call: ProcessWithdrawalRequestCall) {
+    this._call = call;
+  }
+}
+
 export class RedeemCall extends ethereum.Call {
   get inputs(): RedeemCall__Inputs {
     return new RedeemCall__Inputs(this);
@@ -1113,29 +1358,45 @@ export class RedeemCall__Outputs {
   }
 }
 
-export class RequestRebalanceCall extends ethereum.Call {
-  get inputs(): RequestRebalanceCall__Inputs {
-    return new RequestRebalanceCall__Inputs(this);
+export class RequestRebalanceWithdrawCall extends ethereum.Call {
+  get inputs(): RequestRebalanceWithdrawCall__Inputs {
+    return new RequestRebalanceWithdrawCall__Inputs(this);
   }
 
-  get outputs(): RequestRebalanceCall__Outputs {
-    return new RequestRebalanceCall__Outputs(this);
-  }
-}
-
-export class RequestRebalanceCall__Inputs {
-  _call: RequestRebalanceCall;
-
-  constructor(call: RequestRebalanceCall) {
-    this._call = call;
+  get outputs(): RequestRebalanceWithdrawCall__Outputs {
+    return new RequestRebalanceWithdrawCall__Outputs(this);
   }
 }
 
-export class RequestRebalanceCall__Outputs {
-  _call: RequestRebalanceCall;
+export class RequestRebalanceWithdrawCall__Inputs {
+  _call: RequestRebalanceWithdrawCall;
 
-  constructor(call: RequestRebalanceCall) {
+  constructor(call: RequestRebalanceWithdrawCall) {
     this._call = call;
+  }
+
+  get assets(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get receiver(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
+  get owner(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+}
+
+export class RequestRebalanceWithdrawCall__Outputs {
+  _call: RequestRebalanceWithdrawCall;
+
+  constructor(call: RequestRebalanceWithdrawCall) {
+    this._call = call;
+  }
+
+  get shares(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
   }
 }
 
@@ -1272,6 +1533,48 @@ export class UpdateAggregateVaultCall__Outputs {
 
   constructor(call: UpdateAggregateVaultCall) {
     this._call = call;
+  }
+}
+
+export class WhitelistDepositCall extends ethereum.Call {
+  get inputs(): WhitelistDepositCall__Inputs {
+    return new WhitelistDepositCall__Inputs(this);
+  }
+
+  get outputs(): WhitelistDepositCall__Outputs {
+    return new WhitelistDepositCall__Outputs(this);
+  }
+}
+
+export class WhitelistDepositCall__Inputs {
+  _call: WhitelistDepositCall;
+
+  constructor(call: WhitelistDepositCall) {
+    this._call = call;
+  }
+
+  get assets(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get receiver(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
+  get merkleProof(): Array<Bytes> {
+    return this._call.inputValues[2].value.toBytesArray();
+  }
+}
+
+export class WhitelistDepositCall__Outputs {
+  _call: WhitelistDepositCall;
+
+  constructor(call: WhitelistDepositCall) {
+    this._call = call;
+  }
+
+  get shares(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
   }
 }
 

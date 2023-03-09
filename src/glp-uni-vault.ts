@@ -1,10 +1,5 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import {
-  GlpUniVaultDeposit as GlpUniVaultDepositEvent,
-  GlpUniVaultRebalanceRequest as GlpUniVaultRebalanceRequestEvent,
-  GlpUniVaultTransfer as GlpUniVaultTransferEvent,
-  GlpUniVaultWithdraw as GlpUniVaultWithdrawEvent,
-} from "../generated/GlpUniVault/GlpUniVault";
+import { Transfer as GlpUniVaultTransferEvent } from "../generated/GlpUniVault/GlpUniVault";
 import { UserVaultBalance, UserVaultBalanceTotal } from "../generated/schema";
 import { UNI_VAULT_ADDRESS, ZERO_ADDRESS } from "./constants";
 
@@ -87,15 +82,3 @@ export function handleGlpUniVaultTransfer(
     toHistoricalBalance.save();
   }
 }
-
-export function handleGlpUniVaultRebalanceRequest(
-  event: GlpUniVaultRebalanceRequestEvent
-): void {}
-
-export function handleGlpUniVaultDeposit(
-  event: GlpUniVaultDepositEvent
-): void {}
-
-export function handleGlpUniVaultWithdraw(
-  event: GlpUniVaultWithdrawEvent
-): void {}

@@ -6,7 +6,7 @@ dataSources:
     name: GlpUsdcVault
     network: arbitrum-one
     source:
-      address: "0x348fD77C569ff888Ab93c03860e7Cf5F59760D35"
+      address: "0x348fd77c569ff888ab93c03860e7cf5f59760d35"
       abi: GlpUsdcVault
       startBlock: 63600000
     mapping:
@@ -18,7 +18,7 @@ dataSources:
         - UserVaultBalance
       abis:
         - name: GlpUsdcVault
-          file: ./abis/GlpUsdcVault.json
+          file: ./abis/GlpAssetVault.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
@@ -27,7 +27,7 @@ dataSources:
     name: GlpWethVault
     network: arbitrum-one
     source:
-      address: "0xEaa2C841cC4901d93FAf85B48245C4C72A5FE8Aa"
+      address: "0xeaa2c841cc4901d93faf85b48245c4c72a5fe8aa"
       abi: GlpWethVault
       startBlock: 63600000
     mapping:
@@ -39,16 +39,16 @@ dataSources:
         - UserVaultBalance
       abis:
         - name: GlpWethVault
-          file: ./abis/GlpWethVault.json
+          file: ./abis/GlpAssetVault.json
       eventHandlers:
-        - event: GlpWethVaultTransfer(indexed address,indexed address,uint256)
+        - event: Transfer(indexed address,indexed address,uint256)
           handler: handleGlpWethVaultTransfer
       file: ./src/glp-weth-vault.ts
   - kind: ethereum
     name: GlpWbtcVault
     network: arbitrum-one
     source:
-      address: "0x466683aBC221A38d02cF4da05258D203De118500"
+      address: "0x466683abc221a38d02cf4da05258d203de118500"
       abi: GlpWbtcVault
       startBlock: 63600000
     mapping:
@@ -60,16 +60,16 @@ dataSources:
         - UserVaultBalance
       abis:
         - name: GlpWbtcVault
-          file: ./abis/GlpWbtcVault.json
+          file: ./abis/GlpAssetVault.json
       eventHandlers:
-        - event: GlpWbtcVaultTransfer(indexed address,indexed address,uint256)
+        - event: Transfer(indexed address,indexed address,uint256)
           handler: handleGlpWbtcVaultTransfer
       file: ./src/glp-wbtc-vault.ts
   - kind: ethereum
     name: GlpLinkVault
     network: arbitrum-one
     source:
-      address: "0x7387eB285C7e0Ddcff5Ce05D1895aD9573702218"
+      address: "0x7387eb285c7e0ddcff5ce05d1895ad9573702218"
       abi: GlpLinkVault
       startBlock: 63600000
     mapping:
@@ -81,16 +81,16 @@ dataSources:
         - UserVaultBalance
       abis:
         - name: GlpLinkVault
-          file: ./abis/GlpLinkVault.json
+          file: ./abis/GlpAssetVault.json
       eventHandlers:
-        - event: GlpLinkVaultTransfer(indexed address,indexed address,uint256)
+        - event: Transfer(indexed address,indexed address,uint256)
           handler: handleGlpLinkVaultTransfer
       file: ./src/glp-link-vault.ts
   - kind: ethereum
     name: GlpUniVault
     network: arbitrum-one
     source:
-      address: "0x6528709f58A88511B887326Fe713bd93353062a7"
+      address: "0x6528709f58a88511b887326fe713bd93353062a7"
       abi: GlpUniVault
       startBlock: 63600000
     mapping:
@@ -102,16 +102,16 @@ dataSources:
         - UserVaultBalance
       abis:
         - name: GlpUniVault
-          file: ./abis/GlpUniVault.json
+          file: ./abis/GlpAssetVault.json
       eventHandlers:
-        - event: GlpUniVaultTransfer(indexed address,indexed address,uint256)
+        - event: Transfer(indexed address,indexed address,uint256)
           handler: handleGlpUniVaultTransfer
       file: ./src/glp-uni-vault.ts
   - kind: ethereum
     name: AggregateVault
     network: arbitrum-one
     source:
-      address: "0x6E258BE26e713387a058F8644F514aE7ED3320Ad"
+      address: "0x6e258be26e713387a058f8644f514ae7ed3320ad"
       abi: AggregateVaultHelper
       startBlock: 63600000
     mapping:
