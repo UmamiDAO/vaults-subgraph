@@ -132,6 +132,7 @@ dataSources:
         - VaultPpsLastTimestampQuick
         - VaultPpsLastTimestampSlow
         - RebalanceSnapshot
+        - GmxState
       abis:
         - name: AggregateVault
           file: ./abis/AggregateVault.json

@@ -159,3 +159,12 @@ type UpdateNettingCheckpointPrice @entity(immutable: true) {
   newPrices_link: BigInt! # uint256
   newPrices_uni: BigInt! # uint256
 }
+
+type GmxState @entity(immutable: true) {
+  id: ID!
+  block: BigInt! # uint256
+  timestamp: BigInt! # uint256
+  assetsPrices: [BigInt!]! # uint256[5]
+  glpPrice: BigInt! # uint256[5]
+  glpComposition: [BigInt!]! # uint256[5]
+}

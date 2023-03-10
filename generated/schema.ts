@@ -1448,3 +1448,80 @@ export class UpdateNettingCheckpointPrice extends Entity {
     this.set("newPrices_uni", Value.fromBigInt(value));
   }
 }
+
+export class GmxState extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save GmxState entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type GmxState must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("GmxState", id.toString(), this);
+    }
+  }
+
+  static load(id: string): GmxState | null {
+    return changetype<GmxState | null>(store.get("GmxState", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get block(): BigInt {
+    let value = this.get("block");
+    return value!.toBigInt();
+  }
+
+  set block(value: BigInt) {
+    this.set("block", Value.fromBigInt(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get assetsPrices(): Array<BigInt> {
+    let value = this.get("assetsPrices");
+    return value!.toBigIntArray();
+  }
+
+  set assetsPrices(value: Array<BigInt>) {
+    this.set("assetsPrices", Value.fromBigIntArray(value));
+  }
+
+  get glpPrice(): BigInt {
+    let value = this.get("glpPrice");
+    return value!.toBigInt();
+  }
+
+  set glpPrice(value: BigInt) {
+    this.set("glpPrice", Value.fromBigInt(value));
+  }
+
+  get glpComposition(): Array<BigInt> {
+    let value = this.get("glpComposition");
+    return value!.toBigIntArray();
+  }
+
+  set glpComposition(value: Array<BigInt>) {
+    this.set("glpComposition", Value.fromBigIntArray(value));
+  }
+}

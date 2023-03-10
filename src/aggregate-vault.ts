@@ -16,6 +16,7 @@ import {
   CloseRebalance,
   CompoundDistributeYield,
   Cycle,
+  GmxState,
   OpenRebalance,
   RebalanceGlpPosition,
   RebalanceSnapshot,
@@ -63,6 +64,36 @@ export function handleBlock(block: ethereum.Block): void {
     lastPpsTimestampQuick.save();
 
     const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
+    const gmxVaultContract = GmxVault.bind(GMX_VAULT_ADDRESS);
+    const glpManagerContract = Manager.bind(GLP_HANDLER_ADDRESS);
+
+    const usdcMinPrice = gmxVaultContract.getMinPrice(USDC_ADDRESS);
+    const usdcMaxPrice = gmxVaultContract.getMaxPrice(USDC_ADDRESS);
+    const wethMinPrice = gmxVaultContract.getMinPrice(WETH_ADDRESS);
+    const wethMaxPrice = gmxVaultContract.getMaxPrice(WETH_ADDRESS);
+    const wbtcMinPrice = gmxVaultContract.getMinPrice(WBTC_ADDRESS);
+    const wbtcMaxPrice = gmxVaultContract.getMaxPrice(WBTC_ADDRESS);
+    const linkMinPrice = gmxVaultContract.getMinPrice(LINK_ADDRESS);
+    const linkMaxPrice = gmxVaultContract.getMaxPrice(LINK_ADDRESS);
+    const uniMinPrice = gmxVaultContract.getMinPrice(UNI_ADDRESS);
+    const uniMaxPrice = gmxVaultContract.getMaxPrice(UNI_ADDRESS);
+    const assetsPrices = [
+      usdcMinPrice.plus(usdcMaxPrice).div(BigInt.fromString("2")),
+      wethMinPrice.plus(wethMaxPrice).div(BigInt.fromString("2")),
+      wbtcMinPrice.plus(wbtcMaxPrice).div(BigInt.fromString("2")),
+      linkMinPrice.plus(linkMaxPrice).div(BigInt.fromString("2")),
+      uniMinPrice.plus(uniMaxPrice).div(BigInt.fromString("2")),
+    ];
+
+    const rebalanceState = aggregateVault.getRebalanceState();
+
+    const gmxState = new GmxState(`${block.number}`);
+    gmxState.block = block.number;
+    gmxState.timestamp = block.timestamp;
+    gmxState.assetsPrices = assetsPrices;
+    gmxState.glpPrice = glpManagerContract.getGlpPrice1();
+    gmxState.glpComposition = rebalanceState.getGlpComposition();
+    gmxState.save();
 
     /** USDC vault */
     /** USDC vault price per share */
