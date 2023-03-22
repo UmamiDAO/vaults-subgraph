@@ -277,6 +277,94 @@ export class VaultTVL extends Entity {
   }
 }
 
+export class VaultTotalSupply extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save VaultTotalSupply entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type VaultTotalSupply must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("VaultTotalSupply", id.toString(), this);
+    }
+  }
+
+  static load(id: string): VaultTotalSupply | null {
+    return changetype<VaultTotalSupply | null>(
+      store.get("VaultTotalSupply", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get block(): BigInt {
+    let value = this.get("block");
+    return value!.toBigInt();
+  }
+
+  set block(value: BigInt) {
+    this.set("block", Value.fromBigInt(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get event(): string {
+    let value = this.get("event");
+    return value!.toString();
+  }
+
+  set event(value: string) {
+    this.set("event", Value.fromString(value));
+  }
+
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
+  }
+
+  get vault(): string {
+    let value = this.get("vault");
+    return value!.toString();
+  }
+
+  set vault(value: string) {
+    this.set("vault", Value.fromString(value));
+  }
+
+  get totalSupply(): BigInt {
+    let value = this.get("totalSupply");
+    return value!.toBigInt();
+  }
+
+  set totalSupply(value: BigInt) {
+    this.set("totalSupply", Value.fromBigInt(value));
+  }
+}
+
 export class UserVaultBalanceTotal extends Entity {
   constructor(id: string) {
     super();

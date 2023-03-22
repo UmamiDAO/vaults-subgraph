@@ -12,6 +12,7 @@ import {
 import { AggregateVault } from "../generated/AggregateVault/AggregateVault";
 import { GmxVault } from "../generated/AggregateVault/GmxVault";
 import { Manager } from "../generated/AggregateVault/Manager";
+import { GlpAssetVault } from "../generated/AggregateVault/GlpAssetVault";
 import {
   CloseRebalance,
   CompoundDistributeYield,
@@ -26,6 +27,7 @@ import {
   VaultPpsLastTimestampQuick,
   VaultPpsLastTimestampSlow,
   VaultPricePerShare,
+  VaultTotalSupply,
   VaultTVL,
 } from "../generated/schema";
 import {
@@ -66,6 +68,11 @@ export function handleBlock(block: ethereum.Block): void {
     const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
     const gmxVaultContract = GmxVault.bind(GMX_VAULT_ADDRESS);
     const glpManagerContract = Manager.bind(GLP_HANDLER_ADDRESS);
+    const usdcVaultContract = GlpAssetVault.bind(USDC_VAULT_ADDRESS);
+    const wethVaultContract = GlpAssetVault.bind(WETH_VAULT_ADDRESS);
+    const wbtcVaultContract = GlpAssetVault.bind(WBTC_VAULT_ADDRESS);
+    const linkVaultContract = GlpAssetVault.bind(LINK_VAULT_ADDRESS);
+    const uniVaultContract = GlpAssetVault.bind(UNI_VAULT_ADDRESS);
 
     const usdcMinPrice = gmxVaultContract.getMinPrice(USDC_ADDRESS);
     const usdcMaxPrice = gmxVaultContract.getMaxPrice(USDC_ADDRESS);
@@ -138,6 +145,18 @@ export function handleBlock(block: ethereum.Block): void {
       : usdcVaultTVLTry.value;
     usdcVaultTvl.save();
 
+    /** Total supply */
+
+    const usdcTotalSupply = new VaultTotalSupply(usdcVaultEntityId);
+
+    usdcTotalSupply.block = block.number;
+    usdcTotalSupply.timestamp = block.timestamp;
+    usdcTotalSupply.event = event;
+    usdcTotalSupply.txHash = "";
+    usdcTotalSupply.vault = USDC_VAULT_ADDRESS.toHexString();
+    usdcTotalSupply.totalSupply = usdcVaultContract.totalSupply();
+    usdcTotalSupply.save();
+
     /** WETH vault */
     /** Price per share */
     const wethVaultEntityId = `${block.number}:${
@@ -179,6 +198,18 @@ export function handleBlock(block: ethereum.Block): void {
       ? BigInt.zero()
       : wethVaultTVLTry.value;
     wethVaulTvl.save();
+
+    /** Total supply */
+
+    const wethTotalSupply = new VaultTotalSupply(wethVaultEntityId);
+
+    wethTotalSupply.block = block.number;
+    wethTotalSupply.timestamp = block.timestamp;
+    wethTotalSupply.event = event;
+    wethTotalSupply.txHash = "";
+    wethTotalSupply.vault = WETH_VAULT_ADDRESS.toHexString();
+    wethTotalSupply.totalSupply = wethVaultContract.totalSupply();
+    wethTotalSupply.save();
 
     /** WBTC vault */
     /** Price per share */
@@ -223,48 +254,17 @@ export function handleBlock(block: ethereum.Block): void {
       : wbtcVaultTVLTry.value;
     wbtcVaultTvl.save();
 
-    /** UNI vault */
-    /** Price per share */
-    const uniVaultEntityId = `${block.number}:${
-      block.timestamp
-    }:${UNI_VAULT_ADDRESS.toHexString()}`;
-    const uniVaultPps = new VaultPricePerShare(uniVaultEntityId);
+    /** Total supply */
 
-    uniVaultPps.block = block.number;
-    uniVaultPps.timestamp = block.timestamp;
-    uniVaultPps.event = event;
-    uniVaultPps.txHash = "";
-    uniVaultPps.vault = UNI_VAULT_ADDRESS.toHexString();
-    const uniVaultPpsTry = aggregateVault.try_getVaultPPS(UNI_VAULT_ADDRESS);
-    if (uniVaultPpsTry.reverted) {
-      log.info("REVERT_PPS handleBlock UNI at block {} ", [
-        block.number.toString(),
-      ]);
-    }
-    uniVaultPps.pricePerShare = uniVaultPpsTry.reverted
-      ? BigInt.zero()
-      : uniVaultPpsTry.value;
-    uniVaultPps.save();
+    const wbtcTotalSupply = new VaultTotalSupply(wbtcVaultEntityId);
 
-    /** TVL */
-
-    const uniVaultTvl = new VaultTVL(uniVaultEntityId);
-
-    uniVaultTvl.block = block.number;
-    uniVaultTvl.timestamp = block.timestamp;
-    uniVaultTvl.event = event;
-    uniVaultTvl.vault = UNI_VAULT_ADDRESS.toHexString();
-    uniVaultTvl.txHash = "";
-    const uniVaultTVLTry = aggregateVault.try_getVaultTVL(UNI_VAULT_ADDRESS);
-    if (uniVaultTVLTry.reverted) {
-      log.info("REVERT_TVL handleBlock UNI at block {} ", [
-        block.number.toString(),
-      ]);
-    }
-    uniVaultTvl.tvl = uniVaultTVLTry.reverted
-      ? BigInt.zero()
-      : uniVaultTVLTry.value;
-    uniVaultTvl.save();
+    wbtcTotalSupply.block = block.number;
+    wbtcTotalSupply.timestamp = block.timestamp;
+    wbtcTotalSupply.event = event;
+    wbtcTotalSupply.txHash = "";
+    wbtcTotalSupply.vault = WBTC_VAULT_ADDRESS.toHexString();
+    wbtcTotalSupply.totalSupply = wbtcVaultContract.totalSupply();
+    wbtcTotalSupply.save();
 
     /** LINK vault */
     /** Price per share */
@@ -309,7 +309,73 @@ export function handleBlock(block: ethereum.Block): void {
       ? BigInt.zero()
       : linkVaultTVLTry.value;
     linkVaultTvl.save();
+
+    const linkTotalSupply = new VaultTotalSupply(linkVaultEntityId);
+
+    linkTotalSupply.block = block.number;
+    linkTotalSupply.timestamp = block.timestamp;
+    linkTotalSupply.event = event;
+    linkTotalSupply.txHash = "";
+    linkTotalSupply.vault = LINK_VAULT_ADDRESS.toHexString();
+    linkTotalSupply.totalSupply = linkVaultContract.totalSupply();
+    linkTotalSupply.save();
+
+    /** UNI vault */
+    /** Price per share */
+    const uniVaultEntityId = `${block.number}:${
+      block.timestamp
+    }:${UNI_VAULT_ADDRESS.toHexString()}`;
+    const uniVaultPps = new VaultPricePerShare(uniVaultEntityId);
+
+    uniVaultPps.block = block.number;
+    uniVaultPps.timestamp = block.timestamp;
+    uniVaultPps.event = event;
+    uniVaultPps.txHash = "";
+    uniVaultPps.vault = UNI_VAULT_ADDRESS.toHexString();
+    const uniVaultPpsTry = aggregateVault.try_getVaultPPS(UNI_VAULT_ADDRESS);
+    if (uniVaultPpsTry.reverted) {
+      log.info("REVERT_PPS handleBlock UNI at block {} ", [
+        block.number.toString(),
+      ]);
+    }
+    uniVaultPps.pricePerShare = uniVaultPpsTry.reverted
+      ? BigInt.zero()
+      : uniVaultPpsTry.value;
+    uniVaultPps.save();
+
+    /** TVL */
+
+    const uniVaultTvl = new VaultTVL(uniVaultEntityId);
+
+    uniVaultTvl.block = block.number;
+    uniVaultTvl.timestamp = block.timestamp;
+    uniVaultTvl.event = event;
+    uniVaultTvl.vault = UNI_VAULT_ADDRESS.toHexString();
+    uniVaultTvl.txHash = "";
+    const uniVaultTVLTry = aggregateVault.try_getVaultTVL(UNI_VAULT_ADDRESS);
+    if (uniVaultTVLTry.reverted) {
+      log.info("REVERT_TVL handleBlock UNI at block {} ", [
+        block.number.toString(),
+      ]);
+    }
+    uniVaultTvl.tvl = uniVaultTVLTry.reverted
+      ? BigInt.zero()
+      : uniVaultTVLTry.value;
+    uniVaultTvl.save();
+
+    /** Total supply */
+
+    const uniTotalSupply = new VaultTotalSupply(uniVaultEntityId);
+
+    uniTotalSupply.block = block.number;
+    uniTotalSupply.timestamp = block.timestamp;
+    uniTotalSupply.event = event;
+    uniTotalSupply.txHash = "";
+    uniTotalSupply.vault = UNI_VAULT_ADDRESS.toHexString();
+    uniTotalSupply.totalSupply = uniVaultContract.totalSupply();
+    uniTotalSupply.save();
   }
+
   let lastPpsTimestampSlow = VaultPpsLastTimestampSlow.load("timestamp-slow");
   /** Wait an hour to register a new PPS */
   if (
@@ -455,49 +521,6 @@ export function handleBlock(block: ethereum.Block): void {
       : wbtcVaultTVLTry.value;
     wbtcVaultTvl.save();
 
-    /** UNI vault */
-    /** Price per share */
-    const uniVaultEntityId = `${block.number}:${
-      block.timestamp
-    }:${UNI_VAULT_ADDRESS.toHexString()}`;
-    const uniVaultPps = new VaultPricePerShare(uniVaultEntityId);
-
-    uniVaultPps.block = block.number;
-    uniVaultPps.timestamp = block.timestamp;
-    uniVaultPps.event = event;
-    uniVaultPps.txHash = "";
-    uniVaultPps.vault = UNI_VAULT_ADDRESS.toHexString();
-    const uniVaultPpsTry = aggregateVault.try_getVaultPPS(UNI_VAULT_ADDRESS);
-    if (uniVaultPpsTry.reverted) {
-      log.info("REVERT_PPS handleBlock UNI at block {} ", [
-        block.number.toString(),
-      ]);
-    }
-    uniVaultPps.pricePerShare = uniVaultPpsTry.reverted
-      ? BigInt.zero()
-      : uniVaultPpsTry.value;
-    uniVaultPps.save();
-
-    /** TVL */
-
-    const uniVaultTvl = new VaultTVL(uniVaultEntityId);
-
-    uniVaultTvl.block = block.number;
-    uniVaultTvl.timestamp = block.timestamp;
-    uniVaultTvl.event = event;
-    uniVaultTvl.txHash = "";
-    uniVaultTvl.vault = UNI_VAULT_ADDRESS.toHexString();
-    const uniVaultTVLTry = aggregateVault.try_getVaultTVL(UNI_VAULT_ADDRESS);
-    if (uniVaultTVLTry.reverted) {
-      log.info("REVERT_TVL handleBlock UNI at block {} ", [
-        block.number.toString(),
-      ]);
-    }
-    uniVaultTvl.tvl = uniVaultTVLTry.reverted
-      ? BigInt.zero()
-      : uniVaultTVLTry.value;
-    uniVaultTvl.save();
-
     /** LINK vault */
     /** Price per share */
     const linkVaultEntityId = `${block.number}:${
@@ -541,6 +564,49 @@ export function handleBlock(block: ethereum.Block): void {
       ? BigInt.zero()
       : linkVaultTVLTry.value;
     linkVaultTvl.save();
+
+    /** UNI vault */
+    /** Price per share */
+    const uniVaultEntityId = `${block.number}:${
+      block.timestamp
+    }:${UNI_VAULT_ADDRESS.toHexString()}`;
+    const uniVaultPps = new VaultPricePerShare(uniVaultEntityId);
+
+    uniVaultPps.block = block.number;
+    uniVaultPps.timestamp = block.timestamp;
+    uniVaultPps.event = event;
+    uniVaultPps.txHash = "";
+    uniVaultPps.vault = UNI_VAULT_ADDRESS.toHexString();
+    const uniVaultPpsTry = aggregateVault.try_getVaultPPS(UNI_VAULT_ADDRESS);
+    if (uniVaultPpsTry.reverted) {
+      log.info("REVERT_PPS handleBlock UNI at block {} ", [
+        block.number.toString(),
+      ]);
+    }
+    uniVaultPps.pricePerShare = uniVaultPpsTry.reverted
+      ? BigInt.zero()
+      : uniVaultPpsTry.value;
+    uniVaultPps.save();
+
+    /** TVL */
+
+    const uniVaultTvl = new VaultTVL(uniVaultEntityId);
+
+    uniVaultTvl.block = block.number;
+    uniVaultTvl.timestamp = block.timestamp;
+    uniVaultTvl.event = event;
+    uniVaultTvl.txHash = "";
+    uniVaultTvl.vault = UNI_VAULT_ADDRESS.toHexString();
+    const uniVaultTVLTry = aggregateVault.try_getVaultTVL(UNI_VAULT_ADDRESS);
+    if (uniVaultTVLTry.reverted) {
+      log.info("REVERT_TVL handleBlock UNI at block {} ", [
+        block.number.toString(),
+      ]);
+    }
+    uniVaultTvl.tvl = uniVaultTVLTry.reverted
+      ? BigInt.zero()
+      : uniVaultTVLTry.value;
+    uniVaultTvl.save();
   }
 }
 

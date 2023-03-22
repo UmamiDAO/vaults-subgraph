@@ -129,6 +129,7 @@ dataSources:
         - UpdateNettingCheckpointPrice
         - VaultPricePerShare
         - VaultTVL
+        - VaultTotalSupply
         - VaultPpsLastTimestampQuick
         - VaultPpsLastTimestampSlow
         - RebalanceSnapshot
@@ -138,6 +139,8 @@ dataSources:
           file: ./abis/AggregateVault.json
         - name: AggregateVaultHelper
           file: ./abis/AggregateVaultHelper.json
+        - name: GlpAssetVault
+          file: ./abis/GlpAssetVault.json
         - name: GmxVault
           file: ./abis/GmxVault.json
         - name: Manager

@@ -28,6 +28,16 @@ type VaultTVL @entity(immutable: true) {
   tvl: BigInt!
 }
 
+type VaultTotalSupply @entity(immutable: true) {
+  id: ID!
+  block: BigInt!
+  timestamp: BigInt!
+  event: String!
+  txHash: String!
+  vault: String!
+  totalSupply: BigInt!
+}
+
 type UserVaultBalanceTotal @entity {
   id: ID!
   usdc: BigInt!
