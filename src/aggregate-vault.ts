@@ -111,9 +111,10 @@ export function handleBlock(block: ethereum.Block): void {
     /** WETH */
     const longsAveragePriceWETH = gmxVaultContract
       .guaranteedUsd(WETH_ADDRESS)
-      .div(gmxVaultContract.reservedAmounts(WETH_ADDRESS));
-    const longsUnrealizedPnlWETH = longsAveragePriceWETH
       .toBigDecimal()
+      .times(BigDecimal.fromString("1e18"))
+      .div(gmxVaultContract.reservedAmounts(WETH_ADDRESS).toBigDecimal());
+    const longsUnrealizedPnlWETH = longsAveragePriceWETH
       .minus(gmxState.assetsPrices[1].toBigDecimal())
       .times(
         gmxVaultContract
@@ -121,30 +122,31 @@ export function handleBlock(block: ethereum.Block): void {
           .toBigDecimal()
           .div(BigDecimal.fromString("1e18"))
       );
+
     const shortsAveragePriceWETH = gmxVaultContract.globalShortAveragePrices(
       WETH_ADDRESS
     );
     const shortsPriceDeltaWETH = gmxState.assetsPrices[1].minus(
       shortsAveragePriceWETH
     );
-    const shortsUnrealizedPnlWETH = shortsPriceDeltaWETH.toBigDecimal().times(
-      gmxVaultContract
-        .globalShortSizes(WETH_ADDRESS)
-        .toBigDecimal()
-        .div(
-          gmxVaultContract
-            .globalShortAveragePrices(WETH_ADDRESS)
-            .toBigDecimal()
-            .div(BigDecimal.fromString("1e18"))
-        )
-    );
+    const shortSizeBigDecimalWETH = gmxVaultContract
+      .globalShortSizes(WETH_ADDRESS)
+      .toBigDecimal();
+    const shortAvgPriceBigDecimalWETH = gmxVaultContract
+      .globalShortAveragePrices(WETH_ADDRESS)
+      .toBigDecimal();
+    const shortsUnrealizedPnlWETH = shortsPriceDeltaWETH
+      .toBigDecimal()
+      .times(shortSizeBigDecimalWETH)
+      .div(shortAvgPriceBigDecimalWETH);
 
     /** WBTC */
     const longsAveragePriceWBTC = gmxVaultContract
       .guaranteedUsd(WBTC_ADDRESS)
-      .div(gmxVaultContract.reservedAmounts(WBTC_ADDRESS));
-    const longsUnrealizedPnlWBTC = longsAveragePriceWBTC
       .toBigDecimal()
+      .times(BigDecimal.fromString("1e8"))
+      .div(gmxVaultContract.reservedAmounts(WBTC_ADDRESS).toBigDecimal());
+    const longsUnrealizedPnlWBTC = longsAveragePriceWBTC
       .minus(gmxState.assetsPrices[2].toBigDecimal())
       .times(
         gmxVaultContract
@@ -152,30 +154,31 @@ export function handleBlock(block: ethereum.Block): void {
           .toBigDecimal()
           .div(BigDecimal.fromString("1e8"))
       );
+
     const shortsAveragePriceWBTC = gmxVaultContract.globalShortAveragePrices(
       WBTC_ADDRESS
     );
     const shortsPriceDeltaWBTC = gmxState.assetsPrices[2].minus(
       shortsAveragePriceWBTC
     );
-    const shortsUnrealizedPnlWBTC = shortsPriceDeltaWBTC.toBigDecimal().times(
-      gmxVaultContract
-        .globalShortSizes(WBTC_ADDRESS)
-        .toBigDecimal()
-        .div(
-          gmxVaultContract
-            .globalShortAveragePrices(WBTC_ADDRESS)
-            .toBigDecimal()
-            .div(BigDecimal.fromString("1e8"))
-        )
-    );
+    const shortSizeBigDecimalWBTC = gmxVaultContract
+      .globalShortSizes(WBTC_ADDRESS)
+      .toBigDecimal();
+    const shortAvgPriceBigDecimalWBTC = gmxVaultContract
+      .globalShortAveragePrices(WBTC_ADDRESS)
+      .toBigDecimal();
+    const shortsUnrealizedPnlWBTC = shortsPriceDeltaWBTC
+      .toBigDecimal()
+      .times(shortSizeBigDecimalWBTC)
+      .div(shortAvgPriceBigDecimalWBTC);
 
     /** LINK */
     const longsAveragePriceLINK = gmxVaultContract
       .guaranteedUsd(LINK_ADDRESS)
-      .div(gmxVaultContract.reservedAmounts(LINK_ADDRESS));
-    const longsUnrealizedPnlLINK = longsAveragePriceLINK
       .toBigDecimal()
+      .times(BigDecimal.fromString("1e18"))
+      .div(gmxVaultContract.reservedAmounts(LINK_ADDRESS).toBigDecimal());
+    const longsUnrealizedPnlLINK = longsAveragePriceLINK
       .minus(gmxState.assetsPrices[3].toBigDecimal())
       .times(
         gmxVaultContract
@@ -183,30 +186,31 @@ export function handleBlock(block: ethereum.Block): void {
           .toBigDecimal()
           .div(BigDecimal.fromString("1e18"))
       );
+
     const shortsAveragePriceLINK = gmxVaultContract.globalShortAveragePrices(
       LINK_ADDRESS
     );
     const shortsPriceDeltaLINK = gmxState.assetsPrices[3].minus(
       shortsAveragePriceLINK
     );
-    const shortsUnrealizedPnlLINK = shortsPriceDeltaLINK.toBigDecimal().times(
-      gmxVaultContract
-        .globalShortSizes(LINK_ADDRESS)
-        .toBigDecimal()
-        .div(
-          gmxVaultContract
-            .globalShortAveragePrices(LINK_ADDRESS)
-            .toBigDecimal()
-            .div(BigDecimal.fromString("1e18"))
-        )
-    );
+    const shortSizeBigDecimalLINK = gmxVaultContract
+      .globalShortSizes(LINK_ADDRESS)
+      .toBigDecimal();
+    const shortAvgPriceBigDecimalLINK = gmxVaultContract
+      .globalShortAveragePrices(LINK_ADDRESS)
+      .toBigDecimal();
+    const shortsUnrealizedPnlLINK = shortsPriceDeltaLINK
+      .toBigDecimal()
+      .times(shortSizeBigDecimalLINK)
+      .div(shortAvgPriceBigDecimalLINK);
 
     /** UNI */
     const longsAveragePriceUNI = gmxVaultContract
       .guaranteedUsd(UNI_ADDRESS)
-      .div(gmxVaultContract.reservedAmounts(UNI_ADDRESS));
-    const longsUnrealizedPnlUNI = longsAveragePriceUNI
       .toBigDecimal()
+      .times(BigDecimal.fromString("1e18"))
+      .div(gmxVaultContract.reservedAmounts(UNI_ADDRESS).toBigDecimal());
+    const longsUnrealizedPnlUNI = longsAveragePriceUNI
       .minus(gmxState.assetsPrices[4].toBigDecimal())
       .times(
         gmxVaultContract
@@ -214,23 +218,23 @@ export function handleBlock(block: ethereum.Block): void {
           .toBigDecimal()
           .div(BigDecimal.fromString("1e18"))
       );
+
     const shortsAveragePriceUNI = gmxVaultContract.globalShortAveragePrices(
       UNI_ADDRESS
     );
     const shortsPriceDeltaUNI = gmxState.assetsPrices[4].minus(
       shortsAveragePriceUNI
     );
-    const shortsUnrealizedPnlUNI = shortsPriceDeltaUNI.toBigDecimal().times(
-      gmxVaultContract
-        .globalShortSizes(UNI_ADDRESS)
-        .toBigDecimal()
-        .div(
-          gmxVaultContract
-            .globalShortAveragePrices(UNI_ADDRESS)
-            .toBigDecimal()
-            .div(BigDecimal.fromString("1e18"))
-        )
-    );
+    const shortSizeBigDecimalUNI = gmxVaultContract
+      .globalShortSizes(UNI_ADDRESS)
+      .toBigDecimal();
+    const shortAvgPriceBigDecimalUNI = gmxVaultContract
+      .globalShortAveragePrices(UNI_ADDRESS)
+      .toBigDecimal();
+    const shortsUnrealizedPnlUNI = shortsPriceDeltaUNI
+      .toBigDecimal()
+      .times(shortSizeBigDecimalUNI)
+      .div(shortAvgPriceBigDecimalUNI);
 
     gmxState.unrealizedLongsPNL = [
       BigDecimal.zero(),
@@ -572,9 +576,10 @@ export function handleBlock(block: ethereum.Block): void {
     /** WETH */
     const longsAveragePriceWETH = gmxVaultContract
       .guaranteedUsd(WETH_ADDRESS)
-      .div(gmxVaultContract.reservedAmounts(WETH_ADDRESS));
-    const longsUnrealizedPnlWETH = longsAveragePriceWETH
       .toBigDecimal()
+      .times(BigDecimal.fromString("1e18"))
+      .div(gmxVaultContract.reservedAmounts(WETH_ADDRESS).toBigDecimal());
+    const longsUnrealizedPnlWETH = longsAveragePriceWETH
       .minus(gmxState.assetsPrices[1].toBigDecimal())
       .times(
         gmxVaultContract
@@ -582,30 +587,31 @@ export function handleBlock(block: ethereum.Block): void {
           .toBigDecimal()
           .div(BigDecimal.fromString("1e18"))
       );
+
     const shortsAveragePriceWETH = gmxVaultContract.globalShortAveragePrices(
       WETH_ADDRESS
     );
     const shortsPriceDeltaWETH = gmxState.assetsPrices[1].minus(
       shortsAveragePriceWETH
     );
-    const shortsUnrealizedPnlWETH = shortsPriceDeltaWETH.toBigDecimal().times(
-      gmxVaultContract
-        .globalShortSizes(WETH_ADDRESS)
-        .toBigDecimal()
-        .div(
-          gmxVaultContract
-            .globalShortAveragePrices(WETH_ADDRESS)
-            .toBigDecimal()
-            .div(BigDecimal.fromString("1e18"))
-        )
-    );
+    const shortSizeBigDecimalWETH = gmxVaultContract
+      .globalShortSizes(WETH_ADDRESS)
+      .toBigDecimal();
+    const shortAvgPriceBigDecimalWETH = gmxVaultContract
+      .globalShortAveragePrices(WETH_ADDRESS)
+      .toBigDecimal();
+    const shortsUnrealizedPnlWETH = shortsPriceDeltaWETH
+      .toBigDecimal()
+      .times(shortSizeBigDecimalWETH)
+      .div(shortAvgPriceBigDecimalWETH);
 
     /** WBTC */
     const longsAveragePriceWBTC = gmxVaultContract
       .guaranteedUsd(WBTC_ADDRESS)
-      .div(gmxVaultContract.reservedAmounts(WBTC_ADDRESS));
-    const longsUnrealizedPnlWBTC = longsAveragePriceWBTC
       .toBigDecimal()
+      .times(BigDecimal.fromString("1e8"))
+      .div(gmxVaultContract.reservedAmounts(WBTC_ADDRESS).toBigDecimal());
+    const longsUnrealizedPnlWBTC = longsAveragePriceWBTC
       .minus(gmxState.assetsPrices[2].toBigDecimal())
       .times(
         gmxVaultContract
@@ -613,30 +619,31 @@ export function handleBlock(block: ethereum.Block): void {
           .toBigDecimal()
           .div(BigDecimal.fromString("1e8"))
       );
+
     const shortsAveragePriceWBTC = gmxVaultContract.globalShortAveragePrices(
       WBTC_ADDRESS
     );
     const shortsPriceDeltaWBTC = gmxState.assetsPrices[2].minus(
       shortsAveragePriceWBTC
     );
-    const shortsUnrealizedPnlWBTC = shortsPriceDeltaWBTC.toBigDecimal().times(
-      gmxVaultContract
-        .globalShortSizes(WBTC_ADDRESS)
-        .toBigDecimal()
-        .div(
-          gmxVaultContract
-            .globalShortAveragePrices(WBTC_ADDRESS)
-            .toBigDecimal()
-            .div(BigDecimal.fromString("1e8"))
-        )
-    );
+    const shortSizeBigDecimalWBTC = gmxVaultContract
+      .globalShortSizes(WBTC_ADDRESS)
+      .toBigDecimal();
+    const shortAvgPriceBigDecimalWBTC = gmxVaultContract
+      .globalShortAveragePrices(WBTC_ADDRESS)
+      .toBigDecimal();
+    const shortsUnrealizedPnlWBTC = shortsPriceDeltaWBTC
+      .toBigDecimal()
+      .times(shortSizeBigDecimalWBTC)
+      .div(shortAvgPriceBigDecimalWBTC);
 
     /** LINK */
     const longsAveragePriceLINK = gmxVaultContract
       .guaranteedUsd(LINK_ADDRESS)
-      .div(gmxVaultContract.reservedAmounts(LINK_ADDRESS));
-    const longsUnrealizedPnlLINK = longsAveragePriceLINK
       .toBigDecimal()
+      .times(BigDecimal.fromString("1e18"))
+      .div(gmxVaultContract.reservedAmounts(LINK_ADDRESS).toBigDecimal());
+    const longsUnrealizedPnlLINK = longsAveragePriceLINK
       .minus(gmxState.assetsPrices[3].toBigDecimal())
       .times(
         gmxVaultContract
@@ -644,30 +651,31 @@ export function handleBlock(block: ethereum.Block): void {
           .toBigDecimal()
           .div(BigDecimal.fromString("1e18"))
       );
+
     const shortsAveragePriceLINK = gmxVaultContract.globalShortAveragePrices(
       LINK_ADDRESS
     );
     const shortsPriceDeltaLINK = gmxState.assetsPrices[3].minus(
       shortsAveragePriceLINK
     );
-    const shortsUnrealizedPnlLINK = shortsPriceDeltaLINK.toBigDecimal().times(
-      gmxVaultContract
-        .globalShortSizes(LINK_ADDRESS)
-        .toBigDecimal()
-        .div(
-          gmxVaultContract
-            .globalShortAveragePrices(LINK_ADDRESS)
-            .toBigDecimal()
-            .div(BigDecimal.fromString("1e18"))
-        )
-    );
+    const shortSizeBigDecimalLINK = gmxVaultContract
+      .globalShortSizes(LINK_ADDRESS)
+      .toBigDecimal();
+    const shortAvgPriceBigDecimalLINK = gmxVaultContract
+      .globalShortAveragePrices(LINK_ADDRESS)
+      .toBigDecimal();
+    const shortsUnrealizedPnlLINK = shortsPriceDeltaLINK
+      .toBigDecimal()
+      .times(shortSizeBigDecimalLINK)
+      .div(shortAvgPriceBigDecimalLINK);
 
     /** UNI */
     const longsAveragePriceUNI = gmxVaultContract
       .guaranteedUsd(UNI_ADDRESS)
-      .div(gmxVaultContract.reservedAmounts(UNI_ADDRESS));
-    const longsUnrealizedPnlUNI = longsAveragePriceUNI
       .toBigDecimal()
+      .times(BigDecimal.fromString("1e18"))
+      .div(gmxVaultContract.reservedAmounts(UNI_ADDRESS).toBigDecimal());
+    const longsUnrealizedPnlUNI = longsAveragePriceUNI
       .minus(gmxState.assetsPrices[4].toBigDecimal())
       .times(
         gmxVaultContract
@@ -675,23 +683,23 @@ export function handleBlock(block: ethereum.Block): void {
           .toBigDecimal()
           .div(BigDecimal.fromString("1e18"))
       );
+
     const shortsAveragePriceUNI = gmxVaultContract.globalShortAveragePrices(
       UNI_ADDRESS
     );
     const shortsPriceDeltaUNI = gmxState.assetsPrices[4].minus(
       shortsAveragePriceUNI
     );
-    const shortsUnrealizedPnlUNI = shortsPriceDeltaUNI.toBigDecimal().times(
-      gmxVaultContract
-        .globalShortSizes(UNI_ADDRESS)
-        .toBigDecimal()
-        .div(
-          gmxVaultContract
-            .globalShortAveragePrices(UNI_ADDRESS)
-            .toBigDecimal()
-            .div(BigDecimal.fromString("1e18"))
-        )
-    );
+    const shortSizeBigDecimalUNI = gmxVaultContract
+      .globalShortSizes(UNI_ADDRESS)
+      .toBigDecimal();
+    const shortAvgPriceBigDecimalUNI = gmxVaultContract
+      .globalShortAveragePrices(UNI_ADDRESS)
+      .toBigDecimal();
+    const shortsUnrealizedPnlUNI = shortsPriceDeltaUNI
+      .toBigDecimal()
+      .times(shortSizeBigDecimalUNI)
+      .div(shortAvgPriceBigDecimalUNI);
 
     gmxState.unrealizedLongsPNL = [
       BigDecimal.zero(),
