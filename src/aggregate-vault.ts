@@ -1,4 +1,10 @@
-import { BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
+import {
+  BigDecimal,
+  BigInt,
+  Bytes,
+  ethereum,
+  log,
+} from "@graphprotocol/graph-ts";
 import {
   CloseRebalance as CloseRebalanceEvent,
   CollectVaultFees as CollectVaultFeesEvent,
@@ -97,9 +103,149 @@ export function handleBlock(block: ethereum.Block): void {
     const gmxState = new GmxState(`${block.number}`);
     gmxState.block = block.number;
     gmxState.timestamp = block.timestamp;
+    gmxState.event = event;
     gmxState.assetsPrices = assetsPrices;
     gmxState.glpPrice = glpManagerContract.getGlpPrice1();
     gmxState.glpComposition = rebalanceState.getGlpComposition();
+
+    /** WETH */
+    const longsAveragePriceWETH = gmxVaultContract
+      .guaranteedUsd(WETH_ADDRESS)
+      .div(gmxVaultContract.reservedAmounts(WETH_ADDRESS));
+    const longsUnrealizedPnlWETH = longsAveragePriceWETH
+      .toBigDecimal()
+      .minus(gmxState.assetsPrices[1].toBigDecimal())
+      .times(
+        gmxVaultContract
+          .reservedAmounts(WETH_ADDRESS)
+          .toBigDecimal()
+          .div(BigDecimal.fromString("1e18"))
+      );
+    const shortsAveragePriceWETH = gmxVaultContract.globalShortAveragePrices(
+      WETH_ADDRESS
+    );
+    const shortsPriceDeltaWETH = gmxState.assetsPrices[1].minus(
+      shortsAveragePriceWETH
+    );
+    const shortsUnrealizedPnlWETH = shortsPriceDeltaWETH.toBigDecimal().times(
+      gmxVaultContract
+        .globalShortSizes(WETH_ADDRESS)
+        .toBigDecimal()
+        .div(
+          gmxVaultContract
+            .globalShortAveragePrices(WETH_ADDRESS)
+            .toBigDecimal()
+            .div(BigDecimal.fromString("1e18"))
+        )
+    );
+
+    /** WBTC */
+    const longsAveragePriceWBTC = gmxVaultContract
+      .guaranteedUsd(WBTC_ADDRESS)
+      .div(gmxVaultContract.reservedAmounts(WBTC_ADDRESS));
+    const longsUnrealizedPnlWBTC = longsAveragePriceWBTC
+      .toBigDecimal()
+      .minus(gmxState.assetsPrices[2].toBigDecimal())
+      .times(
+        gmxVaultContract
+          .reservedAmounts(WBTC_ADDRESS)
+          .toBigDecimal()
+          .div(BigDecimal.fromString("1e8"))
+      );
+    const shortsAveragePriceWBTC = gmxVaultContract.globalShortAveragePrices(
+      WBTC_ADDRESS
+    );
+    const shortsPriceDeltaWBTC = gmxState.assetsPrices[2].minus(
+      shortsAveragePriceWBTC
+    );
+    const shortsUnrealizedPnlWBTC = shortsPriceDeltaWBTC.toBigDecimal().times(
+      gmxVaultContract
+        .globalShortSizes(WBTC_ADDRESS)
+        .toBigDecimal()
+        .div(
+          gmxVaultContract
+            .globalShortAveragePrices(WBTC_ADDRESS)
+            .toBigDecimal()
+            .div(BigDecimal.fromString("1e8"))
+        )
+    );
+
+    /** LINK */
+    const longsAveragePriceLINK = gmxVaultContract
+      .guaranteedUsd(LINK_ADDRESS)
+      .div(gmxVaultContract.reservedAmounts(LINK_ADDRESS));
+    const longsUnrealizedPnlLINK = longsAveragePriceLINK
+      .toBigDecimal()
+      .minus(gmxState.assetsPrices[3].toBigDecimal())
+      .times(
+        gmxVaultContract
+          .reservedAmounts(LINK_ADDRESS)
+          .toBigDecimal()
+          .div(BigDecimal.fromString("1e18"))
+      );
+    const shortsAveragePriceLINK = gmxVaultContract.globalShortAveragePrices(
+      LINK_ADDRESS
+    );
+    const shortsPriceDeltaLINK = gmxState.assetsPrices[3].minus(
+      shortsAveragePriceLINK
+    );
+    const shortsUnrealizedPnlLINK = shortsPriceDeltaLINK.toBigDecimal().times(
+      gmxVaultContract
+        .globalShortSizes(LINK_ADDRESS)
+        .toBigDecimal()
+        .div(
+          gmxVaultContract
+            .globalShortAveragePrices(LINK_ADDRESS)
+            .toBigDecimal()
+            .div(BigDecimal.fromString("1e18"))
+        )
+    );
+
+    /** UNI */
+    const longsAveragePriceUNI = gmxVaultContract
+      .guaranteedUsd(UNI_ADDRESS)
+      .div(gmxVaultContract.reservedAmounts(UNI_ADDRESS));
+    const longsUnrealizedPnlUNI = longsAveragePriceUNI
+      .toBigDecimal()
+      .minus(gmxState.assetsPrices[4].toBigDecimal())
+      .times(
+        gmxVaultContract
+          .reservedAmounts(UNI_ADDRESS)
+          .toBigDecimal()
+          .div(BigDecimal.fromString("1e18"))
+      );
+    const shortsAveragePriceUNI = gmxVaultContract.globalShortAveragePrices(
+      UNI_ADDRESS
+    );
+    const shortsPriceDeltaUNI = gmxState.assetsPrices[4].minus(
+      shortsAveragePriceUNI
+    );
+    const shortsUnrealizedPnlUNI = shortsPriceDeltaUNI.toBigDecimal().times(
+      gmxVaultContract
+        .globalShortSizes(UNI_ADDRESS)
+        .toBigDecimal()
+        .div(
+          gmxVaultContract
+            .globalShortAveragePrices(UNI_ADDRESS)
+            .toBigDecimal()
+            .div(BigDecimal.fromString("1e18"))
+        )
+    );
+
+    gmxState.unrealizedLongsPNL = [
+      BigDecimal.zero(),
+      longsUnrealizedPnlWETH,
+      longsUnrealizedPnlWBTC,
+      longsUnrealizedPnlLINK,
+      longsUnrealizedPnlUNI,
+    ];
+    gmxState.unrealizedShortsPNL = [
+      BigDecimal.zero(),
+      shortsUnrealizedPnlWETH,
+      shortsUnrealizedPnlWBTC,
+      shortsUnrealizedPnlLINK,
+      shortsUnrealizedPnlUNI,
+    ];
     gmxState.save();
 
     /** USDC vault */
@@ -392,6 +538,176 @@ export function handleBlock(block: ethereum.Block): void {
     lastPpsTimestampSlow.save();
 
     const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
+
+    const gmxVaultContract = GmxVault.bind(GMX_VAULT_ADDRESS);
+    const glpManagerContract = Manager.bind(GLP_HANDLER_ADDRESS);
+
+    const usdcMinPrice = gmxVaultContract.getMinPrice(USDC_ADDRESS);
+    const usdcMaxPrice = gmxVaultContract.getMaxPrice(USDC_ADDRESS);
+    const wethMinPrice = gmxVaultContract.getMinPrice(WETH_ADDRESS);
+    const wethMaxPrice = gmxVaultContract.getMaxPrice(WETH_ADDRESS);
+    const wbtcMinPrice = gmxVaultContract.getMinPrice(WBTC_ADDRESS);
+    const wbtcMaxPrice = gmxVaultContract.getMaxPrice(WBTC_ADDRESS);
+    const linkMinPrice = gmxVaultContract.getMinPrice(LINK_ADDRESS);
+    const linkMaxPrice = gmxVaultContract.getMaxPrice(LINK_ADDRESS);
+    const uniMinPrice = gmxVaultContract.getMinPrice(UNI_ADDRESS);
+    const uniMaxPrice = gmxVaultContract.getMaxPrice(UNI_ADDRESS);
+    const assetsPrices = [
+      usdcMinPrice.plus(usdcMaxPrice).div(BigInt.fromString("2")),
+      wethMinPrice.plus(wethMaxPrice).div(BigInt.fromString("2")),
+      wbtcMinPrice.plus(wbtcMaxPrice).div(BigInt.fromString("2")),
+      linkMinPrice.plus(linkMaxPrice).div(BigInt.fromString("2")),
+      uniMinPrice.plus(uniMaxPrice).div(BigInt.fromString("2")),
+    ];
+
+    const rebalanceState = aggregateVault.getRebalanceState();
+    const gmxState = new GmxState(`${block.number}`);
+    gmxState.block = block.number;
+    gmxState.timestamp = block.timestamp;
+    gmxState.event = event;
+    gmxState.assetsPrices = assetsPrices;
+    gmxState.glpPrice = glpManagerContract.getGlpPrice1();
+    gmxState.glpComposition = rebalanceState.getGlpComposition();
+
+    /** WETH */
+    const longsAveragePriceWETH = gmxVaultContract
+      .guaranteedUsd(WETH_ADDRESS)
+      .div(gmxVaultContract.reservedAmounts(WETH_ADDRESS));
+    const longsUnrealizedPnlWETH = longsAveragePriceWETH
+      .toBigDecimal()
+      .minus(gmxState.assetsPrices[1].toBigDecimal())
+      .times(
+        gmxVaultContract
+          .reservedAmounts(WETH_ADDRESS)
+          .toBigDecimal()
+          .div(BigDecimal.fromString("1e18"))
+      );
+    const shortsAveragePriceWETH = gmxVaultContract.globalShortAveragePrices(
+      WETH_ADDRESS
+    );
+    const shortsPriceDeltaWETH = gmxState.assetsPrices[1].minus(
+      shortsAveragePriceWETH
+    );
+    const shortsUnrealizedPnlWETH = shortsPriceDeltaWETH.toBigDecimal().times(
+      gmxVaultContract
+        .globalShortSizes(WETH_ADDRESS)
+        .toBigDecimal()
+        .div(
+          gmxVaultContract
+            .globalShortAveragePrices(WETH_ADDRESS)
+            .toBigDecimal()
+            .div(BigDecimal.fromString("1e18"))
+        )
+    );
+
+    /** WBTC */
+    const longsAveragePriceWBTC = gmxVaultContract
+      .guaranteedUsd(WBTC_ADDRESS)
+      .div(gmxVaultContract.reservedAmounts(WBTC_ADDRESS));
+    const longsUnrealizedPnlWBTC = longsAveragePriceWBTC
+      .toBigDecimal()
+      .minus(gmxState.assetsPrices[2].toBigDecimal())
+      .times(
+        gmxVaultContract
+          .reservedAmounts(WBTC_ADDRESS)
+          .toBigDecimal()
+          .div(BigDecimal.fromString("1e8"))
+      );
+    const shortsAveragePriceWBTC = gmxVaultContract.globalShortAveragePrices(
+      WBTC_ADDRESS
+    );
+    const shortsPriceDeltaWBTC = gmxState.assetsPrices[2].minus(
+      shortsAveragePriceWBTC
+    );
+    const shortsUnrealizedPnlWBTC = shortsPriceDeltaWBTC.toBigDecimal().times(
+      gmxVaultContract
+        .globalShortSizes(WBTC_ADDRESS)
+        .toBigDecimal()
+        .div(
+          gmxVaultContract
+            .globalShortAveragePrices(WBTC_ADDRESS)
+            .toBigDecimal()
+            .div(BigDecimal.fromString("1e8"))
+        )
+    );
+
+    /** LINK */
+    const longsAveragePriceLINK = gmxVaultContract
+      .guaranteedUsd(LINK_ADDRESS)
+      .div(gmxVaultContract.reservedAmounts(LINK_ADDRESS));
+    const longsUnrealizedPnlLINK = longsAveragePriceLINK
+      .toBigDecimal()
+      .minus(gmxState.assetsPrices[3].toBigDecimal())
+      .times(
+        gmxVaultContract
+          .reservedAmounts(LINK_ADDRESS)
+          .toBigDecimal()
+          .div(BigDecimal.fromString("1e18"))
+      );
+    const shortsAveragePriceLINK = gmxVaultContract.globalShortAveragePrices(
+      LINK_ADDRESS
+    );
+    const shortsPriceDeltaLINK = gmxState.assetsPrices[3].minus(
+      shortsAveragePriceLINK
+    );
+    const shortsUnrealizedPnlLINK = shortsPriceDeltaLINK.toBigDecimal().times(
+      gmxVaultContract
+        .globalShortSizes(LINK_ADDRESS)
+        .toBigDecimal()
+        .div(
+          gmxVaultContract
+            .globalShortAveragePrices(LINK_ADDRESS)
+            .toBigDecimal()
+            .div(BigDecimal.fromString("1e18"))
+        )
+    );
+
+    /** UNI */
+    const longsAveragePriceUNI = gmxVaultContract
+      .guaranteedUsd(UNI_ADDRESS)
+      .div(gmxVaultContract.reservedAmounts(UNI_ADDRESS));
+    const longsUnrealizedPnlUNI = longsAveragePriceUNI
+      .toBigDecimal()
+      .minus(gmxState.assetsPrices[4].toBigDecimal())
+      .times(
+        gmxVaultContract
+          .reservedAmounts(UNI_ADDRESS)
+          .toBigDecimal()
+          .div(BigDecimal.fromString("1e18"))
+      );
+    const shortsAveragePriceUNI = gmxVaultContract.globalShortAveragePrices(
+      UNI_ADDRESS
+    );
+    const shortsPriceDeltaUNI = gmxState.assetsPrices[4].minus(
+      shortsAveragePriceUNI
+    );
+    const shortsUnrealizedPnlUNI = shortsPriceDeltaUNI.toBigDecimal().times(
+      gmxVaultContract
+        .globalShortSizes(UNI_ADDRESS)
+        .toBigDecimal()
+        .div(
+          gmxVaultContract
+            .globalShortAveragePrices(UNI_ADDRESS)
+            .toBigDecimal()
+            .div(BigDecimal.fromString("1e18"))
+        )
+    );
+
+    gmxState.unrealizedLongsPNL = [
+      BigDecimal.zero(),
+      longsUnrealizedPnlWETH,
+      longsUnrealizedPnlWBTC,
+      longsUnrealizedPnlLINK,
+      longsUnrealizedPnlUNI,
+    ];
+    gmxState.unrealizedShortsPNL = [
+      BigDecimal.zero(),
+      shortsUnrealizedPnlWETH,
+      shortsUnrealizedPnlWBTC,
+      shortsUnrealizedPnlLINK,
+      shortsUnrealizedPnlUNI,
+    ];
+    gmxState.save();
 
     /** USDC vault */
     /** USDC vault price per share */

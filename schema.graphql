@@ -174,7 +174,10 @@ type GmxState @entity(immutable: true) {
   id: ID!
   block: BigInt! # uint256
   timestamp: BigInt! # uint256
+  event: String!
   assetsPrices: [BigInt!]! # uint256[5]
   glpPrice: BigInt! # uint256[5]
   glpComposition: [BigInt!]! # uint256[5]
+  unrealizedLongsPNL: [BigDecimal!]! # uint256
+  unrealizedShortsPNL: [BigDecimal!]! # uint256
 }

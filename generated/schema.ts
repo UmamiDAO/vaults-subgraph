@@ -1586,6 +1586,15 @@ export class GmxState extends Entity {
     this.set("timestamp", Value.fromBigInt(value));
   }
 
+  get event(): string {
+    let value = this.get("event");
+    return value!.toString();
+  }
+
+  set event(value: string) {
+    this.set("event", Value.fromString(value));
+  }
+
   get assetsPrices(): Array<BigInt> {
     let value = this.get("assetsPrices");
     return value!.toBigIntArray();
@@ -1611,5 +1620,23 @@ export class GmxState extends Entity {
 
   set glpComposition(value: Array<BigInt>) {
     this.set("glpComposition", Value.fromBigIntArray(value));
+  }
+
+  get unrealizedLongsPNL(): Array<BigDecimal> {
+    let value = this.get("unrealizedLongsPNL");
+    return value!.toBigDecimalArray();
+  }
+
+  set unrealizedLongsPNL(value: Array<BigDecimal>) {
+    this.set("unrealizedLongsPNL", Value.fromBigDecimalArray(value));
+  }
+
+  get unrealizedShortsPNL(): Array<BigDecimal> {
+    let value = this.get("unrealizedShortsPNL");
+    return value!.toBigDecimalArray();
+  }
+
+  set unrealizedShortsPNL(value: Array<BigDecimal>) {
+    this.set("unrealizedShortsPNL", Value.fromBigDecimalArray(value));
   }
 }
