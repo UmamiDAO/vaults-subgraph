@@ -1631,6 +1631,15 @@ export class GmxState extends Entity {
     this.set("unrealizedLongsPNL", Value.fromBigDecimalArray(value));
   }
 
+  get unrealizedLongsNegatives(): Array<boolean> {
+    let value = this.get("unrealizedLongsNegatives");
+    return value!.toBooleanArray();
+  }
+
+  set unrealizedLongsNegatives(value: Array<boolean>) {
+    this.set("unrealizedLongsNegatives", Value.fromBooleanArray(value));
+  }
+
   get unrealizedShortsPNL(): Array<BigDecimal> {
     let value = this.get("unrealizedShortsPNL");
     return value!.toBigDecimalArray();
@@ -1638,5 +1647,14 @@ export class GmxState extends Entity {
 
   set unrealizedShortsPNL(value: Array<BigDecimal>) {
     this.set("unrealizedShortsPNL", Value.fromBigDecimalArray(value));
+  }
+
+  get unrealizedShortsNegatives(): Array<boolean> {
+    let value = this.get("unrealizedShortsNegatives");
+    return value!.toBooleanArray();
+  }
+
+  set unrealizedShortsNegatives(value: Array<boolean>) {
+    this.set("unrealizedShortsNegatives", Value.fromBooleanArray(value));
   }
 }

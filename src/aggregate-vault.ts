@@ -114,7 +114,7 @@ export function handleBlock(block: ethereum.Block): void {
       .toBigDecimal()
       .times(BigDecimal.fromString("1e18"))
       .div(gmxVaultContract.reservedAmounts(WETH_ADDRESS).toBigDecimal());
-    const longsUnrealizedPnlWETH = longsAveragePriceWETH
+    let longsUnrealizedPnlWETH = longsAveragePriceWETH
       .minus(gmxState.assetsPrices[1].toBigDecimal())
       .times(
         gmxVaultContract
@@ -135,7 +135,7 @@ export function handleBlock(block: ethereum.Block): void {
     const shortAvgPriceBigDecimalWETH = gmxVaultContract
       .globalShortAveragePrices(WETH_ADDRESS)
       .toBigDecimal();
-    const shortsUnrealizedPnlWETH = shortsPriceDeltaWETH
+    let shortsUnrealizedPnlWETH = shortsPriceDeltaWETH
       .toBigDecimal()
       .times(shortSizeBigDecimalWETH)
       .div(shortAvgPriceBigDecimalWETH);
@@ -146,7 +146,7 @@ export function handleBlock(block: ethereum.Block): void {
       .toBigDecimal()
       .times(BigDecimal.fromString("1e8"))
       .div(gmxVaultContract.reservedAmounts(WBTC_ADDRESS).toBigDecimal());
-    const longsUnrealizedPnlWBTC = longsAveragePriceWBTC
+    let longsUnrealizedPnlWBTC = longsAveragePriceWBTC
       .minus(gmxState.assetsPrices[2].toBigDecimal())
       .times(
         gmxVaultContract
@@ -167,7 +167,7 @@ export function handleBlock(block: ethereum.Block): void {
     const shortAvgPriceBigDecimalWBTC = gmxVaultContract
       .globalShortAveragePrices(WBTC_ADDRESS)
       .toBigDecimal();
-    const shortsUnrealizedPnlWBTC = shortsPriceDeltaWBTC
+    let shortsUnrealizedPnlWBTC = shortsPriceDeltaWBTC
       .toBigDecimal()
       .times(shortSizeBigDecimalWBTC)
       .div(shortAvgPriceBigDecimalWBTC);
@@ -178,7 +178,7 @@ export function handleBlock(block: ethereum.Block): void {
       .toBigDecimal()
       .times(BigDecimal.fromString("1e18"))
       .div(gmxVaultContract.reservedAmounts(LINK_ADDRESS).toBigDecimal());
-    const longsUnrealizedPnlLINK = longsAveragePriceLINK
+    let longsUnrealizedPnlLINK = longsAveragePriceLINK
       .minus(gmxState.assetsPrices[3].toBigDecimal())
       .times(
         gmxVaultContract
@@ -199,7 +199,7 @@ export function handleBlock(block: ethereum.Block): void {
     const shortAvgPriceBigDecimalLINK = gmxVaultContract
       .globalShortAveragePrices(LINK_ADDRESS)
       .toBigDecimal();
-    const shortsUnrealizedPnlLINK = shortsPriceDeltaLINK
+    let shortsUnrealizedPnlLINK = shortsPriceDeltaLINK
       .toBigDecimal()
       .times(shortSizeBigDecimalLINK)
       .div(shortAvgPriceBigDecimalLINK);
@@ -210,7 +210,7 @@ export function handleBlock(block: ethereum.Block): void {
       .toBigDecimal()
       .times(BigDecimal.fromString("1e18"))
       .div(gmxVaultContract.reservedAmounts(UNI_ADDRESS).toBigDecimal());
-    const longsUnrealizedPnlUNI = longsAveragePriceUNI
+    let longsUnrealizedPnlUNI = longsAveragePriceUNI
       .minus(gmxState.assetsPrices[4].toBigDecimal())
       .times(
         gmxVaultContract
@@ -231,11 +231,43 @@ export function handleBlock(block: ethereum.Block): void {
     const shortAvgPriceBigDecimalUNI = gmxVaultContract
       .globalShortAveragePrices(UNI_ADDRESS)
       .toBigDecimal();
-    const shortsUnrealizedPnlUNI = shortsPriceDeltaUNI
+    let shortsUnrealizedPnlUNI = shortsPriceDeltaUNI
       .toBigDecimal()
       .times(shortSizeBigDecimalUNI)
       .div(shortAvgPriceBigDecimalUNI);
 
+    const unrealizedLongsNegatives = [false];
+
+    if (longsUnrealizedPnlWETH.toString().startsWith("-")) {
+      unrealizedLongsNegatives.push(true);
+      const abs = longsUnrealizedPnlWETH.toString().substring(0);
+      longsUnrealizedPnlWETH = BigDecimal.fromString(abs);
+    } else {
+      unrealizedLongsNegatives.push(false);
+    }
+    if (longsUnrealizedPnlWBTC.toString().startsWith("-")) {
+      unrealizedLongsNegatives.push(true);
+      const abs = longsUnrealizedPnlWBTC.toString().substring(0);
+      longsUnrealizedPnlWBTC = BigDecimal.fromString(abs);
+    } else {
+      unrealizedLongsNegatives.push(false);
+    }
+    if (longsUnrealizedPnlLINK.toString().startsWith("-")) {
+      unrealizedLongsNegatives.push(true);
+      const abs = longsUnrealizedPnlLINK.toString().substring(0);
+      longsUnrealizedPnlLINK = BigDecimal.fromString(abs);
+    } else {
+      unrealizedLongsNegatives.push(false);
+    }
+    if (longsUnrealizedPnlUNI.toString().startsWith("-")) {
+      unrealizedLongsNegatives.push(true);
+      const abs = longsUnrealizedPnlUNI.toString().substring(0);
+      longsUnrealizedPnlUNI = BigDecimal.fromString(abs);
+    } else {
+      unrealizedLongsNegatives.push(false);
+    }
+
+    gmxState.unrealizedLongsNegatives = unrealizedLongsNegatives;
     gmxState.unrealizedLongsPNL = [
       BigDecimal.zero(),
       longsUnrealizedPnlWETH,
@@ -243,6 +275,39 @@ export function handleBlock(block: ethereum.Block): void {
       longsUnrealizedPnlLINK,
       longsUnrealizedPnlUNI,
     ];
+
+    const unrealizedShortsNegatives = [false];
+
+    if (shortsUnrealizedPnlWETH.toString().startsWith("-")) {
+      unrealizedShortsNegatives.push(true);
+      const abs = shortsUnrealizedPnlWETH.toString().substring(0);
+      shortsUnrealizedPnlWETH = BigDecimal.fromString(abs);
+    } else {
+      unrealizedShortsNegatives.push(false);
+    }
+    if (shortsUnrealizedPnlWBTC.toString().startsWith("-")) {
+      unrealizedShortsNegatives.push(true);
+      const abs = shortsUnrealizedPnlWBTC.toString().substring(0);
+      shortsUnrealizedPnlWBTC = BigDecimal.fromString(abs);
+    } else {
+      unrealizedShortsNegatives.push(false);
+    }
+    if (shortsUnrealizedPnlLINK.toString().startsWith("-")) {
+      unrealizedShortsNegatives.push(true);
+      const abs = shortsUnrealizedPnlLINK.toString().substring(0);
+      shortsUnrealizedPnlLINK = BigDecimal.fromString(abs);
+    } else {
+      unrealizedShortsNegatives.push(false);
+    }
+    if (shortsUnrealizedPnlUNI.toString().startsWith("-")) {
+      unrealizedShortsNegatives.push(true);
+      const abs = shortsUnrealizedPnlUNI.toString().substring(0);
+      shortsUnrealizedPnlUNI = BigDecimal.fromString(abs);
+    } else {
+      unrealizedShortsNegatives.push(false);
+    }
+
+    gmxState.unrealizedShortsNegatives = unrealizedShortsNegatives;
     gmxState.unrealizedShortsPNL = [
       BigDecimal.zero(),
       shortsUnrealizedPnlWETH,
@@ -579,7 +644,7 @@ export function handleBlock(block: ethereum.Block): void {
       .toBigDecimal()
       .times(BigDecimal.fromString("1e18"))
       .div(gmxVaultContract.reservedAmounts(WETH_ADDRESS).toBigDecimal());
-    const longsUnrealizedPnlWETH = longsAveragePriceWETH
+    let longsUnrealizedPnlWETH = longsAveragePriceWETH
       .minus(gmxState.assetsPrices[1].toBigDecimal())
       .times(
         gmxVaultContract
@@ -600,7 +665,7 @@ export function handleBlock(block: ethereum.Block): void {
     const shortAvgPriceBigDecimalWETH = gmxVaultContract
       .globalShortAveragePrices(WETH_ADDRESS)
       .toBigDecimal();
-    const shortsUnrealizedPnlWETH = shortsPriceDeltaWETH
+    let shortsUnrealizedPnlWETH = shortsPriceDeltaWETH
       .toBigDecimal()
       .times(shortSizeBigDecimalWETH)
       .div(shortAvgPriceBigDecimalWETH);
@@ -611,7 +676,7 @@ export function handleBlock(block: ethereum.Block): void {
       .toBigDecimal()
       .times(BigDecimal.fromString("1e8"))
       .div(gmxVaultContract.reservedAmounts(WBTC_ADDRESS).toBigDecimal());
-    const longsUnrealizedPnlWBTC = longsAveragePriceWBTC
+    let longsUnrealizedPnlWBTC = longsAveragePriceWBTC
       .minus(gmxState.assetsPrices[2].toBigDecimal())
       .times(
         gmxVaultContract
@@ -632,7 +697,7 @@ export function handleBlock(block: ethereum.Block): void {
     const shortAvgPriceBigDecimalWBTC = gmxVaultContract
       .globalShortAveragePrices(WBTC_ADDRESS)
       .toBigDecimal();
-    const shortsUnrealizedPnlWBTC = shortsPriceDeltaWBTC
+    let shortsUnrealizedPnlWBTC = shortsPriceDeltaWBTC
       .toBigDecimal()
       .times(shortSizeBigDecimalWBTC)
       .div(shortAvgPriceBigDecimalWBTC);
@@ -643,7 +708,7 @@ export function handleBlock(block: ethereum.Block): void {
       .toBigDecimal()
       .times(BigDecimal.fromString("1e18"))
       .div(gmxVaultContract.reservedAmounts(LINK_ADDRESS).toBigDecimal());
-    const longsUnrealizedPnlLINK = longsAveragePriceLINK
+    let longsUnrealizedPnlLINK = longsAveragePriceLINK
       .minus(gmxState.assetsPrices[3].toBigDecimal())
       .times(
         gmxVaultContract
@@ -664,7 +729,7 @@ export function handleBlock(block: ethereum.Block): void {
     const shortAvgPriceBigDecimalLINK = gmxVaultContract
       .globalShortAveragePrices(LINK_ADDRESS)
       .toBigDecimal();
-    const shortsUnrealizedPnlLINK = shortsPriceDeltaLINK
+    let shortsUnrealizedPnlLINK = shortsPriceDeltaLINK
       .toBigDecimal()
       .times(shortSizeBigDecimalLINK)
       .div(shortAvgPriceBigDecimalLINK);
@@ -675,7 +740,7 @@ export function handleBlock(block: ethereum.Block): void {
       .toBigDecimal()
       .times(BigDecimal.fromString("1e18"))
       .div(gmxVaultContract.reservedAmounts(UNI_ADDRESS).toBigDecimal());
-    const longsUnrealizedPnlUNI = longsAveragePriceUNI
+    let longsUnrealizedPnlUNI = longsAveragePriceUNI
       .minus(gmxState.assetsPrices[4].toBigDecimal())
       .times(
         gmxVaultContract
@@ -696,11 +761,43 @@ export function handleBlock(block: ethereum.Block): void {
     const shortAvgPriceBigDecimalUNI = gmxVaultContract
       .globalShortAveragePrices(UNI_ADDRESS)
       .toBigDecimal();
-    const shortsUnrealizedPnlUNI = shortsPriceDeltaUNI
+    let shortsUnrealizedPnlUNI = shortsPriceDeltaUNI
       .toBigDecimal()
       .times(shortSizeBigDecimalUNI)
       .div(shortAvgPriceBigDecimalUNI);
 
+    const unrealizedLongsNegatives = [false];
+
+    if (longsUnrealizedPnlWETH.toString().startsWith("-")) {
+      unrealizedLongsNegatives.push(true);
+      const abs = longsUnrealizedPnlWETH.toString().substring(0);
+      longsUnrealizedPnlWETH = BigDecimal.fromString(abs);
+    } else {
+      unrealizedLongsNegatives.push(false);
+    }
+    if (longsUnrealizedPnlWBTC.toString().startsWith("-")) {
+      unrealizedLongsNegatives.push(true);
+      const abs = longsUnrealizedPnlWBTC.toString().substring(0);
+      longsUnrealizedPnlWBTC = BigDecimal.fromString(abs);
+    } else {
+      unrealizedLongsNegatives.push(false);
+    }
+    if (longsUnrealizedPnlLINK.toString().startsWith("-")) {
+      unrealizedLongsNegatives.push(true);
+      const abs = longsUnrealizedPnlLINK.toString().substring(0);
+      longsUnrealizedPnlLINK = BigDecimal.fromString(abs);
+    } else {
+      unrealizedLongsNegatives.push(false);
+    }
+    if (longsUnrealizedPnlUNI.toString().startsWith("-")) {
+      unrealizedLongsNegatives.push(true);
+      const abs = longsUnrealizedPnlUNI.toString().substring(0);
+      longsUnrealizedPnlUNI = BigDecimal.fromString(abs);
+    } else {
+      unrealizedLongsNegatives.push(false);
+    }
+
+    gmxState.unrealizedLongsNegatives = unrealizedLongsNegatives;
     gmxState.unrealizedLongsPNL = [
       BigDecimal.zero(),
       longsUnrealizedPnlWETH,
@@ -708,6 +805,39 @@ export function handleBlock(block: ethereum.Block): void {
       longsUnrealizedPnlLINK,
       longsUnrealizedPnlUNI,
     ];
+
+    const unrealizedShortsNegatives = [false];
+
+    if (shortsUnrealizedPnlWETH.toString().startsWith("-")) {
+      unrealizedShortsNegatives.push(true);
+      const abs = shortsUnrealizedPnlWETH.toString().substring(0);
+      shortsUnrealizedPnlWETH = BigDecimal.fromString(abs);
+    } else {
+      unrealizedShortsNegatives.push(false);
+    }
+    if (shortsUnrealizedPnlWBTC.toString().startsWith("-")) {
+      unrealizedShortsNegatives.push(true);
+      const abs = shortsUnrealizedPnlWBTC.toString().substring(0);
+      shortsUnrealizedPnlWBTC = BigDecimal.fromString(abs);
+    } else {
+      unrealizedShortsNegatives.push(false);
+    }
+    if (shortsUnrealizedPnlLINK.toString().startsWith("-")) {
+      unrealizedShortsNegatives.push(true);
+      const abs = shortsUnrealizedPnlLINK.toString().substring(0);
+      shortsUnrealizedPnlLINK = BigDecimal.fromString(abs);
+    } else {
+      unrealizedShortsNegatives.push(false);
+    }
+    if (shortsUnrealizedPnlUNI.toString().startsWith("-")) {
+      unrealizedShortsNegatives.push(true);
+      const abs = shortsUnrealizedPnlUNI.toString().substring(0);
+      shortsUnrealizedPnlUNI = BigDecimal.fromString(abs);
+    } else {
+      unrealizedShortsNegatives.push(false);
+    }
+
+    gmxState.unrealizedShortsNegatives = unrealizedShortsNegatives;
     gmxState.unrealizedShortsPNL = [
       BigDecimal.zero(),
       shortsUnrealizedPnlWETH,

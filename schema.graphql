@@ -179,5 +179,7 @@ type GmxState @entity(immutable: true) {
   glpPrice: BigInt! # uint256[5]
   glpComposition: [BigInt!]! # uint256[5]
   unrealizedLongsPNL: [BigDecimal!]! # uint256
+  unrealizedLongsNegatives: [Boolean!]! # uint256
   unrealizedShortsPNL: [BigDecimal!]! # uint256
+  unrealizedShortsNegatives: [Boolean!]! # uint256
 }
