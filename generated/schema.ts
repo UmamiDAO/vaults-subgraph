@@ -1622,39 +1622,39 @@ export class GmxState extends Entity {
     this.set("glpComposition", Value.fromBigIntArray(value));
   }
 
-  get unrealizedLongsPNL(): Array<BigDecimal> {
-    let value = this.get("unrealizedLongsPNL");
-    return value!.toBigDecimalArray();
+  get reservedAmounts(): Array<BigInt> {
+    let value = this.get("reservedAmounts");
+    return value!.toBigIntArray();
   }
 
-  set unrealizedLongsPNL(value: Array<BigDecimal>) {
-    this.set("unrealizedLongsPNL", Value.fromBigDecimalArray(value));
+  set reservedAmounts(value: Array<BigInt>) {
+    this.set("reservedAmounts", Value.fromBigIntArray(value));
   }
 
-  get unrealizedLongsNegatives(): Array<boolean> {
-    let value = this.get("unrealizedLongsNegatives");
-    return value!.toBooleanArray();
+  get guaranteedUsd(): Array<BigInt> {
+    let value = this.get("guaranteedUsd");
+    return value!.toBigIntArray();
   }
 
-  set unrealizedLongsNegatives(value: Array<boolean>) {
-    this.set("unrealizedLongsNegatives", Value.fromBooleanArray(value));
+  set guaranteedUsd(value: Array<BigInt>) {
+    this.set("guaranteedUsd", Value.fromBigIntArray(value));
   }
 
-  get unrealizedShortsPNL(): Array<BigDecimal> {
-    let value = this.get("unrealizedShortsPNL");
-    return value!.toBigDecimalArray();
+  get shortsAveragePrices(): Array<BigInt> {
+    let value = this.get("shortsAveragePrices");
+    return value!.toBigIntArray();
   }
 
-  set unrealizedShortsPNL(value: Array<BigDecimal>) {
-    this.set("unrealizedShortsPNL", Value.fromBigDecimalArray(value));
+  set shortsAveragePrices(value: Array<BigInt>) {
+    this.set("shortsAveragePrices", Value.fromBigIntArray(value));
   }
 
-  get unrealizedShortsNegatives(): Array<boolean> {
-    let value = this.get("unrealizedShortsNegatives");
-    return value!.toBooleanArray();
+  get globalShortSizes(): Array<BigInt> {
+    let value = this.get("globalShortSizes");
+    return value!.toBigIntArray();
   }
 
-  set unrealizedShortsNegatives(value: Array<boolean>) {
-    this.set("unrealizedShortsNegatives", Value.fromBooleanArray(value));
+  set globalShortSizes(value: Array<BigInt>) {
+    this.set("globalShortSizes", Value.fromBigIntArray(value));
   }
 }

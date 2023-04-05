@@ -108,213 +108,35 @@ export function handleBlock(block: ethereum.Block): void {
     gmxState.glpPrice = glpManagerContract.getGlpPrice1();
     gmxState.glpComposition = rebalanceState.getGlpComposition();
 
-    /** WETH */
-    const longsAveragePriceWETH = gmxVaultContract
-      .guaranteedUsd(WETH_ADDRESS)
-      .toBigDecimal()
-      .times(BigDecimal.fromString("1e18"))
-      .div(gmxVaultContract.reservedAmounts(WETH_ADDRESS).toBigDecimal());
-    let longsUnrealizedPnlWETH = longsAveragePriceWETH
-      .minus(gmxState.assetsPrices[1].toBigDecimal())
-      .times(
-        gmxVaultContract
-          .reservedAmounts(WETH_ADDRESS)
-          .toBigDecimal()
-          .div(BigDecimal.fromString("1e18"))
-      );
-
-    const shortsAveragePriceWETH = gmxVaultContract.globalShortAveragePrices(
-      WETH_ADDRESS
-    );
-    const shortsPriceDeltaWETH = gmxState.assetsPrices[1].minus(
-      shortsAveragePriceWETH
-    );
-    const shortSizeBigDecimalWETH = gmxVaultContract
-      .globalShortSizes(WETH_ADDRESS)
-      .toBigDecimal();
-    const shortAvgPriceBigDecimalWETH = gmxVaultContract
-      .globalShortAveragePrices(WETH_ADDRESS)
-      .toBigDecimal();
-    let shortsUnrealizedPnlWETH = shortsPriceDeltaWETH
-      .toBigDecimal()
-      .times(shortSizeBigDecimalWETH)
-      .div(shortAvgPriceBigDecimalWETH);
-
-    /** WBTC */
-    const longsAveragePriceWBTC = gmxVaultContract
-      .guaranteedUsd(WBTC_ADDRESS)
-      .toBigDecimal()
-      .times(BigDecimal.fromString("1e8"))
-      .div(gmxVaultContract.reservedAmounts(WBTC_ADDRESS).toBigDecimal());
-    let longsUnrealizedPnlWBTC = longsAveragePriceWBTC
-      .minus(gmxState.assetsPrices[2].toBigDecimal())
-      .times(
-        gmxVaultContract
-          .reservedAmounts(WBTC_ADDRESS)
-          .toBigDecimal()
-          .div(BigDecimal.fromString("1e8"))
-      );
-
-    const shortsAveragePriceWBTC = gmxVaultContract.globalShortAveragePrices(
-      WBTC_ADDRESS
-    );
-    const shortsPriceDeltaWBTC = gmxState.assetsPrices[2].minus(
-      shortsAveragePriceWBTC
-    );
-    const shortSizeBigDecimalWBTC = gmxVaultContract
-      .globalShortSizes(WBTC_ADDRESS)
-      .toBigDecimal();
-    const shortAvgPriceBigDecimalWBTC = gmxVaultContract
-      .globalShortAveragePrices(WBTC_ADDRESS)
-      .toBigDecimal();
-    let shortsUnrealizedPnlWBTC = shortsPriceDeltaWBTC
-      .toBigDecimal()
-      .times(shortSizeBigDecimalWBTC)
-      .div(shortAvgPriceBigDecimalWBTC);
-
-    /** LINK */
-    const longsAveragePriceLINK = gmxVaultContract
-      .guaranteedUsd(LINK_ADDRESS)
-      .toBigDecimal()
-      .times(BigDecimal.fromString("1e18"))
-      .div(gmxVaultContract.reservedAmounts(LINK_ADDRESS).toBigDecimal());
-    let longsUnrealizedPnlLINK = longsAveragePriceLINK
-      .minus(gmxState.assetsPrices[3].toBigDecimal())
-      .times(
-        gmxVaultContract
-          .reservedAmounts(LINK_ADDRESS)
-          .toBigDecimal()
-          .div(BigDecimal.fromString("1e18"))
-      );
-
-    const shortsAveragePriceLINK = gmxVaultContract.globalShortAveragePrices(
-      LINK_ADDRESS
-    );
-    const shortsPriceDeltaLINK = gmxState.assetsPrices[3].minus(
-      shortsAveragePriceLINK
-    );
-    const shortSizeBigDecimalLINK = gmxVaultContract
-      .globalShortSizes(LINK_ADDRESS)
-      .toBigDecimal();
-    const shortAvgPriceBigDecimalLINK = gmxVaultContract
-      .globalShortAveragePrices(LINK_ADDRESS)
-      .toBigDecimal();
-    let shortsUnrealizedPnlLINK = shortsPriceDeltaLINK
-      .toBigDecimal()
-      .times(shortSizeBigDecimalLINK)
-      .div(shortAvgPriceBigDecimalLINK);
-
-    /** UNI */
-    const longsAveragePriceUNI = gmxVaultContract
-      .guaranteedUsd(UNI_ADDRESS)
-      .toBigDecimal()
-      .times(BigDecimal.fromString("1e18"))
-      .div(gmxVaultContract.reservedAmounts(UNI_ADDRESS).toBigDecimal());
-    let longsUnrealizedPnlUNI = longsAveragePriceUNI
-      .minus(gmxState.assetsPrices[4].toBigDecimal())
-      .times(
-        gmxVaultContract
-          .reservedAmounts(UNI_ADDRESS)
-          .toBigDecimal()
-          .div(BigDecimal.fromString("1e18"))
-      );
-
-    const shortsAveragePriceUNI = gmxVaultContract.globalShortAveragePrices(
-      UNI_ADDRESS
-    );
-    const shortsPriceDeltaUNI = gmxState.assetsPrices[4].minus(
-      shortsAveragePriceUNI
-    );
-    const shortSizeBigDecimalUNI = gmxVaultContract
-      .globalShortSizes(UNI_ADDRESS)
-      .toBigDecimal();
-    const shortAvgPriceBigDecimalUNI = gmxVaultContract
-      .globalShortAveragePrices(UNI_ADDRESS)
-      .toBigDecimal();
-    let shortsUnrealizedPnlUNI = shortsPriceDeltaUNI
-      .toBigDecimal()
-      .times(shortSizeBigDecimalUNI)
-      .div(shortAvgPriceBigDecimalUNI);
-
-    const unrealizedLongsNegatives = [false];
-
-    if (longsUnrealizedPnlWETH.toString().startsWith("-")) {
-      unrealizedLongsNegatives.push(true);
-      const abs = longsUnrealizedPnlWETH.toString().substring(0);
-      longsUnrealizedPnlWETH = BigDecimal.fromString(abs);
-    } else {
-      unrealizedLongsNegatives.push(false);
-    }
-    if (longsUnrealizedPnlWBTC.toString().startsWith("-")) {
-      unrealizedLongsNegatives.push(true);
-      const abs = longsUnrealizedPnlWBTC.toString().substring(0);
-      longsUnrealizedPnlWBTC = BigDecimal.fromString(abs);
-    } else {
-      unrealizedLongsNegatives.push(false);
-    }
-    if (longsUnrealizedPnlLINK.toString().startsWith("-")) {
-      unrealizedLongsNegatives.push(true);
-      const abs = longsUnrealizedPnlLINK.toString().substring(0);
-      longsUnrealizedPnlLINK = BigDecimal.fromString(abs);
-    } else {
-      unrealizedLongsNegatives.push(false);
-    }
-    if (longsUnrealizedPnlUNI.toString().startsWith("-")) {
-      unrealizedLongsNegatives.push(true);
-      const abs = longsUnrealizedPnlUNI.toString().substring(0);
-      longsUnrealizedPnlUNI = BigDecimal.fromString(abs);
-    } else {
-      unrealizedLongsNegatives.push(false);
-    }
-
-    gmxState.unrealizedLongsNegatives = unrealizedLongsNegatives;
-    gmxState.unrealizedLongsPNL = [
-      BigDecimal.zero(),
-      longsUnrealizedPnlWETH,
-      longsUnrealizedPnlWBTC,
-      longsUnrealizedPnlLINK,
-      longsUnrealizedPnlUNI,
+    gmxState.reservedAmounts = [
+      BigInt.zero(),
+      gmxVaultContract.reservedAmounts(WETH_ADDRESS),
+      gmxVaultContract.reservedAmounts(WBTC_ADDRESS),
+      gmxVaultContract.reservedAmounts(LINK_ADDRESS),
+      gmxVaultContract.reservedAmounts(UNI_ADDRESS),
+    ];
+    gmxState.guaranteedUsd = [
+      BigInt.zero(),
+      gmxVaultContract.guaranteedUsd(WETH_ADDRESS),
+      gmxVaultContract.guaranteedUsd(WBTC_ADDRESS),
+      gmxVaultContract.guaranteedUsd(LINK_ADDRESS),
+      gmxVaultContract.guaranteedUsd(UNI_ADDRESS),
+    ];
+    gmxState.shortsAveragePrices = [
+      BigInt.zero(),
+      gmxVaultContract.globalShortAveragePrices(WETH_ADDRESS),
+      gmxVaultContract.globalShortAveragePrices(WBTC_ADDRESS),
+      gmxVaultContract.globalShortAveragePrices(LINK_ADDRESS),
+      gmxVaultContract.globalShortAveragePrices(UNI_ADDRESS),
+    ];
+    gmxState.globalShortSizes = [
+      BigInt.zero(),
+      gmxVaultContract.globalShortSizes(WETH_ADDRESS),
+      gmxVaultContract.globalShortSizes(WBTC_ADDRESS),
+      gmxVaultContract.globalShortSizes(LINK_ADDRESS),
+      gmxVaultContract.globalShortSizes(UNI_ADDRESS),
     ];
 
-    const unrealizedShortsNegatives = [false];
-
-    if (shortsUnrealizedPnlWETH.toString().startsWith("-")) {
-      unrealizedShortsNegatives.push(true);
-      const abs = shortsUnrealizedPnlWETH.toString().substring(0);
-      shortsUnrealizedPnlWETH = BigDecimal.fromString(abs);
-    } else {
-      unrealizedShortsNegatives.push(false);
-    }
-    if (shortsUnrealizedPnlWBTC.toString().startsWith("-")) {
-      unrealizedShortsNegatives.push(true);
-      const abs = shortsUnrealizedPnlWBTC.toString().substring(0);
-      shortsUnrealizedPnlWBTC = BigDecimal.fromString(abs);
-    } else {
-      unrealizedShortsNegatives.push(false);
-    }
-    if (shortsUnrealizedPnlLINK.toString().startsWith("-")) {
-      unrealizedShortsNegatives.push(true);
-      const abs = shortsUnrealizedPnlLINK.toString().substring(0);
-      shortsUnrealizedPnlLINK = BigDecimal.fromString(abs);
-    } else {
-      unrealizedShortsNegatives.push(false);
-    }
-    if (shortsUnrealizedPnlUNI.toString().startsWith("-")) {
-      unrealizedShortsNegatives.push(true);
-      const abs = shortsUnrealizedPnlUNI.toString().substring(0);
-      shortsUnrealizedPnlUNI = BigDecimal.fromString(abs);
-    } else {
-      unrealizedShortsNegatives.push(false);
-    }
-
-    gmxState.unrealizedShortsNegatives = unrealizedShortsNegatives;
-    gmxState.unrealizedShortsPNL = [
-      BigDecimal.zero(),
-      shortsUnrealizedPnlWETH,
-      shortsUnrealizedPnlWBTC,
-      shortsUnrealizedPnlLINK,
-      shortsUnrealizedPnlUNI,
-    ];
     gmxState.save();
 
     /** USDC vault */
@@ -638,213 +460,35 @@ export function handleBlock(block: ethereum.Block): void {
     gmxState.glpPrice = glpManagerContract.getGlpPrice1();
     gmxState.glpComposition = rebalanceState.getGlpComposition();
 
-    /** WETH */
-    const longsAveragePriceWETH = gmxVaultContract
-      .guaranteedUsd(WETH_ADDRESS)
-      .toBigDecimal()
-      .times(BigDecimal.fromString("1e18"))
-      .div(gmxVaultContract.reservedAmounts(WETH_ADDRESS).toBigDecimal());
-    let longsUnrealizedPnlWETH = longsAveragePriceWETH
-      .minus(gmxState.assetsPrices[1].toBigDecimal())
-      .times(
-        gmxVaultContract
-          .reservedAmounts(WETH_ADDRESS)
-          .toBigDecimal()
-          .div(BigDecimal.fromString("1e18"))
-      );
-
-    const shortsAveragePriceWETH = gmxVaultContract.globalShortAveragePrices(
-      WETH_ADDRESS
-    );
-    const shortsPriceDeltaWETH = gmxState.assetsPrices[1].minus(
-      shortsAveragePriceWETH
-    );
-    const shortSizeBigDecimalWETH = gmxVaultContract
-      .globalShortSizes(WETH_ADDRESS)
-      .toBigDecimal();
-    const shortAvgPriceBigDecimalWETH = gmxVaultContract
-      .globalShortAveragePrices(WETH_ADDRESS)
-      .toBigDecimal();
-    let shortsUnrealizedPnlWETH = shortsPriceDeltaWETH
-      .toBigDecimal()
-      .times(shortSizeBigDecimalWETH)
-      .div(shortAvgPriceBigDecimalWETH);
-
-    /** WBTC */
-    const longsAveragePriceWBTC = gmxVaultContract
-      .guaranteedUsd(WBTC_ADDRESS)
-      .toBigDecimal()
-      .times(BigDecimal.fromString("1e8"))
-      .div(gmxVaultContract.reservedAmounts(WBTC_ADDRESS).toBigDecimal());
-    let longsUnrealizedPnlWBTC = longsAveragePriceWBTC
-      .minus(gmxState.assetsPrices[2].toBigDecimal())
-      .times(
-        gmxVaultContract
-          .reservedAmounts(WBTC_ADDRESS)
-          .toBigDecimal()
-          .div(BigDecimal.fromString("1e8"))
-      );
-
-    const shortsAveragePriceWBTC = gmxVaultContract.globalShortAveragePrices(
-      WBTC_ADDRESS
-    );
-    const shortsPriceDeltaWBTC = gmxState.assetsPrices[2].minus(
-      shortsAveragePriceWBTC
-    );
-    const shortSizeBigDecimalWBTC = gmxVaultContract
-      .globalShortSizes(WBTC_ADDRESS)
-      .toBigDecimal();
-    const shortAvgPriceBigDecimalWBTC = gmxVaultContract
-      .globalShortAveragePrices(WBTC_ADDRESS)
-      .toBigDecimal();
-    let shortsUnrealizedPnlWBTC = shortsPriceDeltaWBTC
-      .toBigDecimal()
-      .times(shortSizeBigDecimalWBTC)
-      .div(shortAvgPriceBigDecimalWBTC);
-
-    /** LINK */
-    const longsAveragePriceLINK = gmxVaultContract
-      .guaranteedUsd(LINK_ADDRESS)
-      .toBigDecimal()
-      .times(BigDecimal.fromString("1e18"))
-      .div(gmxVaultContract.reservedAmounts(LINK_ADDRESS).toBigDecimal());
-    let longsUnrealizedPnlLINK = longsAveragePriceLINK
-      .minus(gmxState.assetsPrices[3].toBigDecimal())
-      .times(
-        gmxVaultContract
-          .reservedAmounts(LINK_ADDRESS)
-          .toBigDecimal()
-          .div(BigDecimal.fromString("1e18"))
-      );
-
-    const shortsAveragePriceLINK = gmxVaultContract.globalShortAveragePrices(
-      LINK_ADDRESS
-    );
-    const shortsPriceDeltaLINK = gmxState.assetsPrices[3].minus(
-      shortsAveragePriceLINK
-    );
-    const shortSizeBigDecimalLINK = gmxVaultContract
-      .globalShortSizes(LINK_ADDRESS)
-      .toBigDecimal();
-    const shortAvgPriceBigDecimalLINK = gmxVaultContract
-      .globalShortAveragePrices(LINK_ADDRESS)
-      .toBigDecimal();
-    let shortsUnrealizedPnlLINK = shortsPriceDeltaLINK
-      .toBigDecimal()
-      .times(shortSizeBigDecimalLINK)
-      .div(shortAvgPriceBigDecimalLINK);
-
-    /** UNI */
-    const longsAveragePriceUNI = gmxVaultContract
-      .guaranteedUsd(UNI_ADDRESS)
-      .toBigDecimal()
-      .times(BigDecimal.fromString("1e18"))
-      .div(gmxVaultContract.reservedAmounts(UNI_ADDRESS).toBigDecimal());
-    let longsUnrealizedPnlUNI = longsAveragePriceUNI
-      .minus(gmxState.assetsPrices[4].toBigDecimal())
-      .times(
-        gmxVaultContract
-          .reservedAmounts(UNI_ADDRESS)
-          .toBigDecimal()
-          .div(BigDecimal.fromString("1e18"))
-      );
-
-    const shortsAveragePriceUNI = gmxVaultContract.globalShortAveragePrices(
-      UNI_ADDRESS
-    );
-    const shortsPriceDeltaUNI = gmxState.assetsPrices[4].minus(
-      shortsAveragePriceUNI
-    );
-    const shortSizeBigDecimalUNI = gmxVaultContract
-      .globalShortSizes(UNI_ADDRESS)
-      .toBigDecimal();
-    const shortAvgPriceBigDecimalUNI = gmxVaultContract
-      .globalShortAveragePrices(UNI_ADDRESS)
-      .toBigDecimal();
-    let shortsUnrealizedPnlUNI = shortsPriceDeltaUNI
-      .toBigDecimal()
-      .times(shortSizeBigDecimalUNI)
-      .div(shortAvgPriceBigDecimalUNI);
-
-    const unrealizedLongsNegatives = [false];
-
-    if (longsUnrealizedPnlWETH.toString().startsWith("-")) {
-      unrealizedLongsNegatives.push(true);
-      const abs = longsUnrealizedPnlWETH.toString().substring(0);
-      longsUnrealizedPnlWETH = BigDecimal.fromString(abs);
-    } else {
-      unrealizedLongsNegatives.push(false);
-    }
-    if (longsUnrealizedPnlWBTC.toString().startsWith("-")) {
-      unrealizedLongsNegatives.push(true);
-      const abs = longsUnrealizedPnlWBTC.toString().substring(0);
-      longsUnrealizedPnlWBTC = BigDecimal.fromString(abs);
-    } else {
-      unrealizedLongsNegatives.push(false);
-    }
-    if (longsUnrealizedPnlLINK.toString().startsWith("-")) {
-      unrealizedLongsNegatives.push(true);
-      const abs = longsUnrealizedPnlLINK.toString().substring(0);
-      longsUnrealizedPnlLINK = BigDecimal.fromString(abs);
-    } else {
-      unrealizedLongsNegatives.push(false);
-    }
-    if (longsUnrealizedPnlUNI.toString().startsWith("-")) {
-      unrealizedLongsNegatives.push(true);
-      const abs = longsUnrealizedPnlUNI.toString().substring(0);
-      longsUnrealizedPnlUNI = BigDecimal.fromString(abs);
-    } else {
-      unrealizedLongsNegatives.push(false);
-    }
-
-    gmxState.unrealizedLongsNegatives = unrealizedLongsNegatives;
-    gmxState.unrealizedLongsPNL = [
-      BigDecimal.zero(),
-      longsUnrealizedPnlWETH,
-      longsUnrealizedPnlWBTC,
-      longsUnrealizedPnlLINK,
-      longsUnrealizedPnlUNI,
+    gmxState.reservedAmounts = [
+      BigInt.zero(),
+      gmxVaultContract.reservedAmounts(WETH_ADDRESS),
+      gmxVaultContract.reservedAmounts(WBTC_ADDRESS),
+      gmxVaultContract.reservedAmounts(LINK_ADDRESS),
+      gmxVaultContract.reservedAmounts(UNI_ADDRESS),
+    ];
+    gmxState.guaranteedUsd = [
+      BigInt.zero(),
+      gmxVaultContract.guaranteedUsd(WETH_ADDRESS),
+      gmxVaultContract.guaranteedUsd(WBTC_ADDRESS),
+      gmxVaultContract.guaranteedUsd(LINK_ADDRESS),
+      gmxVaultContract.guaranteedUsd(UNI_ADDRESS),
+    ];
+    gmxState.shortsAveragePrices = [
+      BigInt.zero(),
+      gmxVaultContract.globalShortAveragePrices(WETH_ADDRESS),
+      gmxVaultContract.globalShortAveragePrices(WBTC_ADDRESS),
+      gmxVaultContract.globalShortAveragePrices(LINK_ADDRESS),
+      gmxVaultContract.globalShortAveragePrices(UNI_ADDRESS),
+    ];
+    gmxState.globalShortSizes = [
+      BigInt.zero(),
+      gmxVaultContract.globalShortSizes(WETH_ADDRESS),
+      gmxVaultContract.globalShortSizes(WBTC_ADDRESS),
+      gmxVaultContract.globalShortSizes(LINK_ADDRESS),
+      gmxVaultContract.globalShortSizes(UNI_ADDRESS),
     ];
 
-    const unrealizedShortsNegatives = [false];
-
-    if (shortsUnrealizedPnlWETH.toString().startsWith("-")) {
-      unrealizedShortsNegatives.push(true);
-      const abs = shortsUnrealizedPnlWETH.toString().substring(0);
-      shortsUnrealizedPnlWETH = BigDecimal.fromString(abs);
-    } else {
-      unrealizedShortsNegatives.push(false);
-    }
-    if (shortsUnrealizedPnlWBTC.toString().startsWith("-")) {
-      unrealizedShortsNegatives.push(true);
-      const abs = shortsUnrealizedPnlWBTC.toString().substring(0);
-      shortsUnrealizedPnlWBTC = BigDecimal.fromString(abs);
-    } else {
-      unrealizedShortsNegatives.push(false);
-    }
-    if (shortsUnrealizedPnlLINK.toString().startsWith("-")) {
-      unrealizedShortsNegatives.push(true);
-      const abs = shortsUnrealizedPnlLINK.toString().substring(0);
-      shortsUnrealizedPnlLINK = BigDecimal.fromString(abs);
-    } else {
-      unrealizedShortsNegatives.push(false);
-    }
-    if (shortsUnrealizedPnlUNI.toString().startsWith("-")) {
-      unrealizedShortsNegatives.push(true);
-      const abs = shortsUnrealizedPnlUNI.toString().substring(0);
-      shortsUnrealizedPnlUNI = BigDecimal.fromString(abs);
-    } else {
-      unrealizedShortsNegatives.push(false);
-    }
-
-    gmxState.unrealizedShortsNegatives = unrealizedShortsNegatives;
-    gmxState.unrealizedShortsPNL = [
-      BigDecimal.zero(),
-      shortsUnrealizedPnlWETH,
-      shortsUnrealizedPnlWBTC,
-      shortsUnrealizedPnlLINK,
-      shortsUnrealizedPnlUNI,
-    ];
     gmxState.save();
 
     /** USDC vault */

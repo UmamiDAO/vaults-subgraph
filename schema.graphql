@@ -178,8 +178,12 @@ type GmxState @entity(immutable: true) {
   assetsPrices: [BigInt!]! # uint256[5]
   glpPrice: BigInt! # uint256[5]
   glpComposition: [BigInt!]! # uint256[5]
-  unrealizedLongsPNL: [BigDecimal!]! # uint256
-  unrealizedLongsNegatives: [Boolean!]! # uint256
-  unrealizedShortsPNL: [BigDecimal!]! # uint256
-  unrealizedShortsNegatives: [Boolean!]! # uint256
+  # unrealizedLongsPNL: [BigDecimal!]! # uint256[5]
+  # unrealizedLongsNegatives: [Boolean!]! # uint256
+  # unrealizedShortsPNL: [BigDecimal!]! # uint256[5]
+  # unrealizedShortsNegatives: [Boolean!]! # uint256
+  reservedAmounts: [BigInt!]! # uint256[5]
+  guaranteedUsd: [BigInt!]! # uint256[5]
+  shortsAveragePrices: [BigInt!]! # uint256[5]
+  globalShortSizes: [BigInt!]! # uint256[5]
 }
