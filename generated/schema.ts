@@ -11,98 +11,6 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class VaultPpsLastTimestampQuick extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(
-      id != null,
-      "Cannot save VaultPpsLastTimestampQuick entity without an ID"
-    );
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type VaultPpsLastTimestampQuick must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
-      );
-      store.set("VaultPpsLastTimestampQuick", id.toString(), this);
-    }
-  }
-
-  static load(id: string): VaultPpsLastTimestampQuick | null {
-    return changetype<VaultPpsLastTimestampQuick | null>(
-      store.get("VaultPpsLastTimestampQuick", id)
-    );
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get timestamp(): BigInt {
-    let value = this.get("timestamp");
-    return value!.toBigInt();
-  }
-
-  set timestamp(value: BigInt) {
-    this.set("timestamp", Value.fromBigInt(value));
-  }
-}
-
-export class VaultPpsLastTimestampSlow extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(
-      id != null,
-      "Cannot save VaultPpsLastTimestampSlow entity without an ID"
-    );
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type VaultPpsLastTimestampSlow must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
-      );
-      store.set("VaultPpsLastTimestampSlow", id.toString(), this);
-    }
-  }
-
-  static load(id: string): VaultPpsLastTimestampSlow | null {
-    return changetype<VaultPpsLastTimestampSlow | null>(
-      store.get("VaultPpsLastTimestampSlow", id)
-    );
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get timestamp(): BigInt {
-    let value = this.get("timestamp");
-    return value!.toBigInt();
-  }
-
-  set timestamp(value: BigInt) {
-    this.set("timestamp", Value.fromBigInt(value));
-  }
-}
-
 export class VaultPricePerShare extends Entity {
   constructor(id: string) {
     super();
@@ -152,15 +60,6 @@ export class VaultPricePerShare extends Entity {
 
   set timestamp(value: BigInt) {
     this.set("timestamp", Value.fromBigInt(value));
-  }
-
-  get event(): string {
-    let value = this.get("event");
-    return value!.toString();
-  }
-
-  set event(value: string) {
-    this.set("event", Value.fromString(value));
   }
 
   get vault(): string {
@@ -231,24 +130,6 @@ export class VaultTVL extends Entity {
     this.set("timestamp", Value.fromBigInt(value));
   }
 
-  get event(): string {
-    let value = this.get("event");
-    return value!.toString();
-  }
-
-  set event(value: string) {
-    this.set("event", Value.fromString(value));
-  }
-
-  get txHash(): string {
-    let value = this.get("txHash");
-    return value!.toString();
-  }
-
-  set txHash(value: string) {
-    this.set("txHash", Value.fromString(value));
-  }
-
   get vault(): string {
     let value = this.get("vault");
     return value!.toString();
@@ -317,24 +198,6 @@ export class VaultTotalSupply extends Entity {
 
   set timestamp(value: BigInt) {
     this.set("timestamp", Value.fromBigInt(value));
-  }
-
-  get event(): string {
-    let value = this.get("event");
-    return value!.toString();
-  }
-
-  set event(value: string) {
-    this.set("event", Value.fromString(value));
-  }
-
-  get txHash(): string {
-    let value = this.get("txHash");
-    return value!.toString();
-  }
-
-  set txHash(value: string) {
-    this.set("txHash", Value.fromString(value));
   }
 
   get vault(): string {

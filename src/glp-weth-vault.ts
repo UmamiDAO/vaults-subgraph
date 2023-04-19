@@ -1,7 +1,76 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import { Transfer as GlpWethVaultTransferEvent } from "../generated/GlpWethVault/GlpWethVault";
-import { UserVaultBalance, UserVaultBalanceTotal } from "../generated/schema";
-import { WETH_VAULT_ADDRESS, ZERO_ADDRESS } from "./constants";
+import {
+  Deposit as DepositEvent,
+  Withdraw as WithdrawEvent,
+  Transfer as GlpWethVaultTransferEvent,
+  GlpWethVault,
+} from "../generated/GlpWethVault/GlpWethVault";
+import {
+  UserVaultBalance,
+  UserVaultBalanceTotal,
+  VaultTVL,
+  VaultTotalSupply,
+} from "../generated/schema";
+import {
+  AGGREGATE_VAULT_ADDRESS,
+  WETH_VAULT_ADDRESS,
+  ZERO_ADDRESS,
+} from "./constants";
+import { AggregateVault } from "../generated/AggregateVault/AggregateVault";
+
+export function handleGlpWethDeposit(event: DepositEvent): void {
+  const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
+  const vaultContract = GlpWethVault.bind(WETH_VAULT_ADDRESS);
+
+  /** TVL */
+
+  const tvlEntityId = `${event.transaction.hash.toHex()}:tvl`;
+  const vaultTvlEntity = new VaultTVL(tvlEntityId);
+
+  vaultTvlEntity.block = event.block.number;
+  vaultTvlEntity.timestamp = event.block.timestamp;
+  vaultTvlEntity.vault = WETH_VAULT_ADDRESS.toHexString();
+  vaultTvlEntity.tvl = aggregateVault.getVaultTVL(WETH_VAULT_ADDRESS);
+  vaultTvlEntity.save();
+
+  /** Total supply */
+
+  const supplyEntityId = `${event.transaction.hash.toHex()}:supply`;
+  const totalSupplyEntity = new VaultTotalSupply(supplyEntityId);
+
+  totalSupplyEntity.block = event.block.number;
+  totalSupplyEntity.timestamp = event.block.timestamp;
+  totalSupplyEntity.vault = WETH_VAULT_ADDRESS.toHexString();
+  totalSupplyEntity.totalSupply = vaultContract.totalSupply();
+  totalSupplyEntity.save();
+}
+
+export function handleGlpWethWithdraw(event: WithdrawEvent): void {
+  const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
+  const vaultContract = GlpWethVault.bind(WETH_VAULT_ADDRESS);
+
+  /** TVL */
+
+  const tvlEntityId = `${event.transaction.hash.toHex()}:tvl`;
+  const vaultTvlEntity = new VaultTVL(tvlEntityId);
+
+  vaultTvlEntity.block = event.block.number;
+  vaultTvlEntity.timestamp = event.block.timestamp;
+  vaultTvlEntity.vault = WETH_VAULT_ADDRESS.toHexString();
+  vaultTvlEntity.tvl = aggregateVault.getVaultTVL(WETH_VAULT_ADDRESS);
+  vaultTvlEntity.save();
+
+  /** Total supply */
+
+  const supplyEntityId = `${event.transaction.hash.toHex()}:supply`;
+  const totalSupplyEntity = new VaultTotalSupply(supplyEntityId);
+
+  totalSupplyEntity.block = event.block.number;
+  totalSupplyEntity.timestamp = event.block.timestamp;
+  totalSupplyEntity.vault = WETH_VAULT_ADDRESS.toHexString();
+  totalSupplyEntity.totalSupply = vaultContract.totalSupply();
+  totalSupplyEntity.save();
+}
 
 export function handleGlpWethVaultTransfer(
   event: GlpWethVaultTransferEvent

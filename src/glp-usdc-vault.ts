@@ -1,7 +1,76 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import { Transfer as GlpUsdcTransferEvent } from "../generated/GlpUsdcVault/GlpUsdcVault";
-import { UserVaultBalance, UserVaultBalanceTotal } from "../generated/schema";
-import { USDC_VAULT_ADDRESS, ZERO_ADDRESS } from "./constants";
+import {
+  Deposit as DepositEvent,
+  Withdraw as WithdrawEvent,
+  Transfer as GlpUsdcTransferEvent,
+  GlpUsdcVault,
+} from "../generated/GlpUsdcVault/GlpUsdcVault";
+import {
+  UserVaultBalance,
+  UserVaultBalanceTotal,
+  VaultTVL,
+  VaultTotalSupply,
+} from "../generated/schema";
+import {
+  AGGREGATE_VAULT_ADDRESS,
+  USDC_VAULT_ADDRESS,
+  ZERO_ADDRESS,
+} from "./constants";
+import { AggregateVault } from "../generated/AggregateVault/AggregateVault";
+
+export function handleGlpUsdcDeposit(event: DepositEvent): void {
+  const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
+  const vaultContract = GlpUsdcVault.bind(USDC_VAULT_ADDRESS);
+
+  /** TVL */
+
+  const tvlEntityId = `${event.transaction.hash.toHex()}:tvl`;
+  const vaultTvlEntity = new VaultTVL(tvlEntityId);
+
+  vaultTvlEntity.block = event.block.number;
+  vaultTvlEntity.timestamp = event.block.timestamp;
+  vaultTvlEntity.vault = USDC_VAULT_ADDRESS.toHexString();
+  vaultTvlEntity.tvl = aggregateVault.getVaultTVL(USDC_VAULT_ADDRESS);
+  vaultTvlEntity.save();
+
+  /** Total supply */
+
+  const supplyEntityId = `${event.transaction.hash.toHex()}:supply`;
+  const totalSupplyEntity = new VaultTotalSupply(supplyEntityId);
+
+  totalSupplyEntity.block = event.block.number;
+  totalSupplyEntity.timestamp = event.block.timestamp;
+  totalSupplyEntity.vault = USDC_VAULT_ADDRESS.toHexString();
+  totalSupplyEntity.totalSupply = vaultContract.totalSupply();
+  totalSupplyEntity.save();
+}
+
+export function handleGlpUsdcWithdraw(event: WithdrawEvent): void {
+  const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
+  const vaultContract = GlpUsdcVault.bind(USDC_VAULT_ADDRESS);
+
+  /** TVL */
+
+  const tvlEntityId = `${event.transaction.hash.toHex()}:tvl`;
+  const vaultTvlEntity = new VaultTVL(tvlEntityId);
+
+  vaultTvlEntity.block = event.block.number;
+  vaultTvlEntity.timestamp = event.block.timestamp;
+  vaultTvlEntity.vault = USDC_VAULT_ADDRESS.toHexString();
+  vaultTvlEntity.tvl = aggregateVault.getVaultTVL(USDC_VAULT_ADDRESS);
+  vaultTvlEntity.save();
+
+  /** Total supply */
+
+  const supplyEntityId = `${event.transaction.hash.toHex()}:supply`;
+  const totalSupplyEntity = new VaultTotalSupply(supplyEntityId);
+
+  totalSupplyEntity.block = event.block.number;
+  totalSupplyEntity.timestamp = event.block.timestamp;
+  totalSupplyEntity.vault = USDC_VAULT_ADDRESS.toHexString();
+  totalSupplyEntity.totalSupply = vaultContract.totalSupply();
+  totalSupplyEntity.save();
+}
 
 export function handleTransfer(event: GlpUsdcTransferEvent): void {
   const amount = event.params.amount;

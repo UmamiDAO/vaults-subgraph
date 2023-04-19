@@ -1,7 +1,76 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import { Transfer as GlpUniVaultTransferEvent } from "../generated/GlpUniVault/GlpUniVault";
-import { UserVaultBalance, UserVaultBalanceTotal } from "../generated/schema";
-import { UNI_VAULT_ADDRESS, ZERO_ADDRESS } from "./constants";
+import {
+  Deposit as DepositEvent,
+  Withdraw as WithdrawEvent,
+  Transfer as GlpUniVaultTransferEvent,
+  GlpUniVault,
+} from "../generated/GlpUniVault/GlpUniVault";
+import {
+  UserVaultBalance,
+  UserVaultBalanceTotal,
+  VaultTVL,
+  VaultTotalSupply,
+} from "../generated/schema";
+import {
+  AGGREGATE_VAULT_ADDRESS,
+  UNI_VAULT_ADDRESS,
+  ZERO_ADDRESS,
+} from "./constants";
+import { AggregateVault } from "../generated/AggregateVault/AggregateVault";
+
+export function handleGlpWbtcDeposit(event: DepositEvent): void {
+  const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
+  const vaultContract = GlpUniVault.bind(UNI_VAULT_ADDRESS);
+
+  /** TVL */
+
+  const tvlEntityId = `${event.transaction.hash.toHex()}:tvl`;
+  const vaultTvlEntity = new VaultTVL(tvlEntityId);
+
+  vaultTvlEntity.block = event.block.number;
+  vaultTvlEntity.timestamp = event.block.timestamp;
+  vaultTvlEntity.vault = UNI_VAULT_ADDRESS.toHexString();
+  vaultTvlEntity.tvl = aggregateVault.getVaultTVL(UNI_VAULT_ADDRESS);
+  vaultTvlEntity.save();
+
+  /** Total supply */
+
+  const supplyEntityId = `${event.transaction.hash.toHex()}:supply`;
+  const totalSupplyEntity = new VaultTotalSupply(supplyEntityId);
+
+  totalSupplyEntity.block = event.block.number;
+  totalSupplyEntity.timestamp = event.block.timestamp;
+  totalSupplyEntity.vault = UNI_VAULT_ADDRESS.toHexString();
+  totalSupplyEntity.totalSupply = vaultContract.totalSupply();
+  totalSupplyEntity.save();
+}
+
+export function handleGlpWbtcWithdraw(event: WithdrawEvent): void {
+  const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
+  const vaultContract = GlpUniVault.bind(UNI_VAULT_ADDRESS);
+
+  /** TVL */
+
+  const tvlEntityId = `${event.transaction.hash.toHex()}:tvl`;
+  const vaultTvlEntity = new VaultTVL(tvlEntityId);
+
+  vaultTvlEntity.block = event.block.number;
+  vaultTvlEntity.timestamp = event.block.timestamp;
+  vaultTvlEntity.vault = UNI_VAULT_ADDRESS.toHexString();
+  vaultTvlEntity.tvl = aggregateVault.getVaultTVL(UNI_VAULT_ADDRESS);
+  vaultTvlEntity.save();
+
+  /** Total supply */
+
+  const supplyEntityId = `${event.transaction.hash.toHex()}:supply`;
+  const totalSupplyEntity = new VaultTotalSupply(supplyEntityId);
+
+  totalSupplyEntity.block = event.block.number;
+  totalSupplyEntity.timestamp = event.block.timestamp;
+  totalSupplyEntity.vault = UNI_VAULT_ADDRESS.toHexString();
+  totalSupplyEntity.totalSupply = vaultContract.totalSupply();
+  totalSupplyEntity.save();
+}
 
 export function handleGlpUniVaultTransfer(
   event: GlpUniVaultTransferEvent
