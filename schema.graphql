@@ -13,7 +13,6 @@ type VaultPricePerShare @entity(immutable: true) {
   block: BigInt!
   timestamp: BigInt!
   event: String!
-  txHash: String!
   vault: String!
   pricePerShare: BigInt!
 }
@@ -58,54 +57,10 @@ type UserVaultBalance @entity(immutable: true) {
   vault: String!
 }
 
-type RebalanceSnapshot @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt!
-  block: BigInt!
-  txHash: String!
-  event: String!
-  epoch: BigInt!
-  glpPrice: BigInt!
-  vaultsTVL: [BigInt!]!
-  vaultsPps: [BigInt!]!
-  vaultsGlpAlloc: [BigInt!]!
-  aggregatePositions: [BigInt!]!
-  usdcVaultExternalPositions: [BigInt!]!
-  wethVaultExternalPositions: [BigInt!]!
-  wbtcVaultExternalPositions: [BigInt!]!
-  linkVaultExternalPositions: [BigInt!]!
-  uniVaultExternalPositions: [BigInt!]!
-  usdcVaultNettedPositions: [BigInt!]!
-  wethVaultNettedPositions: [BigInt!]!
-  wbtcVaultNettedPositions: [BigInt!]!
-  linkVaultNettedPositions: [BigInt!]!
-  uniVaultNettedPositions: [BigInt!]!
-  glpComposition: [BigInt!]!
-  assetsPrices: [BigInt!]!
-}
-
-type OpenRebalance @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt! # uint256
-  block: BigInt! # uint256
-  epoch: BigInt! # uint256
-  nextVaultGlpAlloc: [BigInt!]! # uint256[5]
-  nextGlpComp: [BigInt!]! # uint256[5]
-  adjustedPositions: [BigInt!]! # int256[5]
-}
-
-type CloseRebalance @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt! # uint256
-  block: BigInt! # uint256
-  epoch: BigInt! # uint256
-}
-
 type VaultFeesCollection @entity(immutable: true) {
   id: ID!
   timestamp: BigInt! # uint256
   block: BigInt! # uint256
-  epoch: BigInt! # uint256
   totalVaultFee: BigInt! # uint256
   performanceFeeInAsset: BigInt! # uint256
   managementFeeInAsset: BigInt! # uint256
@@ -117,77 +72,5 @@ type CompoundDistributeYield @entity(immutable: true) {
   id: ID!
   timestamp: BigInt! # uint256
   block: BigInt! # uint256
-  epoch: BigInt! # uint256
   glpYieldPerVault: [BigInt!]! # uint256[5]
-}
-
-type Cycle @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt! # uint256
-  block: BigInt! # uint256
-  epoch: BigInt! # uint256
-  round: BigInt! # uint256
-}
-
-type RebalanceGlpPosition @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt! # uint256
-  block: BigInt! # uint256
-  epoch: BigInt! # uint256
-  vaultGlpAttributionBefore: [BigInt!]! # uint256[5]
-  vaultGlpAttributionAfter: [BigInt!]! # uint256[5]
-  targetGlpAllocation: [BigInt!]! # uint256[5]
-  vaultGlpDeltaToExecute: [BigInt!]! # int256[5]
-  totalVaultGlpDelta: [BigInt!]! # int256[5]
-}
-
-type SettleNettedPositionPnl @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt! # uint256
-  block: BigInt! # uint256
-  epoch: BigInt! # uint256
-  previousGlpAmount: [BigInt!]! # uint256[5]
-  settledGlpAmount: [BigInt!]! # uint256[5]
-  glpPnl: [BigInt!]! # int256[5]
-  dollarPnl: [BigInt!]! # int256[5]
-  percentPriceChange: [BigInt!]! # int256[5]
-}
-
-type UpdateNettingCheckpointPrice @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt! # uint256
-  block: BigInt! # uint256
-  epoch: BigInt! # uint256
-  oldPrices_stable: BigInt! # uint256
-  oldPrices_eth: BigInt! # uint256
-  oldPrices_btc: BigInt! # uint256
-  oldPrices_link: BigInt! # uint256
-  oldPrices_uni: BigInt! # uint256
-  newPrices_stable: BigInt! # uint256
-  newPrices_eth: BigInt! # uint256
-  newPrices_btc: BigInt! # uint256
-  newPrices_link: BigInt! # uint256
-  newPrices_uni: BigInt! # uint256
-}
-
-type GmxState @entity(immutable: true) {
-  id: ID!
-  block: BigInt! # uint256
-  timestamp: BigInt! # uint256
-  event: String!
-  assetsPrices: [BigInt!]! # uint256[5]
-  glpPrice: BigInt! # uint256[5]
-  glpComposition: [BigInt!]! # uint256[5]
-  reservedAmounts: [BigInt!]! # uint256[5]
-  guaranteedUsd: [BigInt!]! # uint256[5]
-  shortsAveragePrices: [BigInt!]! # uint256[5]
-  globalShortSizes: [BigInt!]! # uint256[5]
-}
-
-type GmxClosedPositionPnl @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  profit: BigInt!
-  loss: BigInt!
 }
