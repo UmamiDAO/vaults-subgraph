@@ -6,16 +6,16 @@ export const KEEPER_ADDRESS = Address.fromString(
   "0x72273a8317f789ee944fbaa692cc562077261ed3"
 );
 
-export const AGGREGATE_VAULT_ADDRESS = Address.fromString(
-  "0x7f5C4f910a672763BA343A71e03730c2518A7d18"
+export const AGGREGATE_VAULT_HELPER_ADDRESS = Address.fromString(
+  "0x5573e7535efb06c757350068a8f0d6fed43f1ad0"
 );
 
-export const VAULT_HELPER_ADDRESS = Address.fromString(
-  "0x49fe379529db8af3720a0c4a8d13ecd587d1b55b"
+export const AGGREGATE_VAULT_ADDRESS = Address.fromString(
+  "0x6e258be26e713387a058f8644f514ae7ed3320ad"
 );
 
 export const USDC_VAULT_ADDRESS = Address.fromString(
-  "0xC86064D7A396B913eCf8A3CBe22d8F285b3DD17C"
+  "0x348fd77c569ff888ab93c03860e7cf5f59760d35"
 );
 
 export const USDC_ADDRESS = Address.fromString(
@@ -23,7 +23,7 @@ export const USDC_ADDRESS = Address.fromString(
 );
 
 export const WETH_VAULT_ADDRESS = Address.fromString(
-  "0xbB7E775CF4DB40AE859865a8b2FDeF9f514d2400"
+  "0xEaa2C841cC4901d93FAf85B48245C4C72A5FE8Aa"
 );
 
 export const WETH_ADDRESS = Address.fromString(
@@ -31,7 +31,7 @@ export const WETH_ADDRESS = Address.fromString(
 );
 
 export const WBTC_VAULT_ADDRESS = Address.fromString(
-  "0xdD8883Ba5A137323B61f73fD5783F2be6bDe4bbc"
+  "0x466683aBC221A38d02cF4da05258D203De118500"
 );
 
 export const WBTC_ADDRESS = Address.fromString(
@@ -39,7 +39,7 @@ export const WBTC_ADDRESS = Address.fromString(
 );
 
 export const LINK_VAULT_ADDRESS = Address.fromString(
-  "0xf883b684ffE3b6B08fca4b19cc8f25D3Da8EA2BF"
+  "0x7387eB285C7e0Ddcff5Ce05D1895aD9573702218"
 );
 
 export const LINK_ADDRESS = Address.fromString(
@@ -47,7 +47,7 @@ export const LINK_ADDRESS = Address.fromString(
 );
 
 export const UNI_VAULT_ADDRESS = Address.fromString(
-  "0x836289A0Ee618C48f8403f3Ee9e0237133ffC9c6"
+  "0x6528709f58A88511B887326Fe713bd93353062a7"
 );
 
 export const UNI_ADDRESS = Address.fromString(

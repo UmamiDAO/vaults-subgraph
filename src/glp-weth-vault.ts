@@ -1,10 +1,5 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import {
-  GlpWethVaultDeposit as GlpWethVaultDepositEvent,
-  GlpWethVaultRebalanceRequest as GlpWethVaultRebalanceRequestEvent,
-  GlpWethVaultTransfer as GlpWethVaultTransferEvent,
-  GlpWethVaultWithdraw as GlpWethVaultWithdrawEvent,
-} from "../generated/GlpWethVault/GlpWethVault";
+import { Transfer as GlpWethVaultTransferEvent } from "../generated/GlpWethVault/GlpWethVault";
 import { UserVaultBalance, UserVaultBalanceTotal } from "../generated/schema";
 import { WETH_VAULT_ADDRESS, ZERO_ADDRESS } from "./constants";
 
@@ -87,15 +82,3 @@ export function handleGlpWethVaultTransfer(
     toHistoricalBalance.save();
   }
 }
-
-export function handleGlpWethVaultRebalanceRequest(
-  event: GlpWethVaultRebalanceRequestEvent
-): void {}
-
-export function handleGlpWethVaultDeposit(
-  event: GlpWethVaultDepositEvent
-): void {}
-
-export function handleGlpWethVaultWithdraw(
-  event: GlpWethVaultWithdrawEvent
-): void {}

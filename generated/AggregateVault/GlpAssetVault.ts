@@ -184,9 +184,9 @@ export class Withdraw__Params {
   }
 }
 
-export class GlpUsdcVault extends ethereum.SmartContract {
-  static bind(address: Address): GlpUsdcVault {
-    return new GlpUsdcVault("GlpUsdcVault", address);
+export class GlpAssetVault extends ethereum.SmartContract {
+  static bind(address: Address): GlpAssetVault {
+    return new GlpAssetVault("GlpAssetVault", address);
   }
 
   AUTH(): Address {

@@ -1,7 +1,11 @@
 [
   {
     "inputs": [
-      { "internalType": "contract Auth", "name": "_auth", "type": "address" },
+      {
+        "internalType": "contract Auth",
+        "name": "_auth",
+        "type": "address"
+      },
       {
         "internalType": "contract GlpHandler",
         "name": "_glpHandler",
@@ -11,10 +15,26 @@
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
-  { "inputs": [], "name": "CallbackHandlerNotSet", "type": "error" },
-  { "inputs": [], "name": "OnlySelf", "type": "error" },
-  { "inputs": [], "name": "UnknownCallback", "type": "error" },
-  { "inputs": [], "name": "UnknownHandlerContract", "type": "error" },
+  {
+    "inputs": [],
+    "name": "CallbackHandlerNotSet",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OnlySelf",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UnknownCallback",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UnknownHandlerContract",
+    "type": "error"
+  },
   {
     "anonymous": false,
     "inputs": [
@@ -72,6 +92,12 @@
         "indexed": false,
         "internalType": "uint256",
         "name": "managementFeeInAsset",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "slowReleaseMintAmount",
         "type": "uint256"
       },
       {
@@ -217,11 +243,20 @@
     "name": "Unpaused",
     "type": "event"
   },
-  { "stateMutability": "payable", "type": "fallback" },
+  {
+    "stateMutability": "payable",
+    "type": "fallback"
+  },
   {
     "inputs": [],
     "name": "ADMIN_ROLE",
-    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -229,7 +264,11 @@
     "inputs": [],
     "name": "AUTH",
     "outputs": [
-      { "internalType": "contract Auth", "name": "", "type": "address" }
+      {
+        "internalType": "contract Auth",
+        "name": "",
+        "type": "address"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -237,21 +276,39 @@
   {
     "inputs": [],
     "name": "SCALE",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "STORAGE_SLOT",
-    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "WETH",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -275,7 +332,11 @@
         "name": "vaultGlpAlloc",
         "type": "uint256[5]"
       },
-      { "internalType": "uint256[5]", "name": "glpComp", "type": "uint256[5]" },
+      {
+        "internalType": "uint256[5]",
+        "name": "glpComp",
+        "type": "uint256[5]"
+      },
       {
         "internalType": "int256[5][5]",
         "name": "hedgeMatrix",
@@ -294,7 +355,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_glpPrice", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_glpPrice",
+        "type": "uint256"
+      }
     ],
     "name": "closeRebalancePeriod",
     "outputs": [],
@@ -304,14 +369,28 @@
   {
     "inputs": [],
     "name": "currentCallbackHandler",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256[5]", "name": "", "type": "uint256[5]" },
-      { "internalType": "uint256", "name": "", "type": "uint256" }
+      {
+        "internalType": "uint256[5]",
+        "name": "",
+        "type": "uint256[5]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
     "name": "cycle",
     "outputs": [],
@@ -319,7 +398,13 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "bytes4", "name": "", "type": "bytes4" }],
+    "inputs": [
+      {
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+      }
+    ],
     "name": "defaultHandlers",
     "outputs": [
       {
@@ -333,11 +418,72 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_handler", "type": "address" },
-      { "internalType": "bytes", "name": "data", "type": "bytes" }
+      {
+        "internalType": "address",
+        "name": "_target",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_data",
+        "type": "bytes"
+      }
+    ],
+    "name": "delegateview",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "_success",
+        "type": "bool"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_ret",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_target",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_data",
+        "type": "bytes"
+      }
+    ],
+    "name": "delegateviewRevert",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_handler",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
+      }
     ],
     "name": "execute",
-    "outputs": [{ "internalType": "bytes", "name": "ret", "type": "bytes" }],
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "ret",
+        "type": "bytes"
+      }
+    ],
     "stateMutability": "payable",
     "type": "function"
   },
@@ -348,23 +494,55 @@
         "name": "_swapManager",
         "type": "address"
       },
-      { "internalType": "address", "name": "_tokenIn", "type": "address" },
-      { "internalType": "address", "name": "_tokenOut", "type": "address" },
-      { "internalType": "uint256", "name": "_amountIn", "type": "uint256" },
-      { "internalType": "uint256", "name": "_minOut", "type": "uint256" },
-      { "internalType": "bytes", "name": "_data", "type": "bytes" }
+      {
+        "internalType": "address",
+        "name": "_tokenIn",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_tokenOut",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amountIn",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_minOut",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_data",
+        "type": "bytes"
+      }
     ],
     "name": "executeSwap",
     "outputs": [
-      { "internalType": "uint256", "name": "_amountOut", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_amountOut",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_handler", "type": "address" },
-      { "internalType": "bytes", "name": "data", "type": "bytes" },
+      {
+        "internalType": "address",
+        "name": "_handler",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
+      },
       {
         "internalType": "address",
         "name": "_callbackHandler",
@@ -372,7 +550,13 @@
       }
     ],
     "name": "executeWithCallbackHandler",
-    "outputs": [{ "internalType": "bytes", "name": "ret", "type": "bytes" }],
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "ret",
+        "type": "bytes"
+      }
+    ],
     "stateMutability": "payable",
     "type": "function"
   },
@@ -380,7 +564,11 @@
     "inputs": [],
     "name": "fsGLP",
     "outputs": [
-      { "internalType": "contract ERC20", "name": "", "type": "address" }
+      {
+        "internalType": "contract ERC20",
+        "name": "",
+        "type": "address"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -415,24 +603,50 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_asset", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_asset",
+        "type": "address"
+      }
     ],
     "name": "getVaultFromAsset",
     "outputs": [
       {
         "components": [
-          { "internalType": "address", "name": "vault", "type": "address" },
-          { "internalType": "address", "name": "token", "type": "address" },
+          {
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
           {
             "internalType": "uint256",
-            "name": "feeWatermarkBalance",
+            "name": "feeWatermarkPPS",
             "type": "uint256"
           },
-          { "internalType": "int256", "name": "epochDelta", "type": "int256" },
+          {
+            "internalType": "uint256",
+            "name": "feeWatermarkDate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "int256",
+            "name": "epochDelta",
+            "type": "int256"
+          },
           {
             "internalType": "uint256",
             "name": "lastCheckpointTvl",
             "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "slowReleaseStaking",
+            "type": "address"
           }
         ],
         "internalType": "struct AggregateVaultStorage.AssetVaultEntry",
@@ -445,33 +659,57 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_asset", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_asset",
+        "type": "address"
+      }
     ],
     "name": "getVaultIndex",
     "outputs": [
-      { "internalType": "uint256", "name": "idx", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "idx",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_assetVault", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_assetVault",
+        "type": "address"
+      }
     ],
     "name": "getVaultPPS",
     "outputs": [
-      { "internalType": "uint256", "name": "_pps", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_pps",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_assetVault", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_assetVault",
+        "type": "address"
+      }
     ],
     "name": "getVaultTVL",
     "outputs": [
-      { "internalType": "uint256", "name": "_tvl", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_tvl",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -479,36 +717,99 @@
   {
     "inputs": [],
     "name": "glpCloseSlippage",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "contract ERC20", "name": "asset", "type": "address" },
-      { "internalType": "uint256", "name": "_amount", "type": "uint256" },
-      { "internalType": "address", "name": "_account", "type": "address" }
+      {
+        "internalType": "contract ERC20",
+        "name": "asset",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_account",
+        "type": "address"
+      }
     ],
     "name": "handleDeposit",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "bool", "name": "compound", "type": "bool" }],
-    "name": "handleGlpRewards",
+    "inputs": [
+      {
+        "internalType": "contract ERC20",
+        "name": "asset",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_shareAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_account",
+        "type": "address"
+      }
+    ],
+    "name": "handleRebalanceRequest",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "contract ERC20", "name": "asset", "type": "address" },
-      { "internalType": "uint256", "name": "_amount", "type": "uint256" },
-      { "internalType": "address", "name": "_account", "type": "address" }
+      {
+        "internalType": "contract ERC20",
+        "name": "asset",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_account",
+        "type": "address"
+      }
     ],
     "name": "handleWithdraw",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -519,10 +820,20 @@
         "name": "",
         "type": "address"
       },
-      { "internalType": "bytes4", "name": "", "type": "bytes4" }
+      {
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+      }
     ],
     "name": "handlerContractCallbacks",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -535,8 +846,33 @@
       }
     ],
     "name": "handlerContracts",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes[]",
+        "name": "data",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "multicall",
+    "outputs": [
+      {
+        "internalType": "bytes[]",
+        "name": "results",
+        "type": "bytes[]"
+      }
+    ],
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -582,13 +918,23 @@
   {
     "inputs": [],
     "name": "paused",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_size", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "size",
+        "type": "uint256"
+      }
     ],
     "name": "previewDepositFee",
     "outputs": [
@@ -598,13 +944,21 @@
         "type": "uint256"
       }
     ],
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "token", "type": "address" },
-      { "internalType": "uint256", "name": "_size", "type": "uint256" }
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "size",
+        "type": "uint256"
+      }
     ],
     "name": "previewWithdrawalFee",
     "outputs": [
@@ -614,26 +968,6 @@
         "type": "uint256"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "router",
-    "outputs": [
-      { "internalType": "contract ISwapRouter", "name": "", "type": "address" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "asset", "type": "address" },
-      { "internalType": "address", "name": "recipient", "type": "address" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" }
-    ],
-    "name": "rug",
-    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -641,27 +975,66 @@
     "inputs": [
       {
         "components": [
-          { "internalType": "address", "name": "vault", "type": "address" },
-          { "internalType": "address", "name": "token", "type": "address" },
+          {
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
           {
             "internalType": "uint256",
-            "name": "feeWatermarkBalance",
+            "name": "feeWatermarkPPS",
             "type": "uint256"
           },
-          { "internalType": "int256", "name": "epochDelta", "type": "int256" },
+          {
+            "internalType": "uint256",
+            "name": "feeWatermarkDate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "int256",
+            "name": "epochDelta",
+            "type": "int256"
+          },
           {
             "internalType": "uint256",
             "name": "lastCheckpointTvl",
             "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "slowReleaseStaking",
+            "type": "address"
           }
         ],
         "internalType": "struct AggregateVaultStorage.AssetVaultEntry[5]",
         "name": "_assetVaults",
         "type": "tuple[5]"
       },
-      { "internalType": "uint256[]", "name": "_swapFees", "type": "uint256[]" }
+      {
+        "internalType": "uint256[]",
+        "name": "_swapFees",
+        "type": "uint256[]"
+      }
     ],
     "name": "setAssetVaults",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_recipient",
+        "type": "address"
+      }
+    ],
+    "name": "setFeeRecipient",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -682,11 +1055,28 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_newNettedThreshold",
+        "type": "uint256"
+      }
+    ],
+    "name": "setNettedThreshold",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "enum Peripheral",
         "name": "_peripheral",
         "type": "uint8"
       },
-      { "internalType": "address", "name": "_addr", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_addr",
+        "type": "address"
+      }
     ],
     "name": "setPeripheral",
     "outputs": [],
@@ -694,7 +1084,13 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "bool", "name": "_newVal", "type": "bool" }],
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_newVal",
+        "type": "bool"
+      }
+    ],
     "name": "setShouldCheckNetting",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -717,7 +1113,21 @@
         "name": "_withdrawalFee",
         "type": "uint256"
       },
-      { "internalType": "uint256", "name": "_depositFee", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_depositFee",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_rebalanceRequestFee",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_slowRelease",
+        "type": "uint256"
+      }
     ],
     "name": "setVaultFees",
     "outputs": [],
@@ -726,10 +1136,33 @@
   },
   {
     "inputs": [
-      { "internalType": "contract ISwapManager", "name": "", "type": "address" }
+      {
+        "internalType": "uint256",
+        "name": "_zeroSumPnlThreshold",
+        "type": "uint256"
+      }
+    ],
+    "name": "setZeroSumPnlThreshold",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract ISwapManager",
+        "name": "",
+        "type": "address"
+      }
     ],
     "name": "swapHandlers",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -742,7 +1175,11 @@
   },
   {
     "inputs": [
-      { "internalType": "bytes4", "name": "_sig", "type": "bytes4" },
+      {
+        "internalType": "bytes4",
+        "name": "_sig",
+        "type": "bytes4"
+      },
       {
         "internalType": "contract IHandlerContract",
         "name": "_handler",
@@ -756,14 +1193,18 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_vaultId", "type": "uint256" },
       {
         "internalType": "uint256",
-        "name": "_feeWatermarkBalance",
+        "name": "_vaultId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_feeWatermarkPPS",
         "type": "uint256"
       }
     ],
-    "name": "updateFeeWatermarkBalance",
+    "name": "updateFeeWatermarkPPS",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -775,7 +1216,11 @@
         "name": "_handler",
         "type": "address"
       },
-      { "internalType": "bool", "name": "_enabled", "type": "bool" }
+      {
+        "internalType": "bool",
+        "name": "_enabled",
+        "type": "bool"
+      }
     ],
     "name": "updateHandlerContract",
     "outputs": [],
@@ -789,7 +1234,11 @@
         "name": "_manager",
         "type": "address"
       },
-      { "internalType": "bool", "name": "_enabled", "type": "bool" }
+      {
+        "internalType": "bool",
+        "name": "_enabled",
+        "type": "bool"
+      }
     ],
     "name": "updateSwapHandler",
     "outputs": [],
@@ -798,19 +1247,12 @@
   },
   {
     "inputs": [],
-    "name": "updateTotalGlp",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "vaultGlpAttribution",
+    "name": "whitelistEnabled",
     "outputs": [
       {
-        "internalType": "uint256[5]",
-        "name": "_vaultGlpAttribution",
-        "type": "uint256[5]"
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -818,18 +1260,34 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_idx", "type": "uint256" }
-    ],
-    "name": "vaultGlpAttribution",
-    "outputs": [
+      {
+        "internalType": "contract ERC20",
+        "name": "_asset",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_account",
+        "type": "address"
+      },
       {
         "internalType": "uint256",
-        "name": "_vaultGlpAttribution",
+        "name": "_amount",
         "type": "uint256"
+      },
+      {
+        "internalType": "bytes32[]",
+        "name": "merkleProof",
+        "type": "bytes32[]"
       }
     ],
-    "stateMutability": "view",
+    "name": "whitelistedDeposit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
-  { "stateMutability": "payable", "type": "receive" }
+  {
+    "stateMutability": "payable",
+    "type": "receive"
+  }
 ]

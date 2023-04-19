@@ -1,10 +1,5 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import {
-  GlpWbtcVaultDeposit as GlpWbtcVaultDepositEvent,
-  GlpWbtcVaultRebalanceRequest as GlpWbtcVaultRebalanceRequestEvent,
-  GlpWbtcVaultTransfer as GlpWbtcVaultTransferEvent,
-  GlpWbtcVaultWithdraw as GlpWbtcVaultWithdrawEvent,
-} from "../generated/GlpWbtcVault/GlpWbtcVault";
+import { Transfer as GlpWbtcVaultTransferEvent } from "../generated/GlpWbtcVault/GlpWbtcVault";
 import { UserVaultBalance, UserVaultBalanceTotal } from "../generated/schema";
 import { WBTC_VAULT_ADDRESS, ZERO_ADDRESS } from "./constants";
 
@@ -87,15 +82,3 @@ export function handleGlpWbtcVaultTransfer(
     toHistoricalBalance.save();
   }
 }
-
-export function handleGlpWbtcVaultRebalanceRequest(
-  event: GlpWbtcVaultRebalanceRequestEvent
-): void {}
-
-export function handleGlpWbtcVaultDeposit(
-  event: GlpWbtcVaultDepositEvent
-): void {}
-
-export function handleGlpWbtcVaultWithdraw(
-  event: GlpWbtcVaultWithdrawEvent
-): void {}

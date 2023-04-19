@@ -3,48 +3,12 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: AggregateVault
-    network: arbitrum-one
-    source:
-      address: "0x7f5C4f910a672763BA343A71e03730c2518A7d18"
-      abi: AggregateVault
-      startBlock: 54800968
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - VaultPricePerShare
-        - VaultTVL
-        - VaultFeesCollection
-        - VaultPpsLastTimestamp
-        - TmpRebalanceSnapshot
-      abis:
-        - name: AggregateVault
-          file: ./abis/AggregateVault.json
-        - name: Manager
-          file: ./abis/Manager.json
-        - name: GmxVault
-          file: ./abis/GmxVault.json
-        - name: VaultHelper
-          file: ./abis/VaultHelper.json
-      eventHandlers:
-        - event: OpenRebalance(uint256,uint256[5],uint256[5],int256[5])
-          handler: handleOpenRebalance
-        - event: CloseRebalance(uint256)
-          handler: handleCloseRebalance
-        - event: CollectVaultFees(uint256,uint256,uint256,address)
-          handler: handleCollectVaultFees
-      blockHandlers:
-        - handler: handleBlock
-      file: ./src/aggregate-vault.ts
-  - kind: ethereum
     name: GlpUsdcVault
     network: arbitrum-one
     source:
-      address: "0xC86064D7A396B913eCf8A3CBe22d8F285b3DD17C"
+      address: "0x348fd77c569ff888ab93c03860e7cf5f59760d35"
       abi: GlpUsdcVault
-      startBlock: 54800968
+      startBlock: 63600000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -54,7 +18,7 @@ dataSources:
         - UserVaultBalance
       abis:
         - name: GlpUsdcVault
-          file: ./abis/GlpUsdcVault.json
+          file: ./abis/GlpAssetVault.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
@@ -63,9 +27,9 @@ dataSources:
     name: GlpWethVault
     network: arbitrum-one
     source:
-      address: "0xbB7E775CF4DB40AE859865a8b2FDeF9f514d2400"
+      address: "0xeaa2c841cc4901d93faf85b48245c4c72a5fe8aa"
       abi: GlpWethVault
-      startBlock: 54800968
+      startBlock: 63600000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -75,18 +39,18 @@ dataSources:
         - UserVaultBalance
       abis:
         - name: GlpWethVault
-          file: ./abis/GlpWethVault.json
+          file: ./abis/GlpAssetVault.json
       eventHandlers:
-        - event: GlpWethVaultTransfer(indexed address,indexed address,uint256)
+        - event: Transfer(indexed address,indexed address,uint256)
           handler: handleGlpWethVaultTransfer
       file: ./src/glp-weth-vault.ts
   - kind: ethereum
     name: GlpWbtcVault
     network: arbitrum-one
     source:
-      address: "0xdD8883Ba5A137323B61f73fD5783F2be6bDe4bbc"
+      address: "0x466683abc221a38d02cf4da05258d203de118500"
       abi: GlpWbtcVault
-      startBlock: 54800968
+      startBlock: 63600000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -96,18 +60,18 @@ dataSources:
         - UserVaultBalance
       abis:
         - name: GlpWbtcVault
-          file: ./abis/GlpWbtcVault.json
+          file: ./abis/GlpAssetVault.json
       eventHandlers:
-        - event: GlpWbtcVaultTransfer(indexed address,indexed address,uint256)
+        - event: Transfer(indexed address,indexed address,uint256)
           handler: handleGlpWbtcVaultTransfer
       file: ./src/glp-wbtc-vault.ts
   - kind: ethereum
     name: GlpLinkVault
     network: arbitrum-one
     source:
-      address: "0xf883b684ffE3b6B08fca4b19cc8f25D3Da8EA2BF"
+      address: "0x7387eb285c7e0ddcff5ce05d1895ad9573702218"
       abi: GlpLinkVault
-      startBlock: 54800968
+      startBlock: 63600000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -117,18 +81,18 @@ dataSources:
         - UserVaultBalance
       abis:
         - name: GlpLinkVault
-          file: ./abis/GlpLinkVault.json
+          file: ./abis/GlpAssetVault.json
       eventHandlers:
-        - event: GlpLinkVaultTransfer(indexed address,indexed address,uint256)
+        - event: Transfer(indexed address,indexed address,uint256)
           handler: handleGlpLinkVaultTransfer
       file: ./src/glp-link-vault.ts
   - kind: ethereum
     name: GlpUniVault
     network: arbitrum-one
     source:
-      address: "0x836289A0Ee618C48f8403f3Ee9e0237133ffC9c6"
+      address: "0x6528709f58a88511b887326fe713bd93353062a7"
       abi: GlpUniVault
-      startBlock: 54800968
+      startBlock: 63600000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -138,8 +102,86 @@ dataSources:
         - UserVaultBalance
       abis:
         - name: GlpUniVault
-          file: ./abis/GlpUniVault.json
+          file: ./abis/GlpAssetVault.json
       eventHandlers:
-        - event: GlpUniVaultTransfer(indexed address,indexed address,uint256)
+        - event: Transfer(indexed address,indexed address,uint256)
           handler: handleGlpUniVaultTransfer
       file: ./src/glp-uni-vault.ts
+  - kind: ethereum
+    name: AggregateVault
+    network: arbitrum-one
+    source:
+      address: "0x6e258be26e713387a058f8644f514ae7ed3320ad"
+      abi: AggregateVaultHelper
+      startBlock: 63600000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - CloseRebalance
+        - VaultFeesCollection
+        - CompoundDistributeYield
+        - Cycle
+        - OpenRebalance
+        - RebalanceGlpPosition
+        - SettleNettedPositionPnl
+        - UpdateNettingCheckpointPrice
+        - VaultPricePerShare
+        - VaultTVL
+        - VaultTotalSupply
+        - VaultPpsLastTimestampQuick
+        - VaultPpsLastTimestampSlow
+        - RebalanceSnapshot
+        - GmxState
+      abis:
+        - name: AggregateVault
+          file: ./abis/AggregateVault.json
+        - name: AggregateVaultHelper
+          file: ./abis/AggregateVaultHelper.json
+        - name: GlpAssetVault
+          file: ./abis/GlpAssetVault.json
+        - name: GmxVault
+          file: ./abis/GmxVault.json
+        - name: Manager
+          file: ./abis/Manager.json
+      eventHandlers:
+        - event: CloseRebalance(uint256)
+          handler: handleCloseRebalance
+        - event: CollectVaultFees(uint256,uint256,uint256,uint256,address)
+          handler: handleCollectVaultFees
+        - event: CompoundDistributeYield(uint256[5])
+          handler: handleCompoundDistributeYield
+        - event: Cycle(uint256,uint256)
+          handler: handleCycle
+        - event: OpenRebalance(uint256,uint256[5],uint256[5],int256[5])
+          handler: handleOpenRebalance
+        - event: RebalanceGlpPosition(uint256[5],uint256[5],uint256[5],int256[5],int256[5])
+          handler: handleRebalanceGlpPosition
+        - event: SettleNettedPositionPnl(uint256[5],uint256[5],int256[5],int256[5],int256[5])
+          handler: handleSettleNettedPositionPnl
+        - event: UpdateNettingCheckpointPrice((uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256))
+          handler: handleUpdateNettingCheckpointPrice
+      blockHandlers:
+        - handler: handleBlock
+      file: ./src/aggregate-vault.ts
+  - kind: ethereum/contract
+    name: GmxVault
+    network: arbitrum-one
+    source:
+      address: "0x489ee077994b6658eafa855c308275ead8097c4a"
+      abi: GmxVault
+      startBlock: 63600000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - GmxClosedPositionPnl
+      abis:
+        - name: GmxVault
+          file: ./abis/GmxVault.json
+      eventHandlers:
+        - event: ClosePosition(bytes32,uint256,uint256,uint256,uint256,uint256,int256)
+          handler: handleClosePosition
+      file: ./src/gmx-vault.ts

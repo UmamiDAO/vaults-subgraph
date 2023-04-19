@@ -1,10 +1,5 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import {
-  GlpLinkVaultDeposit as GlpLinkVaultDepositEvent,
-  GlpLinkVaultRebalanceRequest as GlpLinkVaultRebalanceRequestEvent,
-  GlpLinkVaultTransfer as GlpLinkVaultTransferEvent,
-  GlpLinkVaultWithdraw as GlpLinkVaultWithdrawEvent,
-} from "../generated/GlpLinkVault/GlpLinkVault";
+import { Transfer as GlpLinkVaultTransferEvent } from "../generated/GlpLinkVault/GlpLinkVault";
 import { UserVaultBalance, UserVaultBalanceTotal } from "../generated/schema";
 import { LINK_VAULT_ADDRESS, ZERO_ADDRESS } from "./constants";
 
@@ -87,15 +82,3 @@ export function handleGlpLinkVaultTransfer(
     toHistoricalBalance.save();
   }
 }
-
-export function handleGlpLinkVaultDeposit(
-  event: GlpLinkVaultDepositEvent
-): void {}
-
-export function handleGlpLinkVaultWithdraw(
-  event: GlpLinkVaultWithdrawEvent
-): void {}
-
-export function handleGlpLinkVaultRebalanceRequest(
-  event: GlpLinkVaultRebalanceRequestEvent
-): void {}
