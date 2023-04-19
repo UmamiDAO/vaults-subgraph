@@ -1658,3 +1658,73 @@ export class GmxState extends Entity {
     this.set("globalShortSizes", Value.fromBigIntArray(value));
   }
 }
+
+export class GmxClosedPositionPnl extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save GmxClosedPositionPnl entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type GmxClosedPositionPnl must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("GmxClosedPositionPnl", id.toString(), this);
+    }
+  }
+
+  static load(id: string): GmxClosedPositionPnl | null {
+    return changetype<GmxClosedPositionPnl | null>(
+      store.get("GmxClosedPositionPnl", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get block(): BigInt {
+    let value = this.get("block");
+    return value!.toBigInt();
+  }
+
+  set block(value: BigInt) {
+    this.set("block", Value.fromBigInt(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get profit(): BigInt {
+    let value = this.get("profit");
+    return value!.toBigInt();
+  }
+
+  set profit(value: BigInt) {
+    this.set("profit", Value.fromBigInt(value));
+  }
+
+  get loss(): BigInt {
+    let value = this.get("loss");
+    return value!.toBigInt();
+  }
+
+  set loss(value: BigInt) {
+    this.set("loss", Value.fromBigInt(value));
+  }
+}

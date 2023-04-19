@@ -165,3 +165,23 @@ dataSources:
       blockHandlers:
         - handler: handleBlock
       file: ./src/aggregate-vault.ts
+  - kind: ethereum/contract
+    name: GmxVault
+    network: arbitrum-one
+    source:
+      address: "0x489ee077994b6658eafa855c308275ead8097c4a"
+      abi: GmxVault
+      startBlock: 63600000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - GmxClosedPositionPnl
+      abis:
+        - name: GmxVault
+          file: ./abis/GmxVault.json
+      eventHandlers:
+        - event: ClosePosition(bytes32,uint256,uint256,uint256,uint256,uint256,int256)
+          handler: handleClosePosition
+      file: ./src/gmx-vault.ts
