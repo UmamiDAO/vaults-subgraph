@@ -131,4 +131,6 @@ dataSources:
           handler: handleCollectVaultFees
         - event: CompoundDistributeYield(uint256[5])
           handler: handleCompoundDistributeYield
+        - event: CloseRebalance(uint256)
+          handler: handleCloseRebalance
       file: ./src/aggregate-vault.ts

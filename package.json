@@ -4,16 +4,10 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy:hosted": "graph codegen && graph build && graph deploy --product hosted-service clonescody/vaults-test",
     "create:local": "graph create --node http://65.109.58.74:8020/ vaults",
     "remove:local": "graph remove --node http://65.109.58.74:8020/ vaults",
     "deploy:local": "graph deploy --node http://65.109.58.74:8020/ --ipfs http://65.109.58.74:5001 vaults",
     "redeploy:local": "yarn remove:local && yarn create:local && yarn deploy:local",
-    "deploy:bis": "graph deploy --node https://api.studio.thegraph.com/deploy/ vaults-test",
-    "create:local-bis": "graph create --node http://65.109.58.74:8020/ vaults-test",
-    "remove:local-bis": "graph remove --node http://65.109.58.74:8020/ vaults-test",
-    "deploy:local-bis": "graph deploy --node http://65.109.58.74:8020/ --ipfs http://65.109.58.74:5001 vaults-test",
-    "redeploy:local-bis": "yarn remove:local-bis && yarn create:local-bis && yarn deploy:local-bis",
     "test": "graph test"
   },
   "dependencies": {
