@@ -2,10 +2,6 @@ import { Address } from "@graphprotocol/graph-ts";
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
-export const KEEPER_ADDRESS = Address.fromString(
-  "0x72273a8317f789ee944fbaa692cc562077261ed3"
-);
-
 export const AGGREGATE_VAULT_HELPER_ADDRESS = Address.fromString(
   "0x5573e7535efb06c757350068a8f0d6fed43f1ad0"
 );
@@ -52,12 +48,4 @@ export const UNI_VAULT_ADDRESS = Address.fromString(
 
 export const UNI_ADDRESS = Address.fromString(
   "0xFa7F8980b0f1E64A2062791cc3b0871572f1F7f0"
-);
-
-export const GMX_VAULT_ADDRESS = Address.fromString(
-  "0x489ee077994b6658eafa855c308275ead8097c4a"
-);
-
-export const GLP_HANDLER_ADDRESS = Address.fromString(
-  "0x46af23a5d55d058712fddaf232b6b1b7ba1c1942"
 );

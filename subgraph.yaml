@@ -119,69 +119,18 @@ dataSources:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - CloseRebalance
         - VaultFeesCollection
         - CompoundDistributeYield
-        - Cycle
-        - OpenRebalance
-        - RebalanceGlpPosition
-        - SettleNettedPositionPnl
-        - UpdateNettingCheckpointPrice
-        - VaultPricePerShare
-        - VaultTVL
-        - VaultTotalSupply
-        - VaultPpsLastTimestampQuick
-        - VaultPpsLastTimestampSlow
-        - RebalanceSnapshot
-        - GmxState
       abis:
         - name: AggregateVault
           file: ./abis/AggregateVault.json
         - name: AggregateVaultHelper
           file: ./abis/AggregateVaultHelper.json
-        - name: GlpAssetVault
-          file: ./abis/GlpAssetVault.json
-        - name: GmxVault
-          file: ./abis/GmxVault.json
-        - name: Manager
-          file: ./abis/Manager.json
       eventHandlers:
-        - event: CloseRebalance(uint256)
-          handler: handleCloseRebalance
         - event: CollectVaultFees(uint256,uint256,uint256,uint256,address)
           handler: handleCollectVaultFees
         - event: CompoundDistributeYield(uint256[5])
           handler: handleCompoundDistributeYield
-        - event: Cycle(uint256,uint256)
-          handler: handleCycle
-        - event: OpenRebalance(uint256,uint256[5],uint256[5],int256[5])
-          handler: handleOpenRebalance
-        - event: RebalanceGlpPosition(uint256[5],uint256[5],uint256[5],int256[5],int256[5])
-          handler: handleRebalanceGlpPosition
-        - event: SettleNettedPositionPnl(uint256[5],uint256[5],int256[5],int256[5],int256[5])
-          handler: handleSettleNettedPositionPnl
-        - event: UpdateNettingCheckpointPrice((uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256))
-          handler: handleUpdateNettingCheckpointPrice
-      blockHandlers:
-        - handler: handleBlock
+        - event: CloseRebalance(uint256)
+          handler: handleCloseRebalance
       file: ./src/aggregate-vault.ts
-  - kind: ethereum/contract
-    name: GmxVault
-    network: arbitrum-one
-    source:
-      address: "0x489ee077994b6658eafa855c308275ead8097c4a"
-      abi: GmxVault
-      startBlock: 63600000
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - GmxClosedPositionPnl
-      abis:
-        - name: GmxVault
-          file: ./abis/GmxVault.json
-      eventHandlers:
-        - event: ClosePosition(bytes32,uint256,uint256,uint256,uint256,uint256,int256)
-          handler: handleClosePosition
-      file: ./src/gmx-vault.ts
