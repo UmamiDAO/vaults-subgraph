@@ -15,7 +15,7 @@ export const AGGREGATE_VAULT_ADDRESS = Address.fromString(
 );
 
 export const USDC_VAULT_ADDRESS = Address.fromString(
-  "0x8bdb0c9ee66e4c65205b38fc090a38626dd021a4"
+  "0x9dec2397977544eac16770a1cbff46bbcd15909f"
 );
 
 export const USDC_ADDRESS = Address.fromString(
@@ -23,7 +23,7 @@ export const USDC_ADDRESS = Address.fromString(
 );
 
 export const WETH_VAULT_ADDRESS = Address.fromString(
-  "0xfb5e4cd2282e227e0dca12a6e26e31683eba86dd"
+  "0xf985796605154938104196ce136837da8d4d5566"
 );
 
 export const WETH_ADDRESS = Address.fromString(
@@ -31,7 +31,7 @@ export const WETH_ADDRESS = Address.fromString(
 );
 
 export const WBTC_VAULT_ADDRESS = Address.fromString(
-  "0x83110960cd11c99ad2ef07e37fe4ff19fc682133"
+  "0x52f62dc325f03957984c9edc6775fea25d2a357a"
 );
 
 export const WBTC_ADDRESS = Address.fromString(
@@ -39,7 +39,7 @@ export const WBTC_ADDRESS = Address.fromString(
 );
 
 export const LINK_VAULT_ADDRESS = Address.fromString(
-  "0x2cab0aa432a46d33f4fbe01db7a899ec62985169"
+  "0x75ed77e04bc4dad8540e3dfa36f89d76fc13d8fe"
 );
 
 export const LINK_ADDRESS = Address.fromString(
@@ -47,7 +47,7 @@ export const LINK_ADDRESS = Address.fromString(
 );
 
 export const UNI_VAULT_ADDRESS = Address.fromString(
-  "0xfcdaf16b83aff360d7ee3d83a99515b717d7017d"
+  "0x2ffe110d5f85c3d953e5205fd072a97b0204c764"
 );
 
 export const UNI_ADDRESS = Address.fromString(

@@ -6,9 +6,9 @@ dataSources:
     name: GlpUsdcVault
     network: arbitrum-one
     source:
-      address: "0x8bdb0c9ee66e4c65205b38fc090a38626dd021a4"
+      address: "0x9dec2397977544eac16770a1cbff46bbcd15909f"
       abi: GlpUsdcVault
-      startBlock: 87000000
+      startBlock: 89136370
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -37,9 +37,9 @@ dataSources:
     name: GlpWethVault
     network: arbitrum-one
     source:
-      address: "0xfb5e4cd2282e227e0dca12a6e26e31683eba86dd"
+      address: "0xf985796605154938104196ce136837da8d4d5566"
       abi: GlpWethVault
-      startBlock: 87000000
+      startBlock: 89136370
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -68,9 +68,9 @@ dataSources:
     name: GlpWbtcVault
     network: arbitrum-one
     source:
-      address: "0x83110960cd11c99ad2ef07e37fe4ff19fc682133"
+      address: "0x52f62dc325f03957984c9edc6775fea25d2a357a"
       abi: GlpWbtcVault
-      startBlock: 87000000
+      startBlock: 89136370
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -99,9 +99,9 @@ dataSources:
     name: GlpLinkVault
     network: arbitrum-one
     source:
-      address: "0x2cab0aa432a46d33f4fbe01db7a899ec62985169"
+      address: "0x75ed77e04bc4dad8540e3dfa36f89d76fc13d8fe"
       abi: GlpLinkVault
-      startBlock: 87000000
+      startBlock: 89136370
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -130,9 +130,9 @@ dataSources:
     name: GlpUniVault
     network: arbitrum-one
     source:
-      address: "0xfcdaf16b83aff360d7ee3d83a99515b717d7017d"
+      address: "0x2ffe110d5f85c3d953e5205fd072a97b0204c764"
       abi: GlpUniVault
-      startBlock: 87000000
+      startBlock: 89136370
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -163,7 +163,7 @@ dataSources:
     source:
       address: "0x2f35e5742f63010c8840f6f6f290ce85b27fe206"
       abi: AggregateVaultHelper
-      startBlock: 87000000
+      startBlock: 89136370
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -188,7 +188,7 @@ dataSources:
     source:
       address: "0x489ee077994b6658eafa855c308275ead8097c4a"
       abi: GmxVault
-      startBlock: 87000000
+      startBlock: 89136370
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
