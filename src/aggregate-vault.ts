@@ -1,13 +1,12 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 import {
-  CloseRebalance,
-  CollectVaultFees as CollectVaultFeesEvent,
   CompoundDistributeYield as CompoundDistributeYieldEvent,
+  GlpRewardClaimed as GlpRewardClaimedEvent,
 } from "../generated/AggregateVault/AggregateVaultHelper";
 import { AggregateVault } from "../generated/AggregateVault/AggregateVault";
 import {
   CompoundDistributeYield,
-  VaultFeesCollection,
+  GlpRewardsClaim,
   VaultPricePerShare,
 } from "../generated/schema";
 import {
@@ -37,7 +36,14 @@ function getVaultPpsEntity(
   return vaultPps as VaultPricePerShare;
 }
 
-export function handleCloseRebalance(event: CloseRebalance): void {
+export function handleGlpRewardClaimed(event: GlpRewardClaimedEvent): void {
+  const glpRewardsClaim = new GlpRewardsClaim(event.transaction.hash.toHex());
+
+  glpRewardsClaim.block = event.block.number;
+  glpRewardsClaim.timestamp = event.block.timestamp;
+  glpRewardsClaim.claimed = event.params._amount;
+  glpRewardsClaim.save();
+
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
 
   const pricePerShareUSDC = aggregateVault.getVaultPPS(USDC_VAULT_ADDRESS);
@@ -90,21 +96,6 @@ export function handleCloseRebalance(event: CloseRebalance): void {
   );
   uniPpsEntity.pricePerShare = pricePerShareUNI;
   uniPpsEntity.save();
-}
-
-export function handleCollectVaultFees(event: CollectVaultFeesEvent): void {
-  let entity = new VaultFeesCollection(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  );
-
-  entity.timestamp = event.block.timestamp;
-  entity.block = event.block.number;
-  entity.totalVaultFee = event.params.totalVaultFee;
-  entity.performanceFeeInAsset = event.params.performanceFeeInAsset;
-  entity.managementFeeInAsset = event.params.managementFeeInAsset;
-  entity.slowReleaseMintAmount = event.params.slowReleaseMintAmount;
-  entity.vault = event.params._assetVault.toHexString();
-  entity.save();
 }
 
 export function handleCompoundDistributeYield(

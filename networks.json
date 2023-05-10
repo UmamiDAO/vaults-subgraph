@@ -1,19 +1,19 @@
 {
   "arbitrum-one": {
     "GlpUsdcVault": {
-      "address": "0x348fD77C569ff888Ab93c03860e7Cf5F59760D35"
+      "address": "0x8bdb0c9ee66e4c65205b38fc090a38626dd021a4"
     },
     "GlpWethVault": {
-      "address": "0xEaa2C841cC4901d93FAf85B48245C4C72A5FE8Aa"
+      "address": "0xfb5e4cd2282e227e0dca12a6e26e31683eba86dd"
     },
     "GlpWbtcVault": {
-      "address": "0x466683aBC221A38d02cF4da05258D203De118500"
+      "address": "0x83110960cd11c99ad2ef07e37fe4ff19fc682133"
     },
     "GlpLinkVault": {
-      "address": "0x7387eB285C7e0Ddcff5Ce05D1895aD9573702218"
+      "address": "0x2cab0aa432a46d33f4fbe01db7a899ec62985169"
     },
     "GlpUniVault": {
-      "address": "0x6528709f58A88511B887326Fe713bd93353062a7"
+      "address": "0xfcdaf16b83aff360d7ee3d83a99515b717d7017d"
     },
     "GmxVault": {
       "address": "0x489ee077994b6658eafa855c308275ead8097c4a"
@@ -22,7 +22,7 @@
       "address": "0x46af23a5d55d058712fddaf232b6b1b7ba1c1942"
     },
     "AggregateVaultHelper": {
-      "address": "0x6E258BE26e713387a058F8644F514aE7ED3320Ad"
+      "address": "0x2f35e5742f63010c8840f6f6f290ce85b27fe206"
     }
   }
 }

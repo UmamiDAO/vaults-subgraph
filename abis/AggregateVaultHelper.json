@@ -1,54 +1,8 @@
 [
-  { "inputs": [], "name": "OnlyDelegateCall", "type": "error" },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "CloseRebalance",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "totalVaultFee",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "performanceFeeInAsset",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "managementFeeInAsset",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "slowReleaseMintAmount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "_assetVault",
-        "type": "address"
-      }
-    ],
-    "name": "CollectVaultFees",
-    "type": "event"
+    "inputs": [],
+    "name": "OnlyDelegateCall",
+    "type": "error"
   },
   {
     "anonymous": false,
@@ -88,29 +42,11 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "timestamp",
+        "name": "_amount",
         "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256[5]",
-        "name": "nextVaultGlpAlloc",
-        "type": "uint256[5]"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256[5]",
-        "name": "nextGlpComp",
-        "type": "uint256[5]"
-      },
-      {
-        "indexed": false,
-        "internalType": "int256[5]",
-        "name": "adjustedPositions",
-        "type": "int256[5]"
       }
     ],
-    "name": "OpenRebalance",
+    "name": "GlpRewardClaimed",
     "type": "event"
   },
   {
@@ -192,11 +128,31 @@
     "inputs": [
       {
         "components": [
-          { "internalType": "uint256", "name": "stable", "type": "uint256" },
-          { "internalType": "uint256", "name": "eth", "type": "uint256" },
-          { "internalType": "uint256", "name": "btc", "type": "uint256" },
-          { "internalType": "uint256", "name": "link", "type": "uint256" },
-          { "internalType": "uint256", "name": "uni", "type": "uint256" }
+          {
+            "internalType": "uint256",
+            "name": "stable",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "eth",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "btc",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "link",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "uni",
+            "type": "uint256"
+          }
         ],
         "indexed": false,
         "internalType": "struct INettedPositionTracker.NettedPrices",
@@ -205,11 +161,31 @@
       },
       {
         "components": [
-          { "internalType": "uint256", "name": "stable", "type": "uint256" },
-          { "internalType": "uint256", "name": "eth", "type": "uint256" },
-          { "internalType": "uint256", "name": "btc", "type": "uint256" },
-          { "internalType": "uint256", "name": "link", "type": "uint256" },
-          { "internalType": "uint256", "name": "uni", "type": "uint256" }
+          {
+            "internalType": "uint256",
+            "name": "stable",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "eth",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "btc",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "link",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "uni",
+            "type": "uint256"
+          }
         ],
         "indexed": false,
         "internalType": "struct INettedPositionTracker.NettedPrices",
@@ -223,7 +199,13 @@
   {
     "inputs": [],
     "name": "STORAGE_SLOT",
-    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -237,7 +219,7 @@
         "type": "uint256[4][5]"
       }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -246,11 +228,31 @@
     "outputs": [
       {
         "components": [
-          { "internalType": "uint256", "name": "stable", "type": "uint256" },
-          { "internalType": "uint256", "name": "eth", "type": "uint256" },
-          { "internalType": "uint256", "name": "btc", "type": "uint256" },
-          { "internalType": "uint256", "name": "link", "type": "uint256" },
-          { "internalType": "uint256", "name": "uni", "type": "uint256" }
+          {
+            "internalType": "uint256",
+            "name": "stable",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "eth",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "btc",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "link",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "uni",
+            "type": "uint256"
+          }
         ],
         "internalType": "struct INettedPositionTracker.NettedPrices",
         "name": "_prices",
@@ -261,10 +263,62 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
+    "name": "_getTotalMargin",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "_totalMargin",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_isLong",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
+    "name": "_getTotalNotional",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "_totalNotional",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_isLong",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "callbackSigs",
     "outputs": [
-      { "internalType": "bytes4[]", "name": "_ret", "type": "bytes4[]" }
+      {
+        "internalType": "bytes4[]",
+        "name": "_ret",
+        "type": "bytes4[]"
+      }
     ],
     "stateMutability": "pure",
     "type": "function"
@@ -276,7 +330,11 @@
         "name": "assetPrices",
         "type": "uint256[5]"
       },
-      { "internalType": "uint256", "name": "glpPrice", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "glpPrice",
+        "type": "uint256"
+      }
     ],
     "name": "cycle",
     "outputs": [],
@@ -315,8 +373,16 @@
     "outputs": [
       {
         "components": [
-          { "internalType": "address", "name": "vault", "type": "address" },
-          { "internalType": "address", "name": "token", "type": "address" },
+          {
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
           {
             "internalType": "uint256",
             "name": "feeWatermarkPPS",
@@ -327,7 +393,11 @@
             "name": "feeWatermarkDate",
             "type": "uint256"
           },
-          { "internalType": "int256", "name": "epochDelta", "type": "int256" },
+          {
+            "internalType": "int256",
+            "name": "epochDelta",
+            "type": "int256"
+          },
           {
             "internalType": "uint256",
             "name": "lastCheckpointTvl",
@@ -335,7 +405,7 @@
           },
           {
             "internalType": "address",
-            "name": "slowReleaseStaking",
+            "name": "timelockYieldBoost",
             "type": "address"
           }
         ],
@@ -362,17 +432,41 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_epoch", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_epoch",
+        "type": "uint256"
+      }
     ],
     "name": "getLastNettedPrice",
     "outputs": [
       {
         "components": [
-          { "internalType": "uint256", "name": "stable", "type": "uint256" },
-          { "internalType": "uint256", "name": "eth", "type": "uint256" },
-          { "internalType": "uint256", "name": "btc", "type": "uint256" },
-          { "internalType": "uint256", "name": "link", "type": "uint256" },
-          { "internalType": "uint256", "name": "uni", "type": "uint256" }
+          {
+            "internalType": "uint256",
+            "name": "stable",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "eth",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "btc",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "link",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "uni",
+            "type": "uint256"
+          }
         ],
         "internalType": "struct INettedPositionTracker.NettedPrices",
         "name": "_nettedPrices",
@@ -434,7 +528,11 @@
             "name": "aggregatePositions",
             "type": "int256[5]"
           },
-          { "internalType": "uint256", "name": "epoch", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "epoch",
+            "type": "uint256"
+          },
           {
             "internalType": "int256[5][5]",
             "name": "adjustedExternalPositions",
@@ -450,24 +548,27 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "getSwapFees",
-    "outputs": [
-      { "internalType": "uint256[]", "name": "_swapFee", "type": "uint256[]" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
-      { "internalType": "address", "name": "_asset", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_asset",
+        "type": "address"
+      }
     ],
     "name": "getVaultFromAsset",
     "outputs": [
       {
         "components": [
-          { "internalType": "address", "name": "vault", "type": "address" },
-          { "internalType": "address", "name": "token", "type": "address" },
+          {
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
           {
             "internalType": "uint256",
             "name": "feeWatermarkPPS",
@@ -478,7 +579,11 @@
             "name": "feeWatermarkDate",
             "type": "uint256"
           },
-          { "internalType": "int256", "name": "epochDelta", "type": "int256" },
+          {
+            "internalType": "int256",
+            "name": "epochDelta",
+            "type": "int256"
+          },
           {
             "internalType": "uint256",
             "name": "lastCheckpointTvl",
@@ -486,7 +591,7 @@
           },
           {
             "internalType": "address",
-            "name": "slowReleaseStaking",
+            "name": "timelockYieldBoost",
             "type": "address"
           }
         ],
@@ -513,11 +618,19 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_assetVault", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_assetVault",
+        "type": "address"
+      }
     ],
     "name": "getVaultPPS",
     "outputs": [
-      { "internalType": "uint256", "name": "_pps", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_pps",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -528,8 +641,16 @@
     "outputs": [
       {
         "components": [
-          { "internalType": "uint256", "name": "epoch", "type": "uint256" },
-          { "internalType": "bool", "name": "rebalanceOpen", "type": "bool" },
+          {
+            "internalType": "uint256",
+            "name": "epoch",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "rebalanceOpen",
+            "type": "bool"
+          },
           {
             "internalType": "uint256[5]",
             "name": "glpAllocation",
@@ -549,6 +670,21 @@
             "internalType": "address",
             "name": "feeRecipient",
             "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "depositFeeEscrow",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256[5]",
+            "name": "vaultCaps",
+            "type": "uint256[5]"
+          },
+          {
+            "internalType": "uint256[5]",
+            "name": "rebalancePPS",
+            "type": "uint256[5]"
           }
         ],
         "internalType": "struct AggregateVaultStorage.VaultState",
@@ -561,25 +697,53 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_assetVault", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_assetVault",
+        "type": "address"
+      }
     ],
     "name": "getVaultTVL",
     "outputs": [
-      { "internalType": "uint256", "name": "_tvl", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_tvl",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_assetVault", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_assetVault",
+        "type": "address"
+      }
     ],
     "name": "getVaultTVLBreakdown",
     "outputs": [
-      { "internalType": "uint256", "name": "_total", "type": "uint256" },
-      { "internalType": "uint256", "name": "_buffer", "type": "uint256" },
-      { "internalType": "uint256", "name": "_glp", "type": "uint256" },
-      { "internalType": "uint256", "name": "_hedges", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_total",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_buffer",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_glp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_hedges",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -599,46 +763,26 @@
   },
   {
     "inputs": [],
-    "name": "getWithdrawalRequestReciepts",
+    "name": "getVaultsGlpNoPnl",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "assetVault",
-            "type": "address"
-          },
-          { "internalType": "address", "name": "asset", "type": "address" },
-          { "internalType": "address", "name": "user", "type": "address" },
-          {
-            "internalType": "uint256",
-            "name": "tokenAmount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "underlyingAmount",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct AggregateVaultStorage.WithdrawalReciept[]",
-        "name": "_withdrawalRequestReciepts",
-        "type": "tuple[]"
+        "internalType": "uint256[5]",
+        "name": "_vaultsGlpNoPnl",
+        "type": "uint256[5]"
       }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "bool", "name": "compound", "type": "bool" }],
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "compound",
+        "type": "bool"
+      }
+    ],
     "name": "handleGlpRewards",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "processWithdrawalRequests",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -650,7 +794,11 @@
         "name": "_nextGlpAllocation",
         "type": "uint256[5]"
       },
-      { "internalType": "uint256", "name": "_glpPrice", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_glpPrice",
+        "type": "uint256"
+      }
     ],
     "name": "rebalanceGlpPosition",
     "outputs": [],
@@ -659,8 +807,16 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "tokenOut", "type": "address" },
-      { "internalType": "uint256", "name": "_amount", "type": "uint256" }
+      {
+        "internalType": "address",
+        "name": "tokenOut",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
     ],
     "name": "reduceGlp",
     "outputs": [],
@@ -669,8 +825,16 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_addr", "type": "address" },
-      { "internalType": "uint256", "name": "idx", "type": "uint256" }
+      {
+        "internalType": "address",
+        "name": "_addr",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "idx",
+        "type": "uint256"
+      }
     ],
     "name": "removePositionManagerAt",
     "outputs": [],
@@ -679,41 +843,15 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_noOfEpochs", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_noOfEpochs",
+        "type": "uint256"
+      }
     ],
     "name": "resetCheckpointPrices",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "resetGlpAttributionSlippage",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256[5]",
-        "name": "assetPrices",
-        "type": "uint256[5]"
-      },
-      { "internalType": "uint256", "name": "glpPrice", "type": "uint256" }
-    ],
-    "name": "rollToNextEpoch",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "router",
-    "outputs": [
-      { "internalType": "contract ISwapRouter", "name": "", "type": "address" }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -731,7 +869,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_tolerance", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_tolerance",
+        "type": "uint256"
+      }
     ],
     "name": "setNettingPriceTolerance",
     "outputs": [],
@@ -762,7 +904,11 @@
             "name": "aggregatePositions",
             "type": "int256[5]"
           },
-          { "internalType": "uint256", "name": "epoch", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "epoch",
+            "type": "uint256"
+          },
           {
             "internalType": "int256[5][5]",
             "name": "adjustedExternalPositions",
@@ -781,7 +927,29 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256[5]", "name": "_newVals", "type": "uint256[5]" }
+      {
+        "internalType": "address",
+        "name": "newTimelockYieldBoost",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "vaultIdx",
+        "type": "uint256"
+      }
+    ],
+    "name": "setTimelockYieldBoost",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[5]",
+        "name": "_newVals",
+        "type": "uint256[5]"
+      }
     ],
     "name": "setVaultGlpAttribution",
     "outputs": [],
@@ -795,7 +963,11 @@
         "name": "assetPrices",
         "type": "uint256[5]"
       },
-      { "internalType": "uint256", "name": "glpPrice", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "glpPrice",
+        "type": "uint256"
+      }
     ],
     "name": "settleInternalPnl",
     "outputs": [],
@@ -804,18 +976,30 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_token", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      }
     ],
     "name": "tokenToAssetVaultIndex",
     "outputs": [
-      { "internalType": "uint256", "name": "_idx", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_idx",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_epoch", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_epoch",
+        "type": "uint256"
+      }
     ],
     "name": "updateEpoch",
     "outputs": [],
@@ -826,17 +1010,41 @@
     "inputs": [
       {
         "components": [
-          { "internalType": "uint256", "name": "stable", "type": "uint256" },
-          { "internalType": "uint256", "name": "eth", "type": "uint256" },
-          { "internalType": "uint256", "name": "btc", "type": "uint256" },
-          { "internalType": "uint256", "name": "link", "type": "uint256" },
-          { "internalType": "uint256", "name": "uni", "type": "uint256" }
+          {
+            "internalType": "uint256",
+            "name": "stable",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "eth",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "btc",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "link",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "uni",
+            "type": "uint256"
+          }
         ],
         "internalType": "struct INettedPositionTracker.NettedPrices",
         "name": "assetPrices",
         "type": "tuple"
       },
-      { "internalType": "uint256", "name": "epochId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "epochId",
+        "type": "uint256"
+      }
     ],
     "name": "updateNettingCheckpointPrice",
     "outputs": [],
@@ -845,11 +1053,19 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_vault", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_vault",
+        "type": "address"
+      }
     ],
     "name": "vaultToAssetVaultIndex",
     "outputs": [
-      { "internalType": "uint256", "name": "_idx", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_idx",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "view",
     "type": "function"

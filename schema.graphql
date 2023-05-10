@@ -1,3 +1,8 @@
+type VaultPpsLastTimestampSlow @entity {
+  id: ID!
+  timestamp: BigInt!
+}
+
 type VaultPricePerShare @entity(immutable: true) {
   id: ID!
   block: BigInt!
@@ -28,6 +33,19 @@ type VaultTotalSupply @entity(immutable: true) {
   totalSupply: BigInt!
 }
 
+type UserBalanceEvent @entity(immutable: true) {
+  id: ID!
+  timestamp: BigInt!
+  block: BigInt!
+  txHash: String!
+  event: String!
+  token: String!
+  amount: BigInt!
+  user: String!
+  from: String!
+  to: String!
+}
+
 type UserVaultBalanceTotal @entity {
   id: ID!
   usdc: BigInt!
@@ -48,15 +66,11 @@ type UserVaultBalance @entity(immutable: true) {
   vault: String!
 }
 
-type VaultFeesCollection @entity(immutable: true) {
+type GlpRewardsClaim @entity(immutable: true) {
   id: ID!
   timestamp: BigInt! # uint256
   block: BigInt! # uint256
-  totalVaultFee: BigInt! # uint256
-  performanceFeeInAsset: BigInt! # uint256
-  managementFeeInAsset: BigInt! # uint256
-  slowReleaseMintAmount: BigInt! # uint256
-  vault: String!
+  claimed: BigInt! # uint256
 }
 
 type CompoundDistributeYield @entity(immutable: true) {
@@ -64,4 +78,26 @@ type CompoundDistributeYield @entity(immutable: true) {
   timestamp: BigInt! # uint256
   block: BigInt! # uint256
   glpYieldPerVault: [BigInt!]! # uint256[5]
+}
+
+type GmxState @entity(immutable: true) {
+  id: ID!
+  block: BigInt! # uint256
+  timestamp: BigInt! # uint256
+  event: String!
+  assetsPrices: [BigInt!]! # uint256[5]
+  reservedAmounts: [BigInt!]! # uint256[5]
+  guaranteedUsd: [BigInt!]! # uint256[5]
+  shortsAveragePrices: [BigInt!]! # uint256[5]
+  globalShortSizes: [BigInt!]! # uint256[5]
+}
+
+type GmxClosedPositionPnl @entity {
+  id: ID!
+  block: BigInt!
+  timestamp: BigInt!
+  profit: BigInt!
+  loss: BigInt!
+  collateral: BigInt!
+  reserveAmount: BigInt!
 }

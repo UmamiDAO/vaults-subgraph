@@ -6,9 +6,9 @@ dataSources:
     name: GlpUsdcVault
     network: arbitrum-one
     source:
-      address: "0x348fd77c569ff888ab93c03860e7cf5f59760d35"
+      address: "0x8bdb0c9ee66e4c65205b38fc090a38626dd021a4"
       abi: GlpUsdcVault
-      startBlock: 63600000
+      startBlock: 87000000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -16,20 +16,30 @@ dataSources:
       entities:
         - UserVaultBalanceTotal
         - UserVaultBalance
+        - VaultPricePerShare
+        - VaultTVL
+        - VaultTotalSupply
+        - UserBalanceEvent
       abis:
         - name: GlpUsdcVault
           file: ./abis/GlpAssetVault.json
+        - name: AggregateVault
+          file: ./abis/AggregateVault.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
+        - event: Deposit(indexed address,indexed address,uint256,uint256)
+          handler: handleGlpUsdcDeposit
+        - event: Withdraw(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleGlpUsdcWithdraw
       file: ./src/glp-usdc-vault.ts
   - kind: ethereum
     name: GlpWethVault
     network: arbitrum-one
     source:
-      address: "0xeaa2c841cc4901d93faf85b48245c4c72a5fe8aa"
+      address: "0xfb5e4cd2282e227e0dca12a6e26e31683eba86dd"
       abi: GlpWethVault
-      startBlock: 63600000
+      startBlock: 87000000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -37,20 +47,30 @@ dataSources:
       entities:
         - UserVaultBalanceTotal
         - UserVaultBalance
+        - VaultPricePerShare
+        - VaultTVL
+        - VaultTotalSupply
+        - UserBalanceEvent
       abis:
         - name: GlpWethVault
           file: ./abis/GlpAssetVault.json
+        - name: AggregateVault
+          file: ./abis/AggregateVault.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleGlpWethVaultTransfer
+        - event: Deposit(indexed address,indexed address,uint256,uint256)
+          handler: handleGlpWethDeposit
+        - event: Withdraw(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleGlpWethWithdraw
       file: ./src/glp-weth-vault.ts
   - kind: ethereum
     name: GlpWbtcVault
     network: arbitrum-one
     source:
-      address: "0x466683abc221a38d02cf4da05258d203de118500"
+      address: "0x83110960cd11c99ad2ef07e37fe4ff19fc682133"
       abi: GlpWbtcVault
-      startBlock: 63600000
+      startBlock: 87000000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -58,20 +78,30 @@ dataSources:
       entities:
         - UserVaultBalanceTotal
         - UserVaultBalance
+        - VaultPricePerShare
+        - VaultTVL
+        - VaultTotalSupply
+        - UserBalanceEvent
       abis:
         - name: GlpWbtcVault
           file: ./abis/GlpAssetVault.json
+        - name: AggregateVault
+          file: ./abis/AggregateVault.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleGlpWbtcVaultTransfer
+        - event: Deposit(indexed address,indexed address,uint256,uint256)
+          handler: handleGlpWbtcDeposit
+        - event: Withdraw(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleGlpWbtcWithdraw
       file: ./src/glp-wbtc-vault.ts
   - kind: ethereum
     name: GlpLinkVault
     network: arbitrum-one
     source:
-      address: "0x7387eb285c7e0ddcff5ce05d1895ad9573702218"
+      address: "0x2cab0aa432a46d33f4fbe01db7a899ec62985169"
       abi: GlpLinkVault
-      startBlock: 63600000
+      startBlock: 87000000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -79,20 +109,30 @@ dataSources:
       entities:
         - UserVaultBalanceTotal
         - UserVaultBalance
+        - VaultPricePerShare
+        - VaultTVL
+        - VaultTotalSupply
+        - UserBalanceEvent
       abis:
         - name: GlpLinkVault
           file: ./abis/GlpAssetVault.json
+        - name: AggregateVault
+          file: ./abis/AggregateVault.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleGlpLinkVaultTransfer
+        - event: Deposit(indexed address,indexed address,uint256,uint256)
+          handler: handleGlpLinkDeposit
+        - event: Withdraw(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleGlpLinkWithdraw
       file: ./src/glp-link-vault.ts
   - kind: ethereum
     name: GlpUniVault
     network: arbitrum-one
     source:
-      address: "0x6528709f58a88511b887326fe713bd93353062a7"
+      address: "0xfcdaf16b83aff360d7ee3d83a99515b717d7017d"
       abi: GlpUniVault
-      startBlock: 63600000
+      startBlock: 87000000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -100,37 +140,65 @@ dataSources:
       entities:
         - UserVaultBalanceTotal
         - UserVaultBalance
+        - VaultPricePerShare
+        - VaultTVL
+        - VaultTotalSupply
+        - UserBalanceEvent
       abis:
         - name: GlpUniVault
           file: ./abis/GlpAssetVault.json
+        - name: AggregateVault
+          file: ./abis/AggregateVault.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleGlpUniVaultTransfer
+        - event: Deposit(indexed address,indexed address,uint256,uint256)
+          handler: handleGlpUniDeposit
+        - event: Withdraw(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleGlpUniWithdraw
       file: ./src/glp-uni-vault.ts
   - kind: ethereum
     name: AggregateVault
     network: arbitrum-one
     source:
-      address: "0x6e258be26e713387a058f8644f514ae7ed3320ad"
+      address: "0x2f35e5742f63010c8840f6f6f290ce85b27fe206"
       abi: AggregateVaultHelper
-      startBlock: 63600000
+      startBlock: 87000000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - VaultFeesCollection
         - CompoundDistributeYield
+        - VaultPricePerShare
       abis:
         - name: AggregateVault
           file: ./abis/AggregateVault.json
         - name: AggregateVaultHelper
           file: ./abis/AggregateVaultHelper.json
       eventHandlers:
-        - event: CollectVaultFees(uint256,uint256,uint256,uint256,address)
-          handler: handleCollectVaultFees
         - event: CompoundDistributeYield(uint256[5])
           handler: handleCompoundDistributeYield
-        - event: CloseRebalance(uint256)
-          handler: handleCloseRebalance
+        - event: GlpRewardClaimed(uint256)
+          handler: handleGlpRewardClaimed
       file: ./src/aggregate-vault.ts
+  - kind: ethereum/contract
+    name: GmxVault
+    network: arbitrum-one
+    source:
+      address: "0x489ee077994b6658eafa855c308275ead8097c4a"
+      abi: GmxVault
+      startBlock: 87000000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - GmxClosedPositionPnl
+      abis:
+        - name: GmxVault
+          file: ./abis/GmxVault.json
+      eventHandlers:
+        - event: ClosePosition(bytes32,uint256,uint256,uint256,uint256,uint256,int256)
+          handler: handleClosePosition
+      file: ./src/gmx-vault.ts
