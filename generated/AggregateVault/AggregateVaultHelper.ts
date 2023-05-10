@@ -10,58 +10,6 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class CloseRebalance extends ethereum.Event {
-  get params(): CloseRebalance__Params {
-    return new CloseRebalance__Params(this);
-  }
-}
-
-export class CloseRebalance__Params {
-  _event: CloseRebalance;
-
-  constructor(event: CloseRebalance) {
-    this._event = event;
-  }
-
-  get _timestamp(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-}
-
-export class CollectVaultFees extends ethereum.Event {
-  get params(): CollectVaultFees__Params {
-    return new CollectVaultFees__Params(this);
-  }
-}
-
-export class CollectVaultFees__Params {
-  _event: CollectVaultFees;
-
-  constructor(event: CollectVaultFees) {
-    this._event = event;
-  }
-
-  get totalVaultFee(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get performanceFeeInAsset(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
-  }
-
-  get managementFeeInAsset(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-
-  get slowReleaseMintAmount(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-
-  get _assetVault(): Address {
-    return this._event.parameters[4].value.toAddress();
-  }
-}
-
 export class CompoundDistributeYield extends ethereum.Event {
   get params(): CompoundDistributeYield__Params {
     return new CompoundDistributeYield__Params(this);
@@ -102,33 +50,21 @@ export class Cycle__Params {
   }
 }
 
-export class OpenRebalance extends ethereum.Event {
-  get params(): OpenRebalance__Params {
-    return new OpenRebalance__Params(this);
+export class GlpRewardClaimed extends ethereum.Event {
+  get params(): GlpRewardClaimed__Params {
+    return new GlpRewardClaimed__Params(this);
   }
 }
 
-export class OpenRebalance__Params {
-  _event: OpenRebalance;
+export class GlpRewardClaimed__Params {
+  _event: GlpRewardClaimed;
 
-  constructor(event: OpenRebalance) {
+  constructor(event: GlpRewardClaimed) {
     this._event = event;
   }
 
-  get timestamp(): BigInt {
+  get _amount(): BigInt {
     return this._event.parameters[0].value.toBigInt();
-  }
-
-  get nextVaultGlpAlloc(): Array<BigInt> {
-    return this._event.parameters[1].value.toBigIntArray();
-  }
-
-  get nextGlpComp(): Array<BigInt> {
-    return this._event.parameters[2].value.toBigIntArray();
-  }
-
-  get adjustedPositions(): Array<BigInt> {
-    return this._event.parameters[3].value.toBigIntArray();
   }
 }
 
@@ -292,6 +228,56 @@ export class AggregateVaultHelper___getCurrentPricesResult_pricesStruct extends 
   }
 }
 
+export class AggregateVaultHelper___getTotalMarginResult {
+  value0: BigInt;
+  value1: boolean;
+
+  constructor(value0: BigInt, value1: boolean) {
+    this.value0 = value0;
+    this.value1 = value1;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
+    map.set("value1", ethereum.Value.fromBoolean(this.value1));
+    return map;
+  }
+
+  get_totalMargin(): BigInt {
+    return this.value0;
+  }
+
+  get_isLong(): boolean {
+    return this.value1;
+  }
+}
+
+export class AggregateVaultHelper___getTotalNotionalResult {
+  value0: BigInt;
+  value1: boolean;
+
+  constructor(value0: BigInt, value1: boolean) {
+    this.value0 = value0;
+    this.value1 = value1;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
+    map.set("value1", ethereum.Value.fromBoolean(this.value1));
+    return map;
+  }
+
+  get_totalNotional(): BigInt {
+    return this.value0;
+  }
+
+  get_isLong(): boolean {
+    return this.value1;
+  }
+}
+
 export class AggregateVaultHelper__getAssetVaultEntriesResult_assetVaultEntryStruct extends ethereum.Tuple {
   get vault(): Address {
     return this[0].toAddress();
@@ -317,7 +303,7 @@ export class AggregateVaultHelper__getAssetVaultEntriesResult_assetVaultEntryStr
     return this[5].toBigInt();
   }
 
-  get slowReleaseStaking(): Address {
+  get timelockYieldBoost(): Address {
     return this[6].toAddress();
   }
 }
@@ -395,7 +381,7 @@ export class AggregateVaultHelper__getVaultFromAssetResultVaultStruct extends et
     return this[5].toBigInt();
   }
 
-  get slowReleaseStaking(): Address {
+  get timelockYieldBoost(): Address {
     return this[6].toAddress();
   }
 }
@@ -423,6 +409,18 @@ export class AggregateVaultHelper__getVaultStateResult_vaultStateStruct extends 
 
   get feeRecipient(): Address {
     return this[5].toAddress();
+  }
+
+  get depositFeeEscrow(): Address {
+    return this[6].toAddress();
+  }
+
+  get vaultCaps(): Array<BigInt> {
+    return this[7].toBigIntArray();
+  }
+
+  get rebalancePPS(): Array<BigInt> {
+    return this[8].toBigIntArray();
   }
 }
 
@@ -462,28 +460,6 @@ export class AggregateVaultHelper__getVaultTVLBreakdownResult {
 
   get_hedges(): BigInt {
     return this.value3;
-  }
-}
-
-export class AggregateVaultHelper__getWithdrawalRequestRecieptsResult_withdrawalRequestRecieptsStruct extends ethereum.Tuple {
-  get assetVault(): Address {
-    return this[0].toAddress();
-  }
-
-  get asset(): Address {
-    return this[1].toAddress();
-  }
-
-  get user(): Address {
-    return this[2].toAddress();
-  }
-
-  get tokenAmount(): BigInt {
-    return this[3].toBigInt();
-  }
-
-  get underlyingAmount(): BigInt {
-    return this[4].toBigInt();
   }
 }
 
@@ -559,6 +535,76 @@ export class AggregateVaultHelper extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(
       changetype<AggregateVaultHelper___getCurrentPricesResult_pricesStruct>(
         value[0].toTuple()
+      )
+    );
+  }
+
+  _getTotalMargin(
+    _token: Address
+  ): AggregateVaultHelper___getTotalMarginResult {
+    let result = super.call(
+      "_getTotalMargin",
+      "_getTotalMargin(address):(uint256,bool)",
+      [ethereum.Value.fromAddress(_token)]
+    );
+
+    return new AggregateVaultHelper___getTotalMarginResult(
+      result[0].toBigInt(),
+      result[1].toBoolean()
+    );
+  }
+
+  try__getTotalMargin(
+    _token: Address
+  ): ethereum.CallResult<AggregateVaultHelper___getTotalMarginResult> {
+    let result = super.tryCall(
+      "_getTotalMargin",
+      "_getTotalMargin(address):(uint256,bool)",
+      [ethereum.Value.fromAddress(_token)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new AggregateVaultHelper___getTotalMarginResult(
+        value[0].toBigInt(),
+        value[1].toBoolean()
+      )
+    );
+  }
+
+  _getTotalNotional(
+    _token: Address
+  ): AggregateVaultHelper___getTotalNotionalResult {
+    let result = super.call(
+      "_getTotalNotional",
+      "_getTotalNotional(address):(uint256,bool)",
+      [ethereum.Value.fromAddress(_token)]
+    );
+
+    return new AggregateVaultHelper___getTotalNotionalResult(
+      result[0].toBigInt(),
+      result[1].toBoolean()
+    );
+  }
+
+  try__getTotalNotional(
+    _token: Address
+  ): ethereum.CallResult<AggregateVaultHelper___getTotalNotionalResult> {
+    let result = super.tryCall(
+      "_getTotalNotional",
+      "_getTotalNotional(address):(uint256,bool)",
+      [ethereum.Value.fromAddress(_token)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new AggregateVaultHelper___getTotalNotionalResult(
+        value[0].toBigInt(),
+        value[1].toBoolean()
       )
     );
   }
@@ -794,21 +840,6 @@ export class AggregateVaultHelper extends ethereum.SmartContract {
     );
   }
 
-  getSwapFees(): Array<BigInt> {
-    let result = super.call("getSwapFees", "getSwapFees():(uint256[])", []);
-
-    return result[0].toBigIntArray();
-  }
-
-  try_getSwapFees(): ethereum.CallResult<Array<BigInt>> {
-    let result = super.tryCall("getSwapFees", "getSwapFees():(uint256[])", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigIntArray());
-  }
-
   getVaultFromAsset(
     _asset: Address
   ): AggregateVaultHelper__getVaultFromAssetResultVaultStruct {
@@ -891,7 +922,7 @@ export class AggregateVaultHelper extends ethereum.SmartContract {
   getVaultState(): AggregateVaultHelper__getVaultStateResult_vaultStateStruct {
     let result = super.call(
       "getVaultState",
-      "getVaultState():((uint256,bool,uint256[5],int256[5],int256[5][5],address))",
+      "getVaultState():((uint256,bool,uint256[5],int256[5],int256[5][5],address,address,uint256[5],uint256[5]))",
       []
     );
 
@@ -905,7 +936,7 @@ export class AggregateVaultHelper extends ethereum.SmartContract {
   > {
     let result = super.tryCall(
       "getVaultState",
-      "getVaultState():((uint256,bool,uint256[5],int256[5],int256[5][5],address))",
+      "getVaultState():((uint256,bool,uint256[5],int256[5],int256[5][5],address,address,uint256[5],uint256[5]))",
       []
     );
     if (result.reverted) {
@@ -998,54 +1029,27 @@ export class AggregateVaultHelper extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigIntArray());
   }
 
-  getWithdrawalRequestReciepts(): Array<
-    AggregateVaultHelper__getWithdrawalRequestRecieptsResult_withdrawalRequestRecieptsStruct
-  > {
+  getVaultsGlpNoPnl(): Array<BigInt> {
     let result = super.call(
-      "getWithdrawalRequestReciepts",
-      "getWithdrawalRequestReciepts():((address,address,address,uint256,uint256)[])",
+      "getVaultsGlpNoPnl",
+      "getVaultsGlpNoPnl():(uint256[5])",
       []
     );
 
-    return result[0].toTupleArray<
-      AggregateVaultHelper__getWithdrawalRequestRecieptsResult_withdrawalRequestRecieptsStruct
-    >();
+    return result[0].toBigIntArray();
   }
 
-  try_getWithdrawalRequestReciepts(): ethereum.CallResult<
-    Array<
-      AggregateVaultHelper__getWithdrawalRequestRecieptsResult_withdrawalRequestRecieptsStruct
-    >
-  > {
+  try_getVaultsGlpNoPnl(): ethereum.CallResult<Array<BigInt>> {
     let result = super.tryCall(
-      "getWithdrawalRequestReciepts",
-      "getWithdrawalRequestReciepts():((address,address,address,uint256,uint256)[])",
+      "getVaultsGlpNoPnl",
+      "getVaultsGlpNoPnl():(uint256[5])",
       []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(
-      value[0].toTupleArray<
-        AggregateVaultHelper__getWithdrawalRequestRecieptsResult_withdrawalRequestRecieptsStruct
-      >()
-    );
-  }
-
-  router(): Address {
-    let result = super.call("router", "router():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_router(): ethereum.CallResult<Address> {
-    let result = super.tryCall("router", "router():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
+    return ethereum.CallResult.fromValue(value[0].toBigIntArray());
   }
 
   tokenToAssetVaultIndex(_token: Address): BigInt {
@@ -1095,33 +1099,79 @@ export class AggregateVaultHelper extends ethereum.SmartContract {
   }
 }
 
-export class _getAllAssetVaultsHedgeAtributionCall extends ethereum.Call {
-  get inputs(): _getAllAssetVaultsHedgeAtributionCall__Inputs {
-    return new _getAllAssetVaultsHedgeAtributionCall__Inputs(this);
+export class _getTotalMarginCall extends ethereum.Call {
+  get inputs(): _getTotalMarginCall__Inputs {
+    return new _getTotalMarginCall__Inputs(this);
   }
 
-  get outputs(): _getAllAssetVaultsHedgeAtributionCall__Outputs {
-    return new _getAllAssetVaultsHedgeAtributionCall__Outputs(this);
-  }
-}
-
-export class _getAllAssetVaultsHedgeAtributionCall__Inputs {
-  _call: _getAllAssetVaultsHedgeAtributionCall;
-
-  constructor(call: _getAllAssetVaultsHedgeAtributionCall) {
-    this._call = call;
+  get outputs(): _getTotalMarginCall__Outputs {
+    return new _getTotalMarginCall__Outputs(this);
   }
 }
 
-export class _getAllAssetVaultsHedgeAtributionCall__Outputs {
-  _call: _getAllAssetVaultsHedgeAtributionCall;
+export class _getTotalMarginCall__Inputs {
+  _call: _getTotalMarginCall;
 
-  constructor(call: _getAllAssetVaultsHedgeAtributionCall) {
+  constructor(call: _getTotalMarginCall) {
     this._call = call;
   }
 
-  get hedgeAttribution(): Array<Array<BigInt>> {
-    return this._call.outputValues[0].value.toBigIntMatrix();
+  get _token(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class _getTotalMarginCall__Outputs {
+  _call: _getTotalMarginCall;
+
+  constructor(call: _getTotalMarginCall) {
+    this._call = call;
+  }
+
+  get _totalMargin(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
+  }
+
+  get _isLong(): boolean {
+    return this._call.outputValues[1].value.toBoolean();
+  }
+}
+
+export class _getTotalNotionalCall extends ethereum.Call {
+  get inputs(): _getTotalNotionalCall__Inputs {
+    return new _getTotalNotionalCall__Inputs(this);
+  }
+
+  get outputs(): _getTotalNotionalCall__Outputs {
+    return new _getTotalNotionalCall__Outputs(this);
+  }
+}
+
+export class _getTotalNotionalCall__Inputs {
+  _call: _getTotalNotionalCall;
+
+  constructor(call: _getTotalNotionalCall) {
+    this._call = call;
+  }
+
+  get _token(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class _getTotalNotionalCall__Outputs {
+  _call: _getTotalNotionalCall;
+
+  constructor(call: _getTotalNotionalCall) {
+    this._call = call;
+  }
+
+  get _totalNotional(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
+  }
+
+  get _isLong(): boolean {
+    return this._call.outputValues[1].value.toBoolean();
   }
 }
 
@@ -1303,32 +1353,6 @@ export class HandleGlpRewardsCall__Outputs {
   }
 }
 
-export class ProcessWithdrawalRequestsCall extends ethereum.Call {
-  get inputs(): ProcessWithdrawalRequestsCall__Inputs {
-    return new ProcessWithdrawalRequestsCall__Inputs(this);
-  }
-
-  get outputs(): ProcessWithdrawalRequestsCall__Outputs {
-    return new ProcessWithdrawalRequestsCall__Outputs(this);
-  }
-}
-
-export class ProcessWithdrawalRequestsCall__Inputs {
-  _call: ProcessWithdrawalRequestsCall;
-
-  constructor(call: ProcessWithdrawalRequestsCall) {
-    this._call = call;
-  }
-}
-
-export class ProcessWithdrawalRequestsCall__Outputs {
-  _call: ProcessWithdrawalRequestsCall;
-
-  constructor(call: ProcessWithdrawalRequestsCall) {
-    this._call = call;
-  }
-}
-
 export class RebalanceGlpPositionCall extends ethereum.Call {
   get inputs(): RebalanceGlpPositionCall__Inputs {
     return new RebalanceGlpPositionCall__Inputs(this);
@@ -1461,66 +1485,6 @@ export class ResetCheckpointPricesCall__Outputs {
   }
 }
 
-export class ResetGlpAttributionSlippageCall extends ethereum.Call {
-  get inputs(): ResetGlpAttributionSlippageCall__Inputs {
-    return new ResetGlpAttributionSlippageCall__Inputs(this);
-  }
-
-  get outputs(): ResetGlpAttributionSlippageCall__Outputs {
-    return new ResetGlpAttributionSlippageCall__Outputs(this);
-  }
-}
-
-export class ResetGlpAttributionSlippageCall__Inputs {
-  _call: ResetGlpAttributionSlippageCall;
-
-  constructor(call: ResetGlpAttributionSlippageCall) {
-    this._call = call;
-  }
-}
-
-export class ResetGlpAttributionSlippageCall__Outputs {
-  _call: ResetGlpAttributionSlippageCall;
-
-  constructor(call: ResetGlpAttributionSlippageCall) {
-    this._call = call;
-  }
-}
-
-export class RollToNextEpochCall extends ethereum.Call {
-  get inputs(): RollToNextEpochCall__Inputs {
-    return new RollToNextEpochCall__Inputs(this);
-  }
-
-  get outputs(): RollToNextEpochCall__Outputs {
-    return new RollToNextEpochCall__Outputs(this);
-  }
-}
-
-export class RollToNextEpochCall__Inputs {
-  _call: RollToNextEpochCall;
-
-  constructor(call: RollToNextEpochCall) {
-    this._call = call;
-  }
-
-  get assetPrices(): Array<BigInt> {
-    return this._call.inputValues[0].value.toBigIntArray();
-  }
-
-  get glpPrice(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-}
-
-export class RollToNextEpochCall__Outputs {
-  _call: RollToNextEpochCall;
-
-  constructor(call: RollToNextEpochCall) {
-    this._call = call;
-  }
-}
-
 export class SetNettedPositionsCall extends ethereum.Call {
   get inputs(): SetNettedPositionsCall__Inputs {
     return new SetNettedPositionsCall__Inputs(this);
@@ -1636,6 +1600,40 @@ export class SetRebalanceStateCall_rebalanceStateStruct extends ethereum.Tuple {
 
   get adjustedExternalPositions(): Array<Array<BigInt>> {
     return this[5].toBigIntMatrix();
+  }
+}
+
+export class SetTimelockYieldBoostCall extends ethereum.Call {
+  get inputs(): SetTimelockYieldBoostCall__Inputs {
+    return new SetTimelockYieldBoostCall__Inputs(this);
+  }
+
+  get outputs(): SetTimelockYieldBoostCall__Outputs {
+    return new SetTimelockYieldBoostCall__Outputs(this);
+  }
+}
+
+export class SetTimelockYieldBoostCall__Inputs {
+  _call: SetTimelockYieldBoostCall;
+
+  constructor(call: SetTimelockYieldBoostCall) {
+    this._call = call;
+  }
+
+  get newTimelockYieldBoost(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get vaultIdx(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+}
+
+export class SetTimelockYieldBoostCall__Outputs {
+  _call: SetTimelockYieldBoostCall;
+
+  constructor(call: SetTimelockYieldBoostCall) {
+    this._call = call;
   }
 }
 

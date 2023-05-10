@@ -2,16 +2,20 @@ import { Address } from "@graphprotocol/graph-ts";
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
+export const GMX_VAULT_ADDRESS = Address.fromString(
+  "0x489ee077994b6658eafa855c308275ead8097c4a"
+);
+
 export const AGGREGATE_VAULT_HELPER_ADDRESS = Address.fromString(
-  "0x5573e7535efb06c757350068a8f0d6fed43f1ad0"
+  "0x32b403ec6f75e1d10018300f7c8feeb2c950a63b"
 );
 
 export const AGGREGATE_VAULT_ADDRESS = Address.fromString(
-  "0x6e258be26e713387a058f8644f514ae7ed3320ad"
+  "0x2f35e5742f63010c8840f6f6f290ce85b27fe206"
 );
 
 export const USDC_VAULT_ADDRESS = Address.fromString(
-  "0x348fd77c569ff888ab93c03860e7cf5f59760d35"
+  "0x8bdb0c9ee66e4c65205b38fc090a38626dd021a4"
 );
 
 export const USDC_ADDRESS = Address.fromString(
@@ -19,7 +23,7 @@ export const USDC_ADDRESS = Address.fromString(
 );
 
 export const WETH_VAULT_ADDRESS = Address.fromString(
-  "0xEaa2C841cC4901d93FAf85B48245C4C72A5FE8Aa"
+  "0xfb5e4cd2282e227e0dca12a6e26e31683eba86dd"
 );
 
 export const WETH_ADDRESS = Address.fromString(
@@ -27,7 +31,7 @@ export const WETH_ADDRESS = Address.fromString(
 );
 
 export const WBTC_VAULT_ADDRESS = Address.fromString(
-  "0x466683aBC221A38d02cF4da05258D203De118500"
+  "0x83110960cd11c99ad2ef07e37fe4ff19fc682133"
 );
 
 export const WBTC_ADDRESS = Address.fromString(
@@ -35,7 +39,7 @@ export const WBTC_ADDRESS = Address.fromString(
 );
 
 export const LINK_VAULT_ADDRESS = Address.fromString(
-  "0x7387eB285C7e0Ddcff5Ce05D1895aD9573702218"
+  "0x2cab0aa432a46d33f4fbe01db7a899ec62985169"
 );
 
 export const LINK_ADDRESS = Address.fromString(
@@ -43,7 +47,7 @@ export const LINK_ADDRESS = Address.fromString(
 );
 
 export const UNI_VAULT_ADDRESS = Address.fromString(
-  "0x6528709f58A88511B887326Fe713bd93353062a7"
+  "0xfcdaf16b83aff360d7ee3d83a99515b717d7017d"
 );
 
 export const UNI_ADDRESS = Address.fromString(

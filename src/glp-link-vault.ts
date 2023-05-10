@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigInt } from "@graphprotocol/graph-ts";
 import {
   Deposit as DepositEvent,
   Withdraw as WithdrawEvent,
@@ -6,8 +6,10 @@ import {
   GlpLinkVault,
 } from "../generated/GlpLinkVault/GlpLinkVault";
 import {
+  UserBalanceEvent,
   UserVaultBalance,
   UserVaultBalanceTotal,
+  VaultPricePerShare,
   VaultTVL,
   VaultTotalSupply,
 } from "../generated/schema";
@@ -18,9 +20,50 @@ import {
 } from "./constants";
 import { AggregateVault } from "../generated/AggregateVault/AggregateVault";
 
-export function handleGlpWbtcDeposit(event: DepositEvent): void {
+function getVaultPpsEntity(
+  blockNumber: BigInt,
+  timestamp: BigInt,
+  vault: Address,
+  event: string
+): VaultPricePerShare {
+  const vaultEntityId = `${blockNumber}:${timestamp}:${vault.toHexString()}`;
+  const vaultPps = new VaultPricePerShare(vaultEntityId);
+
+  vaultPps.block = blockNumber;
+  vaultPps.timestamp = timestamp;
+  vaultPps.vault = vault.toHexString();
+  vaultPps.txHash = "";
+  vaultPps.event = event;
+
+  return vaultPps as VaultPricePerShare;
+}
+
+export function handleGlpLinkDeposit(event: DepositEvent): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   const vaultContract = GlpLinkVault.bind(LINK_VAULT_ADDRESS);
+  const userBalanceEvent = new UserBalanceEvent(event.transaction.hash.toHex());
+
+  userBalanceEvent.block = event.block.number;
+  userBalanceEvent.timestamp = event.block.timestamp;
+  userBalanceEvent.txHash = event.transaction.hash.toHexString();
+  userBalanceEvent.event = "deposit";
+  userBalanceEvent.token = LINK_VAULT_ADDRESS.toHexString();
+  userBalanceEvent.user = event.params.caller.toHexString();
+  userBalanceEvent.amount = event.params.assets;
+  userBalanceEvent.from = event.params.caller.toHexString();
+  userBalanceEvent.to = LINK_VAULT_ADDRESS.toHexString();
+  userBalanceEvent.save();
+
+  /** Price Per Share */
+
+  const ppsEntity = getVaultPpsEntity(
+    event.block.number,
+    event.block.timestamp,
+    LINK_VAULT_ADDRESS,
+    "deposit"
+  );
+  ppsEntity.pricePerShare = vaultContract.pps();
+  ppsEntity.save();
 
   /** TVL */
 
@@ -29,6 +72,8 @@ export function handleGlpWbtcDeposit(event: DepositEvent): void {
 
   vaultTvlEntity.block = event.block.number;
   vaultTvlEntity.timestamp = event.block.timestamp;
+  vaultTvlEntity.event = "deposit";
+  vaultTvlEntity.txHash = event.transaction.hash.toHex();
   vaultTvlEntity.vault = LINK_VAULT_ADDRESS.toHexString();
   vaultTvlEntity.tvl = aggregateVault.getVaultTVL(LINK_VAULT_ADDRESS);
   vaultTvlEntity.save();
@@ -40,14 +85,39 @@ export function handleGlpWbtcDeposit(event: DepositEvent): void {
 
   totalSupplyEntity.block = event.block.number;
   totalSupplyEntity.timestamp = event.block.timestamp;
+  totalSupplyEntity.event = "deposit";
+  totalSupplyEntity.txHash = event.transaction.hash.toHex();
   totalSupplyEntity.vault = LINK_VAULT_ADDRESS.toHexString();
   totalSupplyEntity.totalSupply = vaultContract.totalSupply();
   totalSupplyEntity.save();
 }
 
-export function handleGlpWbtcWithdraw(event: WithdrawEvent): void {
+export function handleGlpLinkWithdraw(event: WithdrawEvent): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   const vaultContract = GlpLinkVault.bind(LINK_VAULT_ADDRESS);
+  const userBalanceEvent = new UserBalanceEvent(event.transaction.hash.toHex());
+
+  userBalanceEvent.block = event.block.number;
+  userBalanceEvent.timestamp = event.block.timestamp;
+  userBalanceEvent.txHash = event.transaction.hash.toHexString();
+  userBalanceEvent.event = "withdraw";
+  userBalanceEvent.token = LINK_VAULT_ADDRESS.toHexString();
+  userBalanceEvent.user = event.params.caller.toHexString();
+  userBalanceEvent.amount = event.params.assets;
+  userBalanceEvent.from = LINK_VAULT_ADDRESS.toHexString();
+  userBalanceEvent.to = event.params.caller.toHexString();
+  userBalanceEvent.save();
+
+  /** Price Per Share */
+
+  const ppsEntity = getVaultPpsEntity(
+    event.block.number,
+    event.block.timestamp,
+    LINK_VAULT_ADDRESS,
+    "withdraw"
+  );
+  ppsEntity.pricePerShare = vaultContract.pps();
+  ppsEntity.save();
 
   /** TVL */
 
@@ -56,6 +126,8 @@ export function handleGlpWbtcWithdraw(event: WithdrawEvent): void {
 
   vaultTvlEntity.block = event.block.number;
   vaultTvlEntity.timestamp = event.block.timestamp;
+  vaultTvlEntity.event = "withdraw";
+  vaultTvlEntity.txHash = event.transaction.hash.toHex();
   vaultTvlEntity.vault = LINK_VAULT_ADDRESS.toHexString();
   vaultTvlEntity.tvl = aggregateVault.getVaultTVL(LINK_VAULT_ADDRESS);
   vaultTvlEntity.save();
@@ -67,6 +139,8 @@ export function handleGlpWbtcWithdraw(event: WithdrawEvent): void {
 
   totalSupplyEntity.block = event.block.number;
   totalSupplyEntity.timestamp = event.block.timestamp;
+  totalSupplyEntity.event = "withdraw";
+  totalSupplyEntity.txHash = event.transaction.hash.toHex();
   totalSupplyEntity.vault = LINK_VAULT_ADDRESS.toHexString();
   totalSupplyEntity.totalSupply = vaultContract.totalSupply();
   totalSupplyEntity.save();
