@@ -155,14 +155,14 @@ export function handleGlpLinkVaultTransfer(
   const to = event.params.to.toHexString();
 
   // Any event not listed below is considered a transfer
-  let balanceEvent = "link-vault-transfer";
+  let balanceEvent = "transfer";
   // User deposited into the vault
   if (from == ZERO_ADDRESS) {
-    balanceEvent = "link-vault-deposit";
+    balanceEvent = "deposit";
   }
   // User withdrew into the vault
   if (to == ZERO_ADDRESS) {
-    balanceEvent = "link-vault-withdraw";
+    balanceEvent = "withdraw";
   }
 
   // ZERO_ADDRESS = deposit event, don't register ZERO_ADDRESS's balance

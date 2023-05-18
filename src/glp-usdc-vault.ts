@@ -153,14 +153,14 @@ export function handleTransfer(event: GlpUsdcTransferEvent): void {
   const to = event.params.to.toHexString();
 
   // Any event not listed below is considered a transfer
-  let balanceEvent = "usdc-vault-transfer";
+  let balanceEvent = "transfer";
   // User deposited into the vault
   if (from == ZERO_ADDRESS) {
-    balanceEvent = "usdc-vault-deposit";
+    balanceEvent = "deposit";
   }
   // User withdrew into the vault
   if (to == ZERO_ADDRESS) {
-    balanceEvent = "usdc-vault-withdraw";
+    balanceEvent = "withdraw";
   }
 
   // ZERO_ADDRESS = deposit event, don't register ZERO_ADDRESS's balance

@@ -101,3 +101,13 @@ type GmxClosedPositionPnl @entity {
   collateral: BigInt!
   reserveAmount: BigInt!
 }
+
+type VaultFeesCollection @entity(immutable: true) {
+  id: ID!
+  timestamp: BigInt! # uint256
+  block: BigInt! # uint256
+  totalVaultFee: BigInt! # uint256
+  performanceFeeInAsset: BigInt! # uint256
+  managementFeeInAsset: BigInt! # uint256
+  vault: String!
+}

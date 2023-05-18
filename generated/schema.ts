@@ -927,3 +927,91 @@ export class GmxClosedPositionPnl extends Entity {
     this.set("reserveAmount", Value.fromBigInt(value));
   }
 }
+
+export class VaultFeesCollection extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save VaultFeesCollection entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type VaultFeesCollection must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("VaultFeesCollection", id.toString(), this);
+    }
+  }
+
+  static load(id: string): VaultFeesCollection | null {
+    return changetype<VaultFeesCollection | null>(
+      store.get("VaultFeesCollection", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get block(): BigInt {
+    let value = this.get("block");
+    return value!.toBigInt();
+  }
+
+  set block(value: BigInt) {
+    this.set("block", Value.fromBigInt(value));
+  }
+
+  get totalVaultFee(): BigInt {
+    let value = this.get("totalVaultFee");
+    return value!.toBigInt();
+  }
+
+  set totalVaultFee(value: BigInt) {
+    this.set("totalVaultFee", Value.fromBigInt(value));
+  }
+
+  get performanceFeeInAsset(): BigInt {
+    let value = this.get("performanceFeeInAsset");
+    return value!.toBigInt();
+  }
+
+  set performanceFeeInAsset(value: BigInt) {
+    this.set("performanceFeeInAsset", Value.fromBigInt(value));
+  }
+
+  get managementFeeInAsset(): BigInt {
+    let value = this.get("managementFeeInAsset");
+    return value!.toBigInt();
+  }
+
+  set managementFeeInAsset(value: BigInt) {
+    this.set("managementFeeInAsset", Value.fromBigInt(value));
+  }
+
+  get vault(): string {
+    let value = this.get("vault");
+    return value!.toString();
+  }
+
+  set vault(value: string) {
+    this.set("vault", Value.fromString(value));
+  }
+}

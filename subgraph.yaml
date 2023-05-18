@@ -162,7 +162,7 @@ dataSources:
     network: arbitrum-one
     source:
       address: "0x2f35e5742f63010c8840f6f6f290ce85b27fe206"
-      abi: AggregateVaultHelper
+      abi: AggregateVault
       startBlock: 89136370
     mapping:
       kind: ethereum/events
@@ -171,16 +171,22 @@ dataSources:
       entities:
         - CompoundDistributeYield
         - VaultPricePerShare
+        - GmxState
+        - VaultFeesCollection
       abis:
         - name: AggregateVault
           file: ./abis/AggregateVault.json
         - name: AggregateVaultHelper
           file: ./abis/AggregateVaultHelper.json
+        - name: GmxVault
+          file: ./abis/GmxVault.json
       eventHandlers:
-        - event: CompoundDistributeYield(uint256[5])
-          handler: handleCompoundDistributeYield
-        - event: GlpRewardClaimed(uint256)
-          handler: handleGlpRewardClaimed
+        - event: CollectVaultFees(uint256,uint256,uint256,uint256,address)
+          handler: handleCollectVaultFees
+        - event: OpenRebalance(uint256,uint256[5],uint256[5],int256[5])
+          handler: handleOpenRebalance
+        - event: CloseRebalance(uint256)
+          handler: handleCloseRebalance
       file: ./src/aggregate-vault.ts
   - kind: ethereum/contract
     name: GmxVault
@@ -195,6 +201,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - GmxClosedPositionPnl
+        - GmxState
       abis:
         - name: GmxVault
           file: ./abis/GmxVault.json

@@ -156,14 +156,14 @@ export function handleGlpWethVaultTransfer(
   const to = event.params.to.toHexString();
 
   // Any event not listed below is considered a transfer
-  let balanceEvent = "weth-vault-transfer";
+  let balanceEvent = "transfer";
   // User deposited into the vault
   if (from == ZERO_ADDRESS) {
-    balanceEvent = "weth-vault-deposit";
+    balanceEvent = "deposit";
   }
   // User withdrew into the vault
   if (to == ZERO_ADDRESS) {
-    balanceEvent = "weth-vault-withdraw";
+    balanceEvent = "withdraw";
   }
 
   // ZERO_ADDRESS = deposit event, don't register ZERO_ADDRESS's balance
