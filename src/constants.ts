@@ -6,8 +6,12 @@ export const GMX_VAULT_ADDRESS = Address.fromString(
   "0x489ee077994b6658eafa855c308275ead8097c4a"
 );
 
+export const GLP_HANDLER_ADDRESS = Address.fromString(
+  "0x46af23a5d55d058712fddaf232b6b1b7ba1c1942"
+);
+
 export const AGGREGATE_VAULT_HELPER_ADDRESS = Address.fromString(
-  "0x32b403ec6f75e1d10018300f7c8feeb2c950a63b"
+  "0xe8ec96c4137d2c248f32739c262ef42a28ad1307"
 );
 
 export const AGGREGATE_VAULT_ADDRESS = Address.fromString(

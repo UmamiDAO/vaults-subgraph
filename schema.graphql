@@ -1,7 +1,4 @@
-type VaultPpsLastTimestampSlow @entity {
-  id: ID!
-  timestamp: BigInt!
-}
+# REGULAR VAULTS ENTITIES
 
 type VaultPricePerShare @entity(immutable: true) {
   id: ID!
@@ -32,6 +29,32 @@ type VaultTotalSupply @entity(immutable: true) {
   vault: String!
   totalSupply: BigInt!
 }
+
+type VaultFeesCollection @entity(immutable: true) {
+  id: ID!
+  timestamp: BigInt! # uint256
+  block: BigInt! # uint256
+  totalVaultFee: BigInt! # uint256
+  performanceFeeInAsset: BigInt! # uint256
+  managementFeeInAsset: BigInt! # uint256
+  vault: String!
+}
+
+type GlpRewardsClaim @entity(immutable: true) {
+  id: ID!
+  timestamp: BigInt! # uint256
+  block: BigInt! # uint256
+  claimed: BigInt! # uint256
+}
+
+type CompoundDistributeYield @entity(immutable: true) {
+  id: ID!
+  timestamp: BigInt! # uint256
+  block: BigInt! # uint256
+  glpYieldPerVault: [BigInt!]! # uint256[5]
+}
+
+# USER RELATED ENTITIES
 
 type UserBalanceEvent @entity(immutable: true) {
   id: ID!
@@ -66,48 +89,29 @@ type UserVaultBalance @entity(immutable: true) {
   vault: String!
 }
 
-type GlpRewardsClaim @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt! # uint256
-  block: BigInt! # uint256
-  claimed: BigInt! # uint256
-}
+# SNAPSHOTS
 
-type CompoundDistributeYield @entity(immutable: true) {
+type RebalanceSnapshot @entity(immutable: true) {
   id: ID!
-  timestamp: BigInt! # uint256
-  block: BigInt! # uint256
-  glpYieldPerVault: [BigInt!]! # uint256[5]
-}
-
-type GmxState @entity(immutable: true) {
-  id: ID!
-  block: BigInt! # uint256
-  timestamp: BigInt! # uint256
-  event: String!
-  assetsPrices: [BigInt!]! # uint256[5]
-  reservedAmounts: [BigInt!]! # uint256[5]
-  guaranteedUsd: [BigInt!]! # uint256[5]
-  shortsAveragePrices: [BigInt!]! # uint256[5]
-  globalShortSizes: [BigInt!]! # uint256[5]
-}
-
-type GmxClosedPositionPnl @entity {
-  id: ID!
-  block: BigInt!
   timestamp: BigInt!
-  profit: BigInt!
-  loss: BigInt!
-  collateral: BigInt!
-  reserveAmount: BigInt!
-}
-
-type VaultFeesCollection @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt! # uint256
-  block: BigInt! # uint256
-  totalVaultFee: BigInt! # uint256
-  performanceFeeInAsset: BigInt! # uint256
-  managementFeeInAsset: BigInt! # uint256
-  vault: String!
+  block: BigInt!
+  txHash: String!
+  event: String!
+  glpPrice: BigInt!
+  vaultsTVL: [BigInt!]!
+  vaultsPps: [BigInt!]!
+  vaultsGlpAlloc: [BigInt!]!
+  aggregatePositions: [BigInt!]!
+  usdcVaultExternalPositions: [BigInt!]!
+  wethVaultExternalPositions: [BigInt!]!
+  wbtcVaultExternalPositions: [BigInt!]!
+  linkVaultExternalPositions: [BigInt!]!
+  uniVaultExternalPositions: [BigInt!]!
+  usdcVaultNettedPositions: [BigInt!]!
+  wethVaultNettedPositions: [BigInt!]!
+  wbtcVaultNettedPositions: [BigInt!]!
+  linkVaultNettedPositions: [BigInt!]!
+  uniVaultNettedPositions: [BigInt!]!
+  glpComposition: [BigInt!]!
+  assetsPrices: [BigInt!]!
 }
