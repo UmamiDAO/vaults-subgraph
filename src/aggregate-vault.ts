@@ -34,7 +34,7 @@ import {
   WETH_ADDRESS,
   WETH_VAULT_ADDRESS,
 } from "./constants";
-import { GmxVault } from "../generated/GmxVault/GmxVault";
+import { GmxVault } from "../generated/AggregateVault/GmxVault";
 
 function getVaultPpsEntity(
   blockNumber: BigInt,
