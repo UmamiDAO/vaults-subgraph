@@ -63,7 +63,8 @@ type UserBalanceEvent @entity(immutable: true) {
   txHash: String!
   event: String!
   token: String!
-  amount: BigInt!
+  assets: BigInt!
+  shares: BigInt!
   user: String!
   from: String!
   to: String!

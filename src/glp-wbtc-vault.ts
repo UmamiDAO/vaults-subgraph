@@ -15,6 +15,7 @@ import {
 } from "../generated/schema";
 import {
   AGGREGATE_VAULT_ADDRESS,
+  BOOSTED_WBTC_VAULT_ADDRESS,
   WBTC_VAULT_ADDRESS,
   ZERO_ADDRESS,
 } from "./constants";
@@ -49,7 +50,8 @@ export function handleGlpWbtcDeposit(event: DepositEvent): void {
   userBalanceEvent.event = "deposit";
   userBalanceEvent.token = WBTC_VAULT_ADDRESS.toHexString();
   userBalanceEvent.user = event.params.caller.toHexString();
-  userBalanceEvent.amount = event.params.assets;
+  userBalanceEvent.assets = event.params.assets;
+  userBalanceEvent.shares = event.params.shares;
   userBalanceEvent.from = event.params.caller.toHexString();
   userBalanceEvent.to = WBTC_VAULT_ADDRESS.toHexString();
   userBalanceEvent.save();
@@ -103,7 +105,8 @@ export function handleGlpWbtcWithdraw(event: WithdrawEvent): void {
   userBalanceEvent.event = "withdraw";
   userBalanceEvent.token = WBTC_VAULT_ADDRESS.toHexString();
   userBalanceEvent.user = event.params.caller.toHexString();
-  userBalanceEvent.amount = event.params.assets;
+  userBalanceEvent.assets = event.params.assets;
+  userBalanceEvent.shares = event.params.shares;
   userBalanceEvent.from = WBTC_VAULT_ADDRESS.toHexString();
   userBalanceEvent.to = event.params.caller.toHexString();
   userBalanceEvent.save();
@@ -166,7 +169,8 @@ export function handleGlpWbtcVaultTransfer(
   }
 
   // ZERO_ADDRESS = deposit event, don't register ZERO_ADDRESS's balance
-  if (from != ZERO_ADDRESS) {
+  // BOOSTED_WBTC_VAULT_ADDRESS = deboost event, don't register
+  if (from != ZERO_ADDRESS && from != BOOSTED_WBTC_VAULT_ADDRESS.toString()) {
     const idFromTotal = `totalVault:wbtc:${from}`;
     let fromTotal = UserVaultBalanceTotal.load(idFromTotal);
     if (fromTotal == null) {
@@ -193,10 +197,29 @@ export function handleGlpWbtcVaultTransfer(
     fromHistoricalBalance.event = balanceEvent;
 
     fromHistoricalBalance.save();
+
+    if (balanceEvent == "transfer") {
+      const userBalanceEvent = new UserBalanceEvent(
+        event.transaction.hash.toHex()
+      );
+
+      userBalanceEvent.block = event.block.number;
+      userBalanceEvent.timestamp = event.block.timestamp;
+      userBalanceEvent.txHash = event.transaction.hash.toHexString();
+      userBalanceEvent.event = balanceEvent;
+      userBalanceEvent.token = WBTC_VAULT_ADDRESS.toHexString();
+      userBalanceEvent.user = from;
+      userBalanceEvent.assets = BigInt.zero();
+      userBalanceEvent.shares = event.params.amount;
+      userBalanceEvent.from = from;
+      userBalanceEvent.to = to;
+      userBalanceEvent.save();
+    }
   }
 
   // ZERO_ADDRESS = withdraw event, don't register ZERO_ADDRESS's balance
-  if (to != ZERO_ADDRESS) {
+  // BOOSTED_WBTC_VAULT_ADDRESS = boost event, don't register
+  if (to != ZERO_ADDRESS && to != BOOSTED_WBTC_VAULT_ADDRESS.toString()) {
     const idToTotal = `totalVault:wbtc:${to}`;
     let toTotal = UserVaultBalanceTotal.load(idToTotal);
     if (toTotal == null) {
@@ -223,5 +246,23 @@ export function handleGlpWbtcVaultTransfer(
     toHistoricalBalance.event = balanceEvent;
 
     toHistoricalBalance.save();
+
+    if (balanceEvent == "transfer") {
+      const userBalanceEvent = new UserBalanceEvent(
+        event.transaction.hash.toHex()
+      );
+
+      userBalanceEvent.block = event.block.number;
+      userBalanceEvent.timestamp = event.block.timestamp;
+      userBalanceEvent.txHash = event.transaction.hash.toHexString();
+      userBalanceEvent.event = balanceEvent;
+      userBalanceEvent.token = WBTC_VAULT_ADDRESS.toHexString();
+      userBalanceEvent.user = to;
+      userBalanceEvent.assets = BigInt.zero();
+      userBalanceEvent.shares = event.params.amount;
+      userBalanceEvent.from = from;
+      userBalanceEvent.to = to;
+      userBalanceEvent.save();
+    }
   }
 }

@@ -562,13 +562,22 @@ export class UserBalanceEvent extends Entity {
     this.set("token", Value.fromString(value));
   }
 
-  get amount(): BigInt {
-    let value = this.get("amount");
+  get assets(): BigInt {
+    let value = this.get("assets");
     return value!.toBigInt();
   }
 
-  set amount(value: BigInt) {
-    this.set("amount", Value.fromBigInt(value));
+  set assets(value: BigInt) {
+    this.set("assets", Value.fromBigInt(value));
+  }
+
+  get shares(): BigInt {
+    let value = this.get("shares");
+    return value!.toBigInt();
+  }
+
+  set shares(value: BigInt) {
+    this.set("shares", Value.fromBigInt(value));
   }
 
   get user(): string {
