@@ -1,10 +1,10 @@
 {
-  "name": "glp-vaults-team-testing",
+  "name": "glp-vaults",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy:remote": "graph codegen && graph build && graph deploy --product hosted-service umamidao/glp-vaults-team-testing",
+    "deploy:remote": "graph codegen && graph build && graph deploy --product hosted-service umamidao/glp-vaults",
     "test": "graph test"
   },
   "dependencies": {

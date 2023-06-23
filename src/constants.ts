@@ -11,19 +11,19 @@ export const GLP_HANDLER_ADDRESS = Address.fromString(
 );
 
 export const AGGREGATE_VAULT_HELPER_ADDRESS = Address.fromString(
-  "0x33fe3b096660040169c6b6a0ab73811e5de7b25f"
+  "0x36271999cd56c0ce8699937c2f2ac53c159aff57"
 );
 
 export const AGGREGATE_VAULT_ADDRESS = Address.fromString(
-  "0x63b32fdb7ee6c90b98019d04112b46cb28cab4ea"
+  "0x604ab926f30ec125f0f0407d304d71c440302f20"
 );
 
 export const BOOSTED_USDC_VAULT_ADDRESS = Address.fromString(
-  "0x306cd1a21a29a79ab54ac01cde44ff67d960c68e"
+  "0xd88be69fd3c51bd71f221e345310f8cd888136a1"
 );
 
 export const USDC_VAULT_ADDRESS = Address.fromString(
-  "0x7ddf3cb155de8df81615998f273e032f1a173a97"
+  "0x443eff44fd14543c3275d8d6f8093a547c92e166"
 );
 
 export const USDC_ADDRESS = Address.fromString(
@@ -31,11 +31,11 @@ export const USDC_ADDRESS = Address.fromString(
 );
 
 export const BOOSTED_WETH_VAULT_ADDRESS = Address.fromString(
-  "0x9f33f4e7bdefc505f13e85f1a5442d55c7b7f856"
+  "0xfa39412b13cee343b2ff4ae919467c04e9a91232"
 );
 
 export const WETH_VAULT_ADDRESS = Address.fromString(
-  "0x44d9ee2f9d78cb8eb88549190226677258f9249e"
+  "0xeb4158ab3d0976333f39e029714d75ad03918316"
 );
 
 export const WETH_ADDRESS = Address.fromString(
@@ -43,11 +43,11 @@ export const WETH_ADDRESS = Address.fromString(
 );
 
 export const BOOSTED_WBTC_VAULT_ADDRESS = Address.fromString(
-  "0x22cf6f4d8111c2ddeceba75823993ecf289973dc"
+  "0x0783c35155be15c0dac4da52d3476081e74edc90"
 );
 
 export const WBTC_VAULT_ADDRESS = Address.fromString(
-  "0x3237b8e9ce9bd6954aa7b16d92b9505f9e4deaa9"
+  "0x58c67f6e17a2244c095d2ef935988b40c758999d"
 );
 
 export const WBTC_ADDRESS = Address.fromString(
@@ -55,11 +55,11 @@ export const WBTC_ADDRESS = Address.fromString(
 );
 
 export const BOOSTED_LINK_VAULT_ADDRESS = Address.fromString(
-  "0xc84e6b1f8758ba78d8e8791b2c8fbd75346527bc"
+  "0x0d463cb2950d5eee094cee92fdc686d8406c494f"
 );
 
 export const LINK_VAULT_ADDRESS = Address.fromString(
-  "0x860dcc83cd3174bd967b1dd33627cba112860110"
+  "0xa8f9eef49843d856df833df132fdfb50a4d5ab8d"
 );
 
 export const LINK_ADDRESS = Address.fromString(
@@ -67,11 +67,11 @@ export const LINK_ADDRESS = Address.fromString(
 );
 
 export const BOOSTED_UNI_VAULT_ADDRESS = Address.fromString(
-  "0x50188540f47b8848eaced81189ad45b9391c32d9"
+  "0x79ad2aea593c7ac4926830c882e0a99f2d0c7709"
 );
 
 export const UNI_VAULT_ADDRESS = Address.fromString(
-  "0x376502dec4362c06e07a90f38da8be491f849190"
+  "0xa7f30f95432f48b472d6a0c7164ca535affabcc1"
 );
 
 export const UNI_ADDRESS = Address.fromString(
