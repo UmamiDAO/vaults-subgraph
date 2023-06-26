@@ -1,4 +1,4 @@
-import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
+import { Address, BigInt } from "@graphprotocol/graph-ts";
 import {
   CompoundDistributeYield as CompoundDistributeYieldEvent,
   GlpRewardClaimed as GlpRewardClaimedEvent,
@@ -9,32 +9,21 @@ import {
   CollectVaultFees,
   OpenRebalance,
 } from "../generated/AggregateVault/AggregateVault";
-import { GlpManager } from "../generated/AggregateVault/GlpManager";
 import {
   CompoundDistributeYield,
   GlpRewardsClaim,
-  RebalanceSnapshot,
   VaultFeesCollection,
   VaultPricePerShare,
   VaultTVL,
 } from "../generated/schema";
 import {
   AGGREGATE_VAULT_ADDRESS,
-  AGGREGATE_VAULT_HELPER_ADDRESS,
-  GLP_HANDLER_ADDRESS,
-  GMX_VAULT_ADDRESS,
-  LINK_ADDRESS,
   LINK_VAULT_ADDRESS,
-  UNI_ADDRESS,
   UNI_VAULT_ADDRESS,
-  USDC_ADDRESS,
   USDC_VAULT_ADDRESS,
-  WBTC_ADDRESS,
   WBTC_VAULT_ADDRESS,
-  WETH_ADDRESS,
   WETH_VAULT_ADDRESS,
 } from "./constants";
-import { GmxVault } from "../generated/AggregateVault/GmxVault";
 
 function getVaultPpsEntity(
   blockNumber: BigInt,
@@ -318,8 +307,6 @@ export function handleCompoundDistributeYield(
 
 export function handleOpenRebalance(event: OpenRebalance): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
-  const gmxVaultContract = GmxVault.bind(GMX_VAULT_ADDRESS);
-  const glpManagerContract = GlpManager.bind(GLP_HANDLER_ADDRESS);
   const eventName = "open";
 
   const pricePerShareUSDC = aggregateVault.getVaultPPS(USDC_VAULT_ADDRESS);
@@ -423,90 +410,10 @@ export function handleOpenRebalance(event: OpenRebalance): void {
   );
   uniTvlEntity.tvl = tvlUNI;
   uniTvlEntity.save();
-
-  const snapshot = new RebalanceSnapshot(event.transaction.hash.toHex());
-  snapshot.block = event.block.number;
-  snapshot.timestamp = event.block.timestamp;
-  snapshot.txHash = event.transaction.hash.toHex();
-  snapshot.event = eventName;
-
-  snapshot.vaultsPps = [
-    pricePerShareUSDC,
-    pricePerShareWETH,
-    pricePerShareWBTC,
-    pricePerShareLINK,
-    pricePerShareUNI,
-  ];
-  snapshot.vaultsTVL = [tvlUSDC, tvlWETH, tvlWBTC, tvlLINK, tvlUNI];
-
-  const rebalanceState = aggregateVault.getRebalanceState();
-  snapshot.glpComposition = rebalanceState.getGlpComposition();
-  snapshot.vaultsGlpAlloc = rebalanceState.getGlpAllocation();
-  snapshot.aggregatePositions = rebalanceState.getAggregatePositions();
-  snapshot.usdcVaultExternalPositions = rebalanceState.getExternalPositions()[0];
-  snapshot.wethVaultExternalPositions = rebalanceState.getExternalPositions()[1];
-  snapshot.wbtcVaultExternalPositions = rebalanceState.getExternalPositions()[2];
-  snapshot.linkVaultExternalPositions = rebalanceState.getExternalPositions()[3];
-  snapshot.uniVaultExternalPositions = rebalanceState.getExternalPositions()[4];
-  const nettedPositionsView = aggregateVault.delegateview(
-    AGGREGATE_VAULT_HELPER_ADDRESS,
-    Bytes.fromHexString("0x6c2e656c")
-  );
-
-  let nettedPositionsViewDecoded = ethereum.decode(
-    "int[5][5]",
-    nettedPositionsView.get_ret()
-  );
-  if (nettedPositionsViewDecoded !== null) {
-    const nettedPositionsMatrix = nettedPositionsViewDecoded.toBigIntMatrix();
-    snapshot.usdcVaultNettedPositions = nettedPositionsMatrix[0];
-    snapshot.wethVaultNettedPositions = nettedPositionsMatrix[1];
-    snapshot.wbtcVaultNettedPositions = nettedPositionsMatrix[2];
-    snapshot.linkVaultNettedPositions = nettedPositionsMatrix[3];
-    snapshot.uniVaultNettedPositions = nettedPositionsMatrix[4];
-  } else {
-    log.info(
-      "DECODE_NETTED_POSITIONS_CLOSE_REBALANCE could not decode getNettedPositions at block {} ",
-      [event.block.number.toString()]
-    );
-    const emptyArray = [
-      BigInt.zero(),
-      BigInt.zero(),
-      BigInt.zero(),
-      BigInt.zero(),
-      BigInt.zero(),
-    ];
-    snapshot.wethVaultNettedPositions = emptyArray;
-    snapshot.usdcVaultNettedPositions = emptyArray;
-    snapshot.wbtcVaultNettedPositions = emptyArray;
-    snapshot.linkVaultNettedPositions = emptyArray;
-    snapshot.uniVaultNettedPositions = emptyArray;
-  }
-  snapshot.glpPrice = glpManagerContract.getGlpPrice1();
-  const usdcMinPrice = gmxVaultContract.getMinPrice(USDC_ADDRESS);
-  const usdcMaxPrice = gmxVaultContract.getMaxPrice(USDC_ADDRESS);
-  const wethMinPrice = gmxVaultContract.getMinPrice(WETH_ADDRESS);
-  const wethMaxPrice = gmxVaultContract.getMaxPrice(WETH_ADDRESS);
-  const wbtcMinPrice = gmxVaultContract.getMinPrice(WBTC_ADDRESS);
-  const wbtcMaxPrice = gmxVaultContract.getMaxPrice(WBTC_ADDRESS);
-  const linkMinPrice = gmxVaultContract.getMinPrice(LINK_ADDRESS);
-  const linkMaxPrice = gmxVaultContract.getMaxPrice(LINK_ADDRESS);
-  const uniMinPrice = gmxVaultContract.getMinPrice(UNI_ADDRESS);
-  const uniMaxPrice = gmxVaultContract.getMaxPrice(UNI_ADDRESS);
-  snapshot.assetsPrices = [
-    usdcMinPrice.plus(usdcMaxPrice).div(BigInt.fromString("2")),
-    wethMinPrice.plus(wethMaxPrice).div(BigInt.fromString("2")),
-    wbtcMinPrice.plus(wbtcMaxPrice).div(BigInt.fromString("2")),
-    linkMinPrice.plus(linkMaxPrice).div(BigInt.fromString("2")),
-    uniMinPrice.plus(uniMaxPrice).div(BigInt.fromString("2")),
-  ];
-  snapshot.save();
 }
 
 export function handleCloseRebalance(event: CloseRebalance): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
-  const gmxVaultContract = GmxVault.bind(GMX_VAULT_ADDRESS);
-  const glpManagerContract = GlpManager.bind(GLP_HANDLER_ADDRESS);
   const eventName = "close";
 
   const pricePerShareUSDC = aggregateVault.getVaultPPS(USDC_VAULT_ADDRESS);
@@ -610,82 +517,4 @@ export function handleCloseRebalance(event: CloseRebalance): void {
   );
   uniTvlEntity.tvl = tvlUNI;
   uniTvlEntity.save();
-
-  const snapshot = new RebalanceSnapshot(event.transaction.hash.toHex());
-  snapshot.block = event.block.number;
-  snapshot.timestamp = event.block.timestamp;
-  snapshot.txHash = event.transaction.hash.toHex();
-  snapshot.event = eventName;
-
-  snapshot.vaultsPps = [
-    pricePerShareUSDC,
-    pricePerShareWETH,
-    pricePerShareWBTC,
-    pricePerShareLINK,
-    pricePerShareUNI,
-  ];
-  snapshot.vaultsTVL = [tvlUSDC, tvlWETH, tvlWBTC, tvlLINK, tvlUNI];
-
-  const rebalanceState = aggregateVault.getRebalanceState();
-  snapshot.glpComposition = rebalanceState.getGlpComposition();
-  snapshot.vaultsGlpAlloc = rebalanceState.getGlpAllocation();
-  snapshot.aggregatePositions = rebalanceState.getAggregatePositions();
-  snapshot.usdcVaultExternalPositions = rebalanceState.getExternalPositions()[0];
-  snapshot.wethVaultExternalPositions = rebalanceState.getExternalPositions()[1];
-  snapshot.wbtcVaultExternalPositions = rebalanceState.getExternalPositions()[2];
-  snapshot.linkVaultExternalPositions = rebalanceState.getExternalPositions()[3];
-  snapshot.uniVaultExternalPositions = rebalanceState.getExternalPositions()[4];
-  const nettedPositionsView = aggregateVault.delegateview(
-    AGGREGATE_VAULT_HELPER_ADDRESS,
-    Bytes.fromHexString("0x6c2e656c")
-  );
-
-  let nettedPositionsViewDecoded = ethereum.decode(
-    "int[5][5]",
-    nettedPositionsView.get_ret()
-  );
-  if (nettedPositionsViewDecoded !== null) {
-    const nettedPositionsMatrix = nettedPositionsViewDecoded.toBigIntMatrix();
-    snapshot.usdcVaultNettedPositions = nettedPositionsMatrix[0];
-    snapshot.wethVaultNettedPositions = nettedPositionsMatrix[1];
-    snapshot.wbtcVaultNettedPositions = nettedPositionsMatrix[2];
-    snapshot.linkVaultNettedPositions = nettedPositionsMatrix[3];
-    snapshot.uniVaultNettedPositions = nettedPositionsMatrix[4];
-  } else {
-    log.info(
-      "DECODE_NETTED_POSITIONS_CLOSE_REBALANCE could not decode getNettedPositions at block {} ",
-      [event.block.number.toString()]
-    );
-    const emptyArray = [
-      BigInt.zero(),
-      BigInt.zero(),
-      BigInt.zero(),
-      BigInt.zero(),
-      BigInt.zero(),
-    ];
-    snapshot.wethVaultNettedPositions = emptyArray;
-    snapshot.usdcVaultNettedPositions = emptyArray;
-    snapshot.wbtcVaultNettedPositions = emptyArray;
-    snapshot.linkVaultNettedPositions = emptyArray;
-    snapshot.uniVaultNettedPositions = emptyArray;
-  }
-  snapshot.glpPrice = glpManagerContract.getGlpPrice1();
-  const usdcMinPrice = gmxVaultContract.getMinPrice(USDC_ADDRESS);
-  const usdcMaxPrice = gmxVaultContract.getMaxPrice(USDC_ADDRESS);
-  const wethMinPrice = gmxVaultContract.getMinPrice(WETH_ADDRESS);
-  const wethMaxPrice = gmxVaultContract.getMaxPrice(WETH_ADDRESS);
-  const wbtcMinPrice = gmxVaultContract.getMinPrice(WBTC_ADDRESS);
-  const wbtcMaxPrice = gmxVaultContract.getMaxPrice(WBTC_ADDRESS);
-  const linkMinPrice = gmxVaultContract.getMinPrice(LINK_ADDRESS);
-  const linkMaxPrice = gmxVaultContract.getMaxPrice(LINK_ADDRESS);
-  const uniMinPrice = gmxVaultContract.getMinPrice(UNI_ADDRESS);
-  const uniMaxPrice = gmxVaultContract.getMaxPrice(UNI_ADDRESS);
-  snapshot.assetsPrices = [
-    usdcMinPrice.plus(usdcMaxPrice).div(BigInt.fromString("2")),
-    wethMinPrice.plus(wethMaxPrice).div(BigInt.fromString("2")),
-    wbtcMinPrice.plus(wbtcMaxPrice).div(BigInt.fromString("2")),
-    linkMinPrice.plus(linkMaxPrice).div(BigInt.fromString("2")),
-    uniMinPrice.plus(uniMaxPrice).div(BigInt.fromString("2")),
-  ];
-  snapshot.save();
 }

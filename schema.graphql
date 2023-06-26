@@ -89,30 +89,3 @@ type UserVaultBalance @entity(immutable: true) {
   user: String!
   vault: String!
 }
-
-# SNAPSHOTS
-
-type RebalanceSnapshot @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt!
-  block: BigInt!
-  txHash: String!
-  event: String!
-  glpPrice: BigInt!
-  vaultsTVL: [BigInt!]!
-  vaultsPps: [BigInt!]!
-  vaultsGlpAlloc: [BigInt!]!
-  aggregatePositions: [BigInt!]!
-  usdcVaultExternalPositions: [BigInt!]!
-  wethVaultExternalPositions: [BigInt!]!
-  wbtcVaultExternalPositions: [BigInt!]!
-  linkVaultExternalPositions: [BigInt!]!
-  uniVaultExternalPositions: [BigInt!]!
-  usdcVaultNettedPositions: [BigInt!]!
-  wethVaultNettedPositions: [BigInt!]!
-  wbtcVaultNettedPositions: [BigInt!]!
-  linkVaultNettedPositions: [BigInt!]!
-  uniVaultNettedPositions: [BigInt!]!
-  glpComposition: [BigInt!]!
-  assetsPrices: [BigInt!]!
-}

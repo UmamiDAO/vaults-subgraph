@@ -1,28 +1,31 @@
 {
   "arbitrum-one": {
-    "GlpUsdcVault": {
-      "address": "0x443eff44fd14543c3275d8d6f8093a547c92e166"
-    },
-    "GlpWethVault": {
-      "address": "0xeb4158ab3d0976333f39e029714d75ad03918316"
-    },
-    "GlpWbtcVault": {
-      "address": "0x58c67f6e17a2244c095d2ef935988b40c758999d"
-    },
-    "GlpLinkVault": {
-      "address": "0xa8f9eef49843d856df833df132fdfb50a4d5ab8d"
-    },
-    "GlpUniVault": {
-      "address": "0xa7f30f95432f48b472d6a0c7164ca535affabcc1"
-    },
-    "GmxVault": {
-      "address": "0x489ee077994b6658eafa855c308275ead8097c4a"
-    },
-    "Manager": {
-      "address": "0x46af23a5d55d058712fddaf232b6b1b7ba1c1942"
+    "AggregateVault": {
+      "address": "0xc69adac3d27672c6907aae429eee3e69f76f7106",
+      "startBlock": 104763967
     },
     "AggregateVaultHelper": {
-      "address": "0x604ab926f30ec125f0f0407d304d71c440302f20"
+      "address": "0xc69adac3d27672c6907aae429eee3e69f76f7106"
+    },
+    "GlpUsdcVault": {
+      "address": "0x727ed4ef04bb2a96ec77e44c1a91dbb01b605e42",
+      "startBlock": 104763967
+    },
+    "GlpWethVault": {
+      "address": "0xbb84d79159d6bbe1de148dc82640caa677e06126",
+      "startBlock": 104763967
+    },
+    "GlpWbtcVault": {
+      "address": "0x6a89faf99587a12e6bb0351f2fa9006c6cd12257",
+      "startBlock": 104763967
+    },
+    "GlpLinkVault": {
+      "address": "0xe0a21a475f8da0ee7fa5af8c1809d8ac5257607d",
+      "startBlock": 104763967
+    },
+    "GlpUniVault": {
+      "address": "0x37c0705a65948ea5e0ae1add13552bcad7711a23",
+      "startBlock": 104763967
     }
   }
 }

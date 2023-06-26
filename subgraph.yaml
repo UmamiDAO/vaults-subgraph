@@ -6,9 +6,9 @@ dataSources:
     name: GlpUsdcVault
     network: arbitrum-one
     source:
-      address: "0x443eff44fd14543c3275d8d6f8093a547c92e166"
+      address: "0x727ed4ef04bb2a96ec77e44c1a91dbb01b605e42"
       abi: GlpUsdcVault
-      startBlock: 104126134
+      startBlock: 104763834
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -37,9 +37,9 @@ dataSources:
     name: GlpWethVault
     network: arbitrum-one
     source:
-      address: "0xeb4158ab3d0976333f39e029714d75ad03918316"
+      address: "0xbb84d79159d6bbe1de148dc82640caa677e06126"
       abi: GlpWethVault
-      startBlock: 104126166
+      startBlock: 104763867
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -68,9 +68,9 @@ dataSources:
     name: GlpWbtcVault
     network: arbitrum-one
     source:
-      address: "0x58c67f6e17a2244c095d2ef935988b40c758999d"
+      address: "0x6a89faf99587a12e6bb0351f2fa9006c6cd12257"
       abi: GlpWbtcVault
-      startBlock: 104126199
+      startBlock: 104763901
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -99,9 +99,9 @@ dataSources:
     name: GlpLinkVault
     network: arbitrum-one
     source:
-      address: "0xa8f9eef49843d856df833df132fdfb50a4d5ab8d"
+      address: "0xe0a21a475f8da0ee7fa5af8c1809d8ac5257607d"
       abi: GlpLinkVault
-      startBlock: 104126232
+      startBlock: 104763934
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -130,9 +130,9 @@ dataSources:
     name: GlpUniVault
     network: arbitrum-one
     source:
-      address: "0xa7f30f95432f48b472d6a0c7164ca535affabcc1"
+      address: "0x37c0705a65948ea5e0ae1add13552bcad7711a23"
       abi: GlpUniVault
-      startBlock: 104126268
+      startBlock: 104763967
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -161,9 +161,9 @@ dataSources:
     name: AggregateVault
     network: arbitrum-one
     source:
-      address: "0x604ab926f30ec125f0f0407d304d71c440302f20"
+      address: "0xc69adac3d27672c6907aae429eee3e69f76f7106"
       abi: AggregateVault
-      startBlock: 104125239
+      startBlock: 104763232
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -173,16 +173,11 @@ dataSources:
         - VaultPricePerShare
         - VaultTVL
         - VaultFeesCollection
-        - RebalanceSnapshot
       abis:
         - name: AggregateVault
           file: ./abis/AggregateVault.json
         - name: AggregateVaultHelper
           file: ./abis/AggregateVaultHelper.json
-        - name: GmxVault
-          file: ./abis/GmxVault.json
-        - name: GlpManager
-          file: ./abis/GlpManager.json
       eventHandlers:
         - event: CollectVaultFees(uint256,uint256,uint256,uint256,address)
           handler: handleCollectVaultFees
