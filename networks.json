@@ -2,26 +2,26 @@
   "arbitrum-one": {
     "AggregateVault": {
       "address": "0xc69adac3d27672c6907aae429eee3e69f76f7106",
-      "startBlock": 104763967
+      "startBlock": 104763232
     },
     "AggregateVaultHelper": {
       "address": "0xc69adac3d27672c6907aae429eee3e69f76f7106"
     },
     "GlpUsdcVault": {
       "address": "0x727ed4ef04bb2a96ec77e44c1a91dbb01b605e42",
-      "startBlock": 104763967
+      "startBlock": 104763834
     },
     "GlpWethVault": {
       "address": "0xbb84d79159d6bbe1de148dc82640caa677e06126",
-      "startBlock": 104763967
+      "startBlock": 104763867
     },
     "GlpWbtcVault": {
       "address": "0x6a89faf99587a12e6bb0351f2fa9006c6cd12257",
-      "startBlock": 104763967
+      "startBlock": 104763901
     },
     "GlpLinkVault": {
       "address": "0xe0a21a475f8da0ee7fa5af8c1809d8ac5257607d",
-      "startBlock": 104763967
+      "startBlock": 104763934
     },
     "GlpUniVault": {
       "address": "0x37c0705a65948ea5e0ae1add13552bcad7711a23",
