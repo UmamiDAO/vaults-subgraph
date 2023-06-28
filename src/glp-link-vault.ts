@@ -42,14 +42,16 @@ function getVaultPpsEntity(
 export function handleGlpLinkDeposit(event: DepositEvent): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   const vaultContract = GlpLinkVault.bind(LINK_VAULT_ADDRESS);
-  const userBalanceEvent = new UserBalanceEvent(event.transaction.hash.toHex());
+  const userBalanceEvent = new UserBalanceEvent(
+    `link:deposit:${event.transaction.hash.toHex()}`
+  );
 
   userBalanceEvent.block = event.block.number;
   userBalanceEvent.timestamp = event.block.timestamp;
   userBalanceEvent.txHash = event.transaction.hash.toHexString();
   userBalanceEvent.event = "deposit";
   userBalanceEvent.token = LINK_VAULT_ADDRESS.toHexString();
-  userBalanceEvent.user = event.params.caller.toHexString();
+  userBalanceEvent.user = event.params.owner.toHexString();
   userBalanceEvent.assets = event.params.assets;
   userBalanceEvent.shares = event.params.shares;
   userBalanceEvent.from = event.params.caller.toHexString();
@@ -97,18 +99,20 @@ export function handleGlpLinkDeposit(event: DepositEvent): void {
 export function handleGlpLinkWithdraw(event: WithdrawEvent): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   const vaultContract = GlpLinkVault.bind(LINK_VAULT_ADDRESS);
-  const userBalanceEvent = new UserBalanceEvent(event.transaction.hash.toHex());
+  const userBalanceEvent = new UserBalanceEvent(
+    `link:withdraw:${event.transaction.hash.toHex()}`
+  );
 
   userBalanceEvent.block = event.block.number;
   userBalanceEvent.timestamp = event.block.timestamp;
   userBalanceEvent.txHash = event.transaction.hash.toHexString();
   userBalanceEvent.event = "withdraw";
   userBalanceEvent.token = LINK_VAULT_ADDRESS.toHexString();
-  userBalanceEvent.user = event.params.caller.toHexString();
+  userBalanceEvent.user = event.params.receiver.toHexString();
   userBalanceEvent.assets = event.params.assets;
   userBalanceEvent.shares = event.params.shares;
   userBalanceEvent.from = LINK_VAULT_ADDRESS.toHexString();
-  userBalanceEvent.to = event.params.caller.toHexString();
+  userBalanceEvent.to = event.params.receiver.toHexString();
   userBalanceEvent.save();
 
   /** Price Per Share */
@@ -200,7 +204,7 @@ export function handleGlpLinkVaultTransfer(
 
     if (balanceEvent == "transfer") {
       const userBalanceEvent = new UserBalanceEvent(
-        event.transaction.hash.toHex()
+        `link:transferFrom:${event.transaction.hash.toHex()}`
       );
 
       userBalanceEvent.block = event.block.number;
@@ -249,7 +253,7 @@ export function handleGlpLinkVaultTransfer(
 
     if (balanceEvent == "transfer") {
       const userBalanceEvent = new UserBalanceEvent(
-        event.transaction.hash.toHex()
+        `link:transferTo:${event.transaction.hash.toHex()}`
       );
 
       userBalanceEvent.block = event.block.number;
