@@ -43,7 +43,7 @@ export function handleGlpUsdcDeposit(event: DepositEvent): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   const vaultContract = GlpUsdcVault.bind(USDC_VAULT_ADDRESS);
   const userBalanceEvent = new UserBalanceEvent(
-    `usdc:deposit:${event.transaction.hash.toHex()}`
+    `usdc:deposit:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
   );
 
   userBalanceEvent.block = event.block.number;
@@ -100,7 +100,7 @@ export function handleGlpUsdcWithdraw(event: WithdrawEvent): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   const vaultContract = GlpUsdcVault.bind(USDC_VAULT_ADDRESS);
   const userBalanceEvent = new UserBalanceEvent(
-    `usdc:withdraw:${event.transaction.hash.toHex()}`
+    `usdc:withdraw:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
   );
 
   userBalanceEvent.block = event.block.number;
@@ -202,7 +202,7 @@ export function handleTransfer(event: GlpUsdcTransferEvent): void {
 
     if (balanceEvent == "transfer") {
       const userBalanceEvent = new UserBalanceEvent(
-        `usdc:transferFrom:${event.transaction.hash.toHex()}`
+        `usdc:transferFrom:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
       );
 
       userBalanceEvent.block = event.block.number;
@@ -251,7 +251,7 @@ export function handleTransfer(event: GlpUsdcTransferEvent): void {
 
     if (balanceEvent == "transfer") {
       const userBalanceEvent = new UserBalanceEvent(
-        `usdc:transferTo:${event.transaction.hash.toHex()}`
+        `usdc:transferTo:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
       );
 
       userBalanceEvent.block = event.block.number;

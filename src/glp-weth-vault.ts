@@ -43,7 +43,7 @@ export function handleGlpWethDeposit(event: DepositEvent): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   const vaultContract = GlpWethVault.bind(WETH_VAULT_ADDRESS);
   const userBalanceEvent = new UserBalanceEvent(
-    `weth:deposit:${event.transaction.hash.toHex()}`
+    `weth:deposit:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
   );
 
   userBalanceEvent.block = event.block.number;
@@ -100,7 +100,7 @@ export function handleGlpWethWithdraw(event: WithdrawEvent): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   const vaultContract = GlpWethVault.bind(WETH_VAULT_ADDRESS);
   const userBalanceEvent = new UserBalanceEvent(
-    `weth:withdraw:${event.transaction.hash.toHex()}`
+    `weth:withdraw:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
   );
 
   userBalanceEvent.block = event.block.number;
@@ -205,7 +205,7 @@ export function handleGlpWethVaultTransfer(
 
     if (balanceEvent == "transfer") {
       const userBalanceEvent = new UserBalanceEvent(
-        `weth:transferFrom:${event.transaction.hash.toHex()}`
+        `weth:transferFrom:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
       );
 
       userBalanceEvent.block = event.block.number;
@@ -254,7 +254,7 @@ export function handleGlpWethVaultTransfer(
 
     if (balanceEvent == "transfer") {
       const userBalanceEvent = new UserBalanceEvent(
-        `weth:transferTo:${event.transaction.hash.toHex()}`
+        `weth:transferTo:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
       );
 
       userBalanceEvent.block = event.block.number;

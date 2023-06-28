@@ -43,7 +43,7 @@ export function handleGlpUniDeposit(event: DepositEvent): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   const vaultContract = GlpUniVault.bind(UNI_VAULT_ADDRESS);
   const userBalanceEvent = new UserBalanceEvent(
-    `uni:deposit:${event.transaction.hash.toHex()}`
+    `uni:deposit:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
   );
 
   userBalanceEvent.block = event.block.number;
@@ -100,7 +100,7 @@ export function handleGlpUniWithdraw(event: WithdrawEvent): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   const vaultContract = GlpUniVault.bind(UNI_VAULT_ADDRESS);
   const userBalanceEvent = new UserBalanceEvent(
-    `uni:withdraw:${event.transaction.hash.toHex()}`
+    `uni:withdraw:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
   );
 
   userBalanceEvent.block = event.block.number;
@@ -204,7 +204,7 @@ export function handleGlpUniVaultTransfer(
 
     if (balanceEvent == "transfer") {
       const userBalanceEvent = new UserBalanceEvent(
-        `uni:transferFrom:${event.transaction.hash.toHex()}`
+        `uni:transferFrom:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
       );
 
       userBalanceEvent.block = event.block.number;
@@ -253,7 +253,7 @@ export function handleGlpUniVaultTransfer(
 
     if (balanceEvent == "transfer") {
       const userBalanceEvent = new UserBalanceEvent(
-        `uni:transferTo:${event.transaction.hash.toHex()}`
+        `uni:transferTo:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
       );
 
       userBalanceEvent.block = event.block.number;

@@ -43,7 +43,7 @@ export function handleGlpWbtcDeposit(event: DepositEvent): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   const vaultContract = GlpWbtcVault.bind(WBTC_VAULT_ADDRESS);
   const userBalanceEvent = new UserBalanceEvent(
-    `wbtc:deposit:${event.transaction.hash.toHex()}`
+    `wbtc:deposit:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
   );
 
   userBalanceEvent.block = event.block.number;
@@ -100,7 +100,7 @@ export function handleGlpWbtcWithdraw(event: WithdrawEvent): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   const vaultContract = GlpWbtcVault.bind(WBTC_VAULT_ADDRESS);
   const userBalanceEvent = new UserBalanceEvent(
-    `wbtc:withdraw:${event.transaction.hash.toHex()}`
+    `wbtc:withdraw:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
   );
 
   userBalanceEvent.block = event.block.number;
@@ -204,7 +204,7 @@ export function handleGlpWbtcVaultTransfer(
 
     if (balanceEvent == "transfer") {
       const userBalanceEvent = new UserBalanceEvent(
-        `wbtc:transferFrom:${event.transaction.hash.toHex()}`
+        `wbtc:transferFrom:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
       );
 
       userBalanceEvent.block = event.block.number;
@@ -253,7 +253,7 @@ export function handleGlpWbtcVaultTransfer(
 
     if (balanceEvent == "transfer") {
       const userBalanceEvent = new UserBalanceEvent(
-        `wbtc:transferTo:${event.transaction.hash.toHex()}`
+        `wbtc:transferTo:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
       );
 
       userBalanceEvent.block = event.block.number;
