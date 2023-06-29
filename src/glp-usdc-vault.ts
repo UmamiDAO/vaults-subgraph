@@ -71,7 +71,9 @@ export function handleGlpUsdcDeposit(event: DepositEvent): void {
 
   /** TVL */
 
-  const tvlEntityId = `${event.transaction.hash.toHex()}:tvl`;
+  const tvlEntityId = `usdc:${event.transaction.hash.toHex()}:tvl:${
+    event.transactionLogIndex
+  }`;
   const vaultTvlEntity = new VaultTVL(tvlEntityId);
 
   vaultTvlEntity.block = event.block.number;
@@ -84,7 +86,9 @@ export function handleGlpUsdcDeposit(event: DepositEvent): void {
 
   /** Total supply */
 
-  const supplyEntityId = `${event.transaction.hash.toHex()}:supply`;
+  const supplyEntityId = `usdc:${event.transaction.hash.toHex()}:supply:${
+    event.transactionLogIndex
+  }`;
   const totalSupplyEntity = new VaultTotalSupply(supplyEntityId);
 
   totalSupplyEntity.block = event.block.number;
@@ -128,7 +132,9 @@ export function handleGlpUsdcWithdraw(event: WithdrawEvent): void {
 
   /** TVL */
 
-  const tvlEntityId = `${event.transaction.hash.toHex()}:tvl`;
+  const tvlEntityId = `usdc:${event.transaction.hash.toHex()}:tvl:${
+    event.transactionLogIndex
+  }`;
   const vaultTvlEntity = new VaultTVL(tvlEntityId);
 
   vaultTvlEntity.block = event.block.number;
@@ -141,7 +147,9 @@ export function handleGlpUsdcWithdraw(event: WithdrawEvent): void {
 
   /** Total supply */
 
-  const supplyEntityId = `${event.transaction.hash.toHex()}:supply`;
+  const supplyEntityId = `usdc:${event.transaction.hash.toHex()}:supply:${
+    event.transactionLogIndex
+  }`;
   const totalSupplyEntity = new VaultTotalSupply(supplyEntityId);
 
   totalSupplyEntity.block = event.block.number;
