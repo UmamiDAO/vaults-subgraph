@@ -34,24 +34,11 @@ type VaultFeesCollection @entity(immutable: true) {
   id: ID!
   timestamp: BigInt! # uint256
   block: BigInt! # uint256
+  txHash: String!
   totalVaultFee: BigInt! # uint256
   performanceFeeInAsset: BigInt! # uint256
   managementFeeInAsset: BigInt! # uint256
   vault: String!
-}
-
-type GlpRewardsClaim @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt! # uint256
-  block: BigInt! # uint256
-  claimed: BigInt! # uint256
-}
-
-type CompoundDistributeYield @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt! # uint256
-  block: BigInt! # uint256
-  glpYieldPerVault: [BigInt!]! # uint256[5]
 }
 
 # USER RELATED ENTITIES

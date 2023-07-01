@@ -169,15 +169,12 @@ dataSources:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - CompoundDistributeYield
         - VaultPricePerShare
         - VaultTVL
         - VaultFeesCollection
       abis:
         - name: AggregateVault
           file: ./abis/AggregateVault.json
-        - name: AggregateVaultHelper
-          file: ./abis/AggregateVaultHelper.json
       eventHandlers:
         - event: CollectVaultFees(uint256,uint256,uint256,uint256,address)
           handler: handleCollectVaultFees

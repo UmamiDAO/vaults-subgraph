@@ -1,10 +1,10 @@
 {
-  "name": "glp-vaults-pre-live",
+  "name": "glp-vaultspre-live",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy:remote": "graph codegen && graph build && graph deploy --product hosted-service umamidao/glp-vaults-pre-live",
+    "deploy:remote": "graph codegen && graph build && graph deploy --product hosted-service umamidao/glp-vaults",
     "test": "graph test"
   },
   "dependencies": {

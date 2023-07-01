@@ -43,7 +43,7 @@ export function handleGlpLinkDeposit(event: DepositEvent): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   const vaultContract = GlpLinkVault.bind(LINK_VAULT_ADDRESS);
   const userBalanceEvent = new UserBalanceEvent(
-    `link:deposit:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
+    `link:deposit:${event.transaction.hash.toHexString()}:${event.transactionLogIndex.toString()}`
   );
 
   userBalanceEvent.block = event.block.number;
@@ -71,9 +71,7 @@ export function handleGlpLinkDeposit(event: DepositEvent): void {
 
   /** TVL */
 
-  const tvlEntityId = `link:${event.transaction.hash.toHex()}:tvl:${
-    event.transactionLogIndex
-  }`;
+  const tvlEntityId = `link:${event.transaction.hash.toHexString()}:tvl:${event.transactionLogIndex.toString()}`;
   const vaultTvlEntity = new VaultTVL(tvlEntityId);
 
   vaultTvlEntity.block = event.block.number;
@@ -86,15 +84,13 @@ export function handleGlpLinkDeposit(event: DepositEvent): void {
 
   /** Total supply */
 
-  const supplyEntityId = `link:${event.transaction.hash.toHex()}:supply:${
-    event.transactionLogIndex
-  }`;
+  const supplyEntityId = `link:${event.transaction.hash.toHexString()}:supply:${event.transactionLogIndex.toString()}`;
   const totalSupplyEntity = new VaultTotalSupply(supplyEntityId);
 
   totalSupplyEntity.block = event.block.number;
   totalSupplyEntity.timestamp = event.block.timestamp;
   totalSupplyEntity.event = "deposit";
-  totalSupplyEntity.txHash = event.transaction.hash.toHex();
+  totalSupplyEntity.txHash = event.transaction.hash.toHexString();
   totalSupplyEntity.vault = LINK_VAULT_ADDRESS.toHexString();
   totalSupplyEntity.totalSupply = vaultContract.totalSupply();
   totalSupplyEntity.save();
@@ -104,7 +100,7 @@ export function handleGlpLinkWithdraw(event: WithdrawEvent): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   const vaultContract = GlpLinkVault.bind(LINK_VAULT_ADDRESS);
   const userBalanceEvent = new UserBalanceEvent(
-    `link:withdraw:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
+    `link:withdraw:${event.transaction.hash.toHexString()}:${event.transactionLogIndex.toString()}`
   );
 
   userBalanceEvent.block = event.block.number;
@@ -132,30 +128,26 @@ export function handleGlpLinkWithdraw(event: WithdrawEvent): void {
 
   /** TVL */
 
-  const tvlEntityId = `link:${event.transaction.hash.toHex()}:tvl:${
-    event.transactionLogIndex
-  }`;
+  const tvlEntityId = `link:${event.transaction.hash.toHexString()}:tvl:${event.transactionLogIndex.toString()}`;
   const vaultTvlEntity = new VaultTVL(tvlEntityId);
 
   vaultTvlEntity.block = event.block.number;
   vaultTvlEntity.timestamp = event.block.timestamp;
   vaultTvlEntity.event = "withdraw";
-  vaultTvlEntity.txHash = event.transaction.hash.toHex();
+  vaultTvlEntity.txHash = event.transaction.hash.toHexString();
   vaultTvlEntity.vault = LINK_VAULT_ADDRESS.toHexString();
   vaultTvlEntity.tvl = aggregateVault.getVaultTVL(LINK_VAULT_ADDRESS);
   vaultTvlEntity.save();
 
   /** Total supply */
 
-  const supplyEntityId = `link:${event.transaction.hash.toHex()}:supply:${
-    event.transactionLogIndex
-  }`;
+  const supplyEntityId = `link:${event.transaction.hash.toHexString()}:supply:${event.transactionLogIndex.toString()}`;
   const totalSupplyEntity = new VaultTotalSupply(supplyEntityId);
 
   totalSupplyEntity.block = event.block.number;
   totalSupplyEntity.timestamp = event.block.timestamp;
   totalSupplyEntity.event = "withdraw";
-  totalSupplyEntity.txHash = event.transaction.hash.toHex();
+  totalSupplyEntity.txHash = event.transaction.hash.toHexString();
   totalSupplyEntity.vault = LINK_VAULT_ADDRESS.toHexString();
   totalSupplyEntity.totalSupply = vaultContract.totalSupply();
   totalSupplyEntity.save();
@@ -202,7 +194,7 @@ export function handleGlpLinkVaultTransfer(
     );
     fromHistoricalBalance.block = event.block.number;
     fromHistoricalBalance.timestamp = event.block.timestamp;
-    fromHistoricalBalance.txHash = event.transaction.hash.toHex();
+    fromHistoricalBalance.txHash = event.transaction.hash.toHexString();
     fromHistoricalBalance.vault = LINK_VAULT_ADDRESS.toHexString();
     fromHistoricalBalance.user = from;
     fromHistoricalBalance.value = fromTotal.link;
@@ -212,7 +204,7 @@ export function handleGlpLinkVaultTransfer(
 
     if (balanceEvent == "transfer") {
       const userBalanceEvent = new UserBalanceEvent(
-        `link:transferFrom:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
+        `link:transferFrom:${event.transaction.hash.toHexString()}:${event.transactionLogIndex.toString()}`
       );
 
       userBalanceEvent.block = event.block.number;
@@ -251,7 +243,7 @@ export function handleGlpLinkVaultTransfer(
     );
     toHistoricalBalance.block = event.block.number;
     toHistoricalBalance.timestamp = event.block.timestamp;
-    toHistoricalBalance.txHash = event.transaction.hash.toHex();
+    toHistoricalBalance.txHash = event.transaction.hash.toHexString();
     toHistoricalBalance.vault = LINK_VAULT_ADDRESS.toHexString();
     toHistoricalBalance.user = to;
     toHistoricalBalance.value = toTotal.link;
@@ -261,7 +253,7 @@ export function handleGlpLinkVaultTransfer(
 
     if (balanceEvent == "transfer") {
       const userBalanceEvent = new UserBalanceEvent(
-        `link:transferTo:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
+        `link:transferTo:${event.transaction.hash.toHexString()}:${event.transactionLogIndex.toString()}`
       );
 
       userBalanceEvent.block = event.block.number;

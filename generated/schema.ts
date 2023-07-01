@@ -324,6 +324,15 @@ export class VaultFeesCollection extends Entity {
     this.set("block", Value.fromBigInt(value));
   }
 
+  get txHash(): string {
+    let value = this.get("txHash");
+    return value!.toString();
+  }
+
+  set txHash(value: string) {
+    this.set("txHash", Value.fromString(value));
+  }
+
   get totalVaultFee(): BigInt {
     let value = this.get("totalVaultFee");
     return value!.toBigInt();
@@ -358,129 +367,6 @@ export class VaultFeesCollection extends Entity {
 
   set vault(value: string) {
     this.set("vault", Value.fromString(value));
-  }
-}
-
-export class GlpRewardsClaim extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save GlpRewardsClaim entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type GlpRewardsClaim must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
-      );
-      store.set("GlpRewardsClaim", id.toString(), this);
-    }
-  }
-
-  static load(id: string): GlpRewardsClaim | null {
-    return changetype<GlpRewardsClaim | null>(store.get("GlpRewardsClaim", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get timestamp(): BigInt {
-    let value = this.get("timestamp");
-    return value!.toBigInt();
-  }
-
-  set timestamp(value: BigInt) {
-    this.set("timestamp", Value.fromBigInt(value));
-  }
-
-  get block(): BigInt {
-    let value = this.get("block");
-    return value!.toBigInt();
-  }
-
-  set block(value: BigInt) {
-    this.set("block", Value.fromBigInt(value));
-  }
-
-  get claimed(): BigInt {
-    let value = this.get("claimed");
-    return value!.toBigInt();
-  }
-
-  set claimed(value: BigInt) {
-    this.set("claimed", Value.fromBigInt(value));
-  }
-}
-
-export class CompoundDistributeYield extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(
-      id != null,
-      "Cannot save CompoundDistributeYield entity without an ID"
-    );
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type CompoundDistributeYield must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
-      );
-      store.set("CompoundDistributeYield", id.toString(), this);
-    }
-  }
-
-  static load(id: string): CompoundDistributeYield | null {
-    return changetype<CompoundDistributeYield | null>(
-      store.get("CompoundDistributeYield", id)
-    );
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get timestamp(): BigInt {
-    let value = this.get("timestamp");
-    return value!.toBigInt();
-  }
-
-  set timestamp(value: BigInt) {
-    this.set("timestamp", Value.fromBigInt(value));
-  }
-
-  get block(): BigInt {
-    let value = this.get("block");
-    return value!.toBigInt();
-  }
-
-  set block(value: BigInt) {
-    this.set("block", Value.fromBigInt(value));
-  }
-
-  get glpYieldPerVault(): Array<BigInt> {
-    let value = this.get("glpYieldPerVault");
-    return value!.toBigIntArray();
-  }
-
-  set glpYieldPerVault(value: Array<BigInt>) {
-    this.set("glpYieldPerVault", Value.fromBigIntArray(value));
   }
 }
 

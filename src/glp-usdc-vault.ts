@@ -43,7 +43,7 @@ export function handleGlpUsdcDeposit(event: DepositEvent): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   const vaultContract = GlpUsdcVault.bind(USDC_VAULT_ADDRESS);
   const userBalanceEvent = new UserBalanceEvent(
-    `usdc:deposit:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
+    `usdc:deposit:${event.transaction.hash.toHexString()}:${event.transactionLogIndex.toString()}`
   );
 
   userBalanceEvent.block = event.block.number;
@@ -71,30 +71,26 @@ export function handleGlpUsdcDeposit(event: DepositEvent): void {
 
   /** TVL */
 
-  const tvlEntityId = `usdc:${event.transaction.hash.toHex()}:tvl:${
-    event.transactionLogIndex
-  }`;
+  const tvlEntityId = `usdc:${event.transaction.hash.toHexString()}:tvl:${event.transactionLogIndex.toString()}`;
   const vaultTvlEntity = new VaultTVL(tvlEntityId);
 
   vaultTvlEntity.block = event.block.number;
   vaultTvlEntity.timestamp = event.block.timestamp;
   vaultTvlEntity.event = "deposit";
-  vaultTvlEntity.txHash = event.transaction.hash.toHex();
+  vaultTvlEntity.txHash = event.transaction.hash.toHexString();
   vaultTvlEntity.vault = USDC_VAULT_ADDRESS.toHexString();
   vaultTvlEntity.tvl = aggregateVault.getVaultTVL(USDC_VAULT_ADDRESS);
   vaultTvlEntity.save();
 
   /** Total supply */
 
-  const supplyEntityId = `usdc:${event.transaction.hash.toHex()}:supply:${
-    event.transactionLogIndex
-  }`;
+  const supplyEntityId = `usdc:${event.transaction.hash.toHexString()}:supply:${event.transactionLogIndex.toString()}`;
   const totalSupplyEntity = new VaultTotalSupply(supplyEntityId);
 
   totalSupplyEntity.block = event.block.number;
   totalSupplyEntity.timestamp = event.block.timestamp;
   totalSupplyEntity.event = "deposit";
-  totalSupplyEntity.txHash = event.transaction.hash.toHex();
+  totalSupplyEntity.txHash = event.transaction.hash.toHexString();
   totalSupplyEntity.vault = USDC_VAULT_ADDRESS.toHexString();
   totalSupplyEntity.totalSupply = vaultContract.totalSupply();
   totalSupplyEntity.save();
@@ -104,7 +100,7 @@ export function handleGlpUsdcWithdraw(event: WithdrawEvent): void {
   const aggregateVault = AggregateVault.bind(AGGREGATE_VAULT_ADDRESS);
   const vaultContract = GlpUsdcVault.bind(USDC_VAULT_ADDRESS);
   const userBalanceEvent = new UserBalanceEvent(
-    `usdc:withdraw:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
+    `usdc:withdraw:${event.transaction.hash.toHexString()}:${event.transactionLogIndex.toString()}`
   );
 
   userBalanceEvent.block = event.block.number;
@@ -132,30 +128,26 @@ export function handleGlpUsdcWithdraw(event: WithdrawEvent): void {
 
   /** TVL */
 
-  const tvlEntityId = `usdc:${event.transaction.hash.toHex()}:tvl:${
-    event.transactionLogIndex
-  }`;
+  const tvlEntityId = `usdc:${event.transaction.hash.toHexString()}:tvl:${event.transactionLogIndex.toString()}`;
   const vaultTvlEntity = new VaultTVL(tvlEntityId);
 
   vaultTvlEntity.block = event.block.number;
   vaultTvlEntity.timestamp = event.block.timestamp;
   vaultTvlEntity.event = "withdraw";
-  vaultTvlEntity.txHash = event.transaction.hash.toHex();
+  vaultTvlEntity.txHash = event.transaction.hash.toHexString();
   vaultTvlEntity.vault = USDC_VAULT_ADDRESS.toHexString();
   vaultTvlEntity.tvl = aggregateVault.getVaultTVL(USDC_VAULT_ADDRESS);
   vaultTvlEntity.save();
 
   /** Total supply */
 
-  const supplyEntityId = `usdc:${event.transaction.hash.toHex()}:supply:${
-    event.transactionLogIndex
-  }`;
+  const supplyEntityId = `usdc:${event.transaction.hash.toHexString()}:supply:${event.transactionLogIndex.toString()}`;
   const totalSupplyEntity = new VaultTotalSupply(supplyEntityId);
 
   totalSupplyEntity.block = event.block.number;
   totalSupplyEntity.timestamp = event.block.timestamp;
   totalSupplyEntity.event = "withdraw";
-  totalSupplyEntity.txHash = event.transaction.hash.toHex();
+  totalSupplyEntity.txHash = event.transaction.hash.toHexString();
   totalSupplyEntity.vault = USDC_VAULT_ADDRESS.toHexString();
   totalSupplyEntity.totalSupply = vaultContract.totalSupply();
   totalSupplyEntity.save();
@@ -200,7 +192,7 @@ export function handleTransfer(event: GlpUsdcTransferEvent): void {
     );
     fromHistoricalBalance.block = event.block.number;
     fromHistoricalBalance.timestamp = event.block.timestamp;
-    fromHistoricalBalance.txHash = event.transaction.hash.toHex();
+    fromHistoricalBalance.txHash = event.transaction.hash.toHexString();
     fromHistoricalBalance.vault = USDC_VAULT_ADDRESS.toHexString();
     fromHistoricalBalance.user = from;
     fromHistoricalBalance.value = fromTotal.usdc;
@@ -210,7 +202,7 @@ export function handleTransfer(event: GlpUsdcTransferEvent): void {
 
     if (balanceEvent == "transfer") {
       const userBalanceEvent = new UserBalanceEvent(
-        `usdc:transferFrom:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
+        `usdc:transferFrom:${event.transaction.hash.toHexString()}:${event.transactionLogIndex.toString()}`
       );
 
       userBalanceEvent.block = event.block.number;
@@ -249,7 +241,7 @@ export function handleTransfer(event: GlpUsdcTransferEvent): void {
     );
     toHistoricalBalance.block = event.block.number;
     toHistoricalBalance.timestamp = event.block.timestamp;
-    toHistoricalBalance.txHash = event.transaction.hash.toHex();
+    toHistoricalBalance.txHash = event.transaction.hash.toHexString();
     toHistoricalBalance.vault = USDC_VAULT_ADDRESS.toHexString();
     toHistoricalBalance.user = to;
     toHistoricalBalance.value = toTotal.usdc;
@@ -259,7 +251,7 @@ export function handleTransfer(event: GlpUsdcTransferEvent): void {
 
     if (balanceEvent == "transfer") {
       const userBalanceEvent = new UserBalanceEvent(
-        `usdc:transferTo:${event.transaction.hash.toHex()}:${event.transactionLogIndex.toString()}`
+        `usdc:transferTo:${event.transaction.hash.toHexString()}:${event.transactionLogIndex.toString()}`
       );
 
       userBalanceEvent.block = event.block.number;
