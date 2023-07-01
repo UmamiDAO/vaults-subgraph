@@ -34,24 +34,11 @@ type VaultFeesCollection @entity(immutable: true) {
   id: ID!
   timestamp: BigInt! # uint256
   block: BigInt! # uint256
+  txHash: String!
   totalVaultFee: BigInt! # uint256
   performanceFeeInAsset: BigInt! # uint256
   managementFeeInAsset: BigInt! # uint256
   vault: String!
-}
-
-type GlpRewardsClaim @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt! # uint256
-  block: BigInt! # uint256
-  claimed: BigInt! # uint256
-}
-
-type CompoundDistributeYield @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt! # uint256
-  block: BigInt! # uint256
-  glpYieldPerVault: [BigInt!]! # uint256[5]
 }
 
 # USER RELATED ENTITIES
@@ -63,7 +50,8 @@ type UserBalanceEvent @entity(immutable: true) {
   txHash: String!
   event: String!
   token: String!
-  amount: BigInt!
+  assets: BigInt!
+  shares: BigInt!
   user: String!
   from: String!
   to: String!
@@ -87,31 +75,4 @@ type UserVaultBalance @entity(immutable: true) {
   value: BigInt!
   user: String!
   vault: String!
-}
-
-# SNAPSHOTS
-
-type RebalanceSnapshot @entity(immutable: true) {
-  id: ID!
-  timestamp: BigInt!
-  block: BigInt!
-  txHash: String!
-  event: String!
-  glpPrice: BigInt!
-  vaultsTVL: [BigInt!]!
-  vaultsPps: [BigInt!]!
-  vaultsGlpAlloc: [BigInt!]!
-  aggregatePositions: [BigInt!]!
-  usdcVaultExternalPositions: [BigInt!]!
-  wethVaultExternalPositions: [BigInt!]!
-  wbtcVaultExternalPositions: [BigInt!]!
-  linkVaultExternalPositions: [BigInt!]!
-  uniVaultExternalPositions: [BigInt!]!
-  usdcVaultNettedPositions: [BigInt!]!
-  wethVaultNettedPositions: [BigInt!]!
-  wbtcVaultNettedPositions: [BigInt!]!
-  linkVaultNettedPositions: [BigInt!]!
-  uniVaultNettedPositions: [BigInt!]!
-  glpComposition: [BigInt!]!
-  assetsPrices: [BigInt!]!
 }
