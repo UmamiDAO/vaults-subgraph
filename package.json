@@ -1,5 +1,5 @@
 {
-  "name": "glp-vaultspre-live",
+  "name": "glp-vaults",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
